@@ -66,7 +66,7 @@ function AppContent() {
     if (!hasWallet) {
       return (
         <View style={styles.onboardContainer}>
-          <Text style={[styles.onboardTitle, { color: theme.contentPrimary }]}>Welcome to Slush</Text>
+          <Text style={[styles.onboardTitle, { color: theme.contentPrimary }]}>Welcome to Red Envelope</Text>
           <TouchableOpacity style={[styles.onboardButton, { backgroundColor: theme.actionPrimary }]} onPress={handleCreateWallet}>
             <Text style={[styles.onboardButtonText, { color: theme.contentInversePrimary }]}>Create Wallet</Text>
           </TouchableOpacity>
@@ -108,7 +108,7 @@ function AppContent() {
     ];
 
     return (
-      <Animated.View style={[styles.tabBar, { 
+      <Animated.View style={[styles.tabBar, {
         opacity: tabBarOpacity,
         backgroundColor: theme.backgroundTabBar,
         borderTopColor: theme.borderWeak
@@ -117,25 +117,25 @@ function AppContent() {
           const IconComponent = tab.icon;
           const isActive = activeTab === tab.key;
           const isPressed = pressedTab === tab.key;
-          
+
           return (
             <TouchableOpacity
               key={tab.key}
               style={[styles.tab, isActive && styles.tabActive]}
               onPress={() => handleTabPress(tab.key)}
             >
-              <Animated.View 
+              <Animated.View
                 style={[
-                  styles.tabContent, 
+                  styles.tabContent,
                   isActive && [styles.tabContentActive, { backgroundColor: theme.backgroundPrimary }],
                   {
                     transform: [{ scale: isPressed ? 0.95 : 1 }]
                   }
                 ]}
               >
-                <IconComponent 
-                  size={20} 
-                  color={isActive ? theme.contentPrimary : theme.contentSecondary} 
+                <IconComponent
+                  size={20}
+                  color={isActive ? theme.contentPrimary : theme.contentSecondary}
                 />
               </Animated.View>
             </TouchableOpacity>

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Slush",
-    "slug": "Slush",
+    "name": "Red Envelope",
+    "slug": "red-envelope-wallet",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
