@@ -71,51 +71,50 @@ export const ThemeProvider = ({ children }) => {
 };
 
 const darkTheme = {
-  // Background colors
-  // backgroundPrimary: '#060d14',
-  backgroundPrimary: '#082d57',
-  backgroundSecondary: '#082d57',
-  backgroundTertiary: '#060d14',
-  backgroundInverse: '#060d14',
-  backgroundAccent: '#4da2ff',
-  backgroundTabBar: 'rgba(18, 94, 176, 0.95)',
+  // Background colors - Red Envelope theme
+  backgroundPrimary: '#1a0c0c', // Dark red background
+  backgroundSecondary: '#2d1212', // Slightly lighter red
+  backgroundTertiary: '#0f0606', // Very dark red
+  backgroundInverse: '#0f0606', // Card backgrounds
+  backgroundAccent: '#ff4444', // Red accent
+  backgroundTabBar: 'rgba(180, 30, 30, 0.95)', // Red tab bar
 
   // Text colors
   contentPrimary: '#fafcff',
   contentSecondary: '#fafcffa3',
-  contentInversePrimary: '#060d14',
+  contentInversePrimary: '#1a0c0c',
 
-  // Action colors
-  actionPrimary: '#47e299',
-  actionSecondary: '#125eb0a3',
+  // Action colors - Red Envelope theme
+  actionPrimary: '#ff3333', // Red primary action
+  actionSecondary: 'rgba(180, 30, 30, 0.3)', // Red secondary action
 
   // Border colors
-  borderWeak: '#082d57',
+  borderWeak: '#2d1212',
 
   // Status bar
   statusBarStyle: 'light',
 };
 
 const lightTheme = {
-  // Background colors
-  backgroundPrimary: '#cce5ff',
-  backgroundSecondary: '#cce5ff',
-  backgroundTertiary: '#ffffff',
-  backgroundInverse: '#ffffff',
-  backgroundAccent: '#4da2ff',
-  backgroundTabBar: '#8fc5ff',
+  // Background colors - Red Envelope light theme
+  backgroundPrimary: '#ffe5e5', // Light red/pink background
+  backgroundSecondary: '#ffcccc', // Slightly deeper pink
+  backgroundTertiary: '#ffffff', // White cards
+  backgroundInverse: '#ffffff', // White card backgrounds
+  backgroundAccent: '#ff6666', // Light red accent
+  backgroundTabBar: '#ffaaaa', // Pink tab bar
 
   // Text colors
-  contentPrimary: '#1a202c',
-  contentSecondary: '#4a5568',
+  contentPrimary: '#1a0c0c', // Dark red text
+  contentSecondary: '#4a2525', // Medium red text
   contentInversePrimary: '#ffffff',
 
-  // Action colors
-  actionPrimary: '#47e299',
-  actionSecondary: '#e2e8f0',
+  // Action colors - Red Envelope theme
+  actionPrimary: '#ff3333', // Red primary action
+  actionSecondary: '#ffdddd', // Light pink secondary
 
   // Border colors
-  borderWeak: '#cce5ff',
+  borderWeak: '#ffcccc',
 
   // Status bar
   statusBarStyle: 'dark',

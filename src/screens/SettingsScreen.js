@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch, Alert } from 'react-native';
 import { useTheme } from '../theme/ThemeContext';
+import { useWallet } from '../context/WalletContext';
 import Svg, { Path, G } from 'react-native-svg';
 
 // Google G Icon Component
@@ -74,9 +75,41 @@ const ExternalArrowIcon = ({ size = 20, color = "#000" }) => (
   </Svg>
 );
 
+const LogoutIcon = ({ size = 24, color = "#000" }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.59L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" fill={color}/>
+  </Svg>
+);
+
 const SettingsScreen = () => {
   const { theme } = useTheme();
+  const { clearWallet } = useWallet();
   const [soundEnabled, setSoundEnabled] = React.useState(true);
+
+  const handleClearWallet = () => {
+    Alert.alert(
+      'Clear Wallet',
+      'Are you sure you want to clear your wallet? This will log you out and you\'ll need to import or create a new wallet.',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Clear Wallet',
+          style: 'destructive',
+          onPress: async () => {
+            const result = await clearWallet();
+            if (result.success) {
+              // Wallet cleared successfully, app will automatically go back to welcome screen
+            } else {
+              Alert.alert('Error', 'Failed to clear wallet: ' + result.error);
+            }
+          },
+        },
+      ]
+    );
+  };
 
   return (
     <View style={[styles.container, { backgroundColor: theme.backgroundPrimary }]}>
@@ -84,7 +117,7 @@ const SettingsScreen = () => {
         {/* Current Account Section */}
         <View style={[styles.section, { backgroundColor: theme.backgroundInverse }]}>
           <Text style={[styles.sectionTitle, { color: theme.contentPrimary }]}>Current Account</Text>
-          
+
           <TouchableOpacity style={[styles.accountCard, { backgroundColor: theme.backgroundSecondary }]}>
             <View style={styles.accountInfo}>
               <GoogleGIcon size={24} />
@@ -98,7 +131,7 @@ const SettingsScreen = () => {
               <ArrowIcon size={20} color={theme.contentSecondary} />
             </View>
           </TouchableOpacity>
-          
+
           <TouchableOpacity style={[styles.manageButton, { backgroundColor: theme.backgroundAccent }]}>
             <Text style={[styles.manageButtonText, { color: theme.contentPrimary }]}>Manage account</Text>
           </TouchableOpacity>
@@ -107,7 +140,7 @@ const SettingsScreen = () => {
         {/* Settings Section */}
         <View style={[styles.section, { backgroundColor: theme.backgroundInverse }]}>
           <Text style={[styles.sectionTitle, { color: theme.contentPrimary }]}>Settings</Text>
-          
+
           <TouchableOpacity style={styles.settingItem}>
             <View style={styles.settingLeft}>
               <NetworkIcon size={24} color={theme.contentPrimary} />
@@ -118,7 +151,7 @@ const SettingsScreen = () => {
               <ArrowIcon size={20} color={theme.contentSecondary} />
             </View>
           </TouchableOpacity>
-          
+
           <TouchableOpacity style={styles.settingItem}>
             <View style={styles.settingLeft}>
               <ThemeIcon size={24} color={theme.contentPrimary} />
@@ -129,7 +162,7 @@ const SettingsScreen = () => {
               <ArrowIcon size={20} color={theme.contentSecondary} />
             </View>
           </TouchableOpacity>
-          
+
           <View style={styles.settingItem}>
             <View style={styles.settingLeft}>
               <SoundIcon size={24} color={theme.contentPrimary} />
@@ -142,6 +175,14 @@ const SettingsScreen = () => {
               thumbColor={soundEnabled ? theme.contentPrimary : theme.contentSecondary}
             />
           </View>
+
+          <TouchableOpacity style={styles.settingItem} onPress={handleClearWallet}>
+            <View style={styles.settingLeft}>
+              <LogoutIcon size={24} color="#ff4444" />
+              <Text style={[styles.settingLabel, { color: '#ff4444' }]}>Clear Wallet</Text>
+            </View>
+            <ArrowIcon size={20} color="#ff4444" />
+          </TouchableOpacity>
         </View>
 
         {/* About Section */}
@@ -150,7 +191,7 @@ const SettingsScreen = () => {
             <Text style={[styles.sectionTitle, { color: theme.contentPrimary }]}>About</Text>
             <Text style={[styles.versionText, { color: theme.contentSecondary }]}>e4a49d9</Text>
           </View>
-          
+
           <TouchableOpacity style={styles.settingItem}>
             <View style={styles.settingLeft}>
               <FAQIcon size={24} color={theme.contentPrimary} />
@@ -158,7 +199,7 @@ const SettingsScreen = () => {
             </View>
             <ExternalArrowIcon size={20} color={theme.contentSecondary} />
           </TouchableOpacity>
-          
+
           <TouchableOpacity style={styles.settingItem}>
             <View style={styles.settingLeft}>
               <SupportIcon size={24} color={theme.contentPrimary} />
@@ -166,7 +207,7 @@ const SettingsScreen = () => {
             </View>
             <ExternalArrowIcon size={20} color={theme.contentSecondary} />
           </TouchableOpacity>
-          
+
           <TouchableOpacity style={styles.settingItem}>
             <View style={styles.settingLeft}>
               <DiscordIcon size={24} color={theme.contentPrimary} />
@@ -174,7 +215,7 @@ const SettingsScreen = () => {
             </View>
             <ExternalArrowIcon size={20} color={theme.contentSecondary} />
           </TouchableOpacity>
-          
+
           <TouchableOpacity style={styles.settingItem}>
             <View style={styles.settingLeft}>
               <TermsIcon size={24} color={theme.contentPrimary} />

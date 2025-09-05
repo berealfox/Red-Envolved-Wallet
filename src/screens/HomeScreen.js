@@ -32,7 +32,13 @@ const GoogleGIcon = ({ size = 24 }) => (
 );
 
 const HomeScreen = ({ navigation }) => {
-  const { theme, toggleTheme } = useTheme();
+  const {
+    theme,
+    toggleTheme,
+    rewardPercentage,
+    updateRewardPercentage,
+    rewardToColor
+  } = useTheme();
   const {
     walletAddress,
     balances,
