@@ -9,14 +9,21 @@ import ActivityScreen from './src/screens/ActivityScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
 import { HomeIcon, EarnIcon, NFTsIcon, AppsIcon, ActivityIcon, SettingsIcon } from './src/components/icons';
 import { ThemeProvider, useTheme } from './src/theme/ThemeContext';
+import { WalletProvider, useWallet } from './src/context/WalletContext';
 
 function AppContent() {
   const { theme } = useTheme();
+  const {
+    hasWallet,
+    walletAddress,
+    balances,
+    recentTxs,
+    createWallet,
+    importWallet,
+    isLoading,
+    error
+  } = useWallet();
   const [activeTab, setActiveTab] = useState('Home');
-  const [hasWallet, setHasWallet] = useState(false);
-  const [walletAddress, setWalletAddress] = useState('');
-  const [walletBalance, setWalletBalance] = useState(0);
-  const [recentTxs, setRecentTxs] = useState([]);
   const [tabBarOpacity] = useState(new Animated.Value(0));
   const [pressedTab, setPressedTab] = useState(null);
 
@@ -39,25 +46,30 @@ function AppContent() {
 
 
 
-  const handleCreateWallet = () => {
-    setHasWallet(true);
-    setWalletAddress('bc1q9f3x0slushmockupaddress9r2k7p0');
-    setWalletBalance(0.2345);
-    setRecentTxs([
-      { id: 'tx_1', type: 'received', amount: 0.4, time: '2d ago' },
-      { id: 'tx_2', type: 'sent', amount: 0.15, time: '5d ago' },
-      { id: 'tx_3', type: 'received', amount: 0.02, time: '1w ago' },
-    ]);
+  const handleCreateWallet = async () => {
+    const result = await createWallet();
+    if (result.success) {
+      // Wallet created successfully
+      console.log('Wallet created:', result.address);
+      // You might want to show the mnemonic to the user here
+    } else {
+      console.error('Failed to create wallet:', result.error);
+      // Handle error (show alert, etc.)
+    }
   };
 
-  const handleImportWallet = () => {
-    setHasWallet(true);
-    setWalletAddress('bc1qs1ushm0ckup1mprt7ddr355xx9q');
-    setWalletBalance(1.0523);
-    setRecentTxs([
-      { id: 'tx_4', type: 'received', amount: 0.9, time: '3h ago' },
-      { id: 'tx_5', type: 'sent', amount: 0.05, time: '1d ago' },
-    ]);
+  const handleImportWallet = async () => {
+    // For now, we'll use a placeholder mnemonic
+    // In production, you'd show an input dialog for the user to enter their mnemonic
+    const testMnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about";
+
+    const result = await importWallet(testMnemonic);
+    if (result.success) {
+      console.log('Wallet imported:', result.address);
+    } else {
+      console.error('Failed to import wallet:', result.error);
+      // Handle error
+    }
   };
 
 
@@ -79,7 +91,7 @@ function AppContent() {
 
     switch (activeTab) {
       case 'Home':
-        return <HomeScreen walletAddress={walletAddress} walletBalance={walletBalance} recentTxs={recentTxs} />;
+        return <HomeScreen />;
       case 'Earn':
         return <EarnScreen />;
       case 'NFTs':
@@ -91,7 +103,7 @@ function AppContent() {
       case 'Settings':
         return <SettingsScreen />;
       default:
-        return <HomeScreen walletAddress={walletAddress} walletBalance={walletBalance} recentTxs={recentTxs} />;
+        return <HomeScreen />;
     }
   };
 
@@ -281,7 +293,9 @@ const styles = StyleSheet.create({
 export default function App() {
   return (
     <ThemeProvider>
-      <AppContent />
+      <WalletProvider>
+        <AppContent />
+      </WalletProvider>
     </ThemeProvider>
   );
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -16,6 +16,9 @@ import {
   SuiIcon,
 } from "../components/icons";
 import { useTheme } from "../theme/ThemeContext";
+import { useWallet } from "../context/WalletContext";
+import SendScreen from "./SendScreen";
+import ReceiveScreen from "./ReceiveScreen";
 import Svg, { Path, G } from 'react-native-svg';
 
 
@@ -28,9 +31,21 @@ const GoogleGIcon = ({ size = 24 }) => (
   </Svg>
 );
 
-const HomeScreen = ({ walletAddress, walletBalance, recentTxs }) => {
+const HomeScreen = ({ navigation }) => {
   const { theme, toggleTheme } = useTheme();
-  
+  const {
+    walletAddress,
+    balances,
+    recentTxs,
+    formatBalance,
+    getTotalValue,
+    refreshWalletData,
+    isLoading
+  } = useWallet();
+
+  const [showSendScreen, setShowSendScreen] = useState(false);
+  const [showReceiveScreen, setShowReceiveScreen] = useState(false);
+
   const handleManageAccount = () => {
     console.log("Manage account pressed");
   };
@@ -64,11 +79,42 @@ const HomeScreen = ({ walletAddress, walletBalance, recentTxs }) => {
 
       <ScrollView style={styles.scrollContainer}>
         <View style={[styles.promoBanner, { backgroundColor: theme.backgroundAccent }]}>
-          <Text style={styles.promoIconText}>C</Text>
+          <Text style={styles.promoIconText}>🧧</Text>
           <View style={styles.promoContent}>
             <Text style={[styles.promoText, { color: theme.contentPrimary }]}>
-              Buy and sell USDC with no fees for a limited time
+              Red Envelope Wallet - Trade AQY, USDC, and GC with rewards
             </Text>
+          </View>
+        </View>
+
+        {/* Portfolio Balance Section */}
+        <View style={[styles.portfolioSection, { backgroundColor: theme.backgroundInverse }]}>
+          <Text style={[styles.portfolioTitle, { color: theme.contentPrimary }]}>
+            Portfolio Value
+          </Text>
+          <Text style={[styles.portfolioValue, { color: theme.contentPrimary }]}>
+            ${getTotalValue()}
+          </Text>
+
+          <View style={styles.tokenBalances}>
+            <View style={styles.tokenRow}>
+              <Text style={[styles.tokenSymbol, { color: theme.contentPrimary }]}>AQY</Text>
+              <Text style={[styles.tokenBalance, { color: theme.contentPrimary }]}>
+                {formatBalance(balances.AQY.balance, balances.AQY.decimals)}
+              </Text>
+            </View>
+            <View style={styles.tokenRow}>
+              <Text style={[styles.tokenSymbol, { color: theme.contentPrimary }]}>USDC</Text>
+              <Text style={[styles.tokenBalance, { color: theme.contentPrimary }]}>
+                {formatBalance(balances.USDC.balance, balances.USDC.decimals)}
+              </Text>
+            </View>
+            <View style={styles.tokenRow}>
+              <Text style={[styles.tokenSymbol, { color: theme.contentPrimary }]}>GC</Text>
+              <Text style={[styles.tokenBalance, { color: theme.contentPrimary }]}>
+                {formatBalance(balances.GC.balance, balances.GC.decimals)}
+              </Text>
+            </View>
           </View>
         </View>
 
@@ -78,7 +124,7 @@ const HomeScreen = ({ walletAddress, walletBalance, recentTxs }) => {
               <SuiIcon size={70} background={false} shadow={true} />
             </View>
             <Text style={[styles.coinStackTitle, { color: theme.contentPrimary }]}>
-              To send transactions on the Sui network, you need SUI in your
+              To send transactions on the AQY network, you need AQY in your
               wallet.
             </Text>
           </View>
@@ -87,12 +133,16 @@ const HomeScreen = ({ walletAddress, walletBalance, recentTxs }) => {
               <BuySellIcon size={20} color={theme.contentPrimary} />
               <Text style={[styles.actionButtonText, { color: theme.contentPrimary }]}>Buy/Sell</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.actionButton, { backgroundColor: theme.actionSecondary }]}>
+            <TouchableOpacity
+              style={[styles.actionButton, { backgroundColor: theme.actionSecondary }]}
+              onPress={() => setShowReceiveScreen(true)}
+            >
               <ReceiveIcon size={20} color={theme.contentPrimary} />
               <Text style={[styles.actionButtonText, { color: theme.contentPrimary }]}>Receive</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.actionButton, styles.actionButtonDisabled, { backgroundColor: theme.actionSecondary }]}
+              style={[styles.actionButton, { backgroundColor: theme.actionSecondary }]}
+              onPress={() => setShowSendScreen(true)}
             >
               <SendIcon size={20} color={theme.contentPrimary} />
               <Text style={[styles.actionButtonText, { color: theme.contentPrimary }]}>Send</Text>
@@ -119,6 +169,20 @@ const HomeScreen = ({ walletAddress, walletBalance, recentTxs }) => {
         </View>
         <View style={{ height: 50 }} />
       </ScrollView>
+
+      {/* Send Screen Modal */}
+      {showSendScreen && (
+        <View style={styles.modalOverlay}>
+          <SendScreen navigation={{ goBack: () => setShowSendScreen(false) }} />
+        </View>
+      )}
+
+      {/* Receive Screen Modal */}
+      {showReceiveScreen && (
+        <View style={styles.modalOverlay}>
+          <ReceiveScreen navigation={{ goBack: () => setShowReceiveScreen(false) }} />
+        </View>
+      )}
     </View>
   );
 };
@@ -203,6 +267,47 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#fafcffa3", // --color-content-primary
     fontWeight: "500",
+  },
+  portfolioSection: {
+    backgroundColor: "#060d14", // --color-background-inverse
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "black",
+    padding: 16,
+    marginBottom: 16,
+  },
+  portfolioTitle: {
+    fontSize: 14,
+    color: "#fafcffa3", // --color-content-secondary
+    marginBottom: 8,
+    textAlign: "center",
+  },
+  portfolioValue: {
+    fontSize: 32,
+    fontWeight: "bold",
+    color: "#fafcff", // --color-content-primary
+    textAlign: "center",
+    marginBottom: 16,
+  },
+  tokenBalances: {
+    gap: 8,
+  },
+  tokenRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: "#125eb0a3",
+  },
+  tokenSymbol: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#fafcff",
+  },
+  tokenBalance: {
+    fontSize: 16,
+    color: "#fafcff",
   },
   coinStackSection: {
     backgroundColor: "#060d14", // --color-background-inverse
@@ -297,6 +402,15 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
     color: "#fafcff", // --color-content-primary
+  },
+  modalOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    zIndex: 1000,
   },
 });
 
