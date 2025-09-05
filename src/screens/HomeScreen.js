@@ -84,14 +84,6 @@ const HomeScreen = ({ navigation }) => {
       </View>
 
       <ScrollView style={styles.scrollContainer}>
-        <View style={[styles.promoBanner, { backgroundColor: theme.backgroundAccent }]}>
-          <Text style={styles.promoIconText}>🧧</Text>
-          <View style={styles.promoContent}>
-            <Text style={[styles.promoText, { color: theme.contentPrimary }]}>
-              Red Envelope Wallet - Trade AQY, USDC, and GC with rewards
-            </Text>
-          </View>
-        </View>
 
         {/* Portfolio Balance Section */}
         <View style={[styles.portfolioSection, { backgroundColor: theme.backgroundInverse }]}>
@@ -154,7 +146,7 @@ const HomeScreen = ({ navigation }) => {
               <Text style={[styles.actionButtonText, { color: theme.contentPrimary }]}>Send</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.actionButton, styles.actionButtonDisabled, { backgroundColor: theme.actionSecondary }]}
+              style={[styles.actionButton, { backgroundColor: theme.actionSecondary }]}
             >
               <SwapIcon size={20} color={theme.contentPrimary} />
               <Text style={[styles.actionButtonText, { color: theme.contentPrimary }]}>Swap</Text>
@@ -347,21 +339,16 @@ const styles = StyleSheet.create({
     gap: 8,
     justifyContent: "space-between",
   },
-  actionButton: {
-    flex: 1,
-    minWidth: "30%",
+ actionButton: {
+    width: "48%",
     backgroundColor: "#125eb0a3", // --color-action-secondary
-    borderRadius: 8,
-    paddingVertical: 16,
-    paddingHorizontal: 12,
+    borderRadius: 12,
+    paddingVertical: 20,
+    paddingHorizontal: 16,
     alignItems: "center",
     flexDirection: "column",
     justifyContent: "center",
-    maxHeight: "53%",
     gap: 8,
-  },
-  actionButtonDisabled: {
-    opacity: 0.4,
   },
   actionButtonText: {
     fontSize: 14,
