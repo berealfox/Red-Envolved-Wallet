@@ -81,10 +81,23 @@ const LogoutIcon = ({ size = 24, color = "#000" }) => (
   </Svg>
 );
 
+const EditIcon = ({ size = 24, color = "#000" }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill={color}/>
+  </Svg>
+);
+
+const DeleteIcon = ({ size = 24, color = "#000" }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" fill={color}/>
+  </Svg>
+);
+
 const SettingsScreen = () => {
   const { theme } = useTheme();
   const { clearWallet } = useWallet();
   const [soundEnabled, setSoundEnabled] = React.useState(true);
+  const [accountExpanded, setAccountExpanded] = React.useState(false);
 
   const handleClearWallet = () => {
     Alert.alert(
@@ -122,15 +135,41 @@ const SettingsScreen = () => {
             <View style={styles.accountInfo}>
               <GoogleGIcon size={24} />
               <View style={styles.accountDetails}>
-                <Text style={[styles.emailText, { color: theme.contentPrimary }]}>bearbeast131@gmail.com</Text>
-                <Text style={[styles.addressText, { color: theme.contentSecondary }]}>0xe1c8...1267</Text>
+                <Text style={[styles.nameText, { color: theme.contentPrimary }]}>Kayato</Text>
+                <Text style={[styles.emailText, { color: theme.contentPrimary }]}>kayato.beast@gmail.com</Text>
+                <Text style={[styles.addressText, { color: theme.contentSecondary }]}>0xc7ca...84f6</Text>
               </View>
             </View>
             <View style={styles.accountActions}>
               <CopyIcon size={20} color={theme.contentSecondary} />
-              <ArrowIcon size={20} color={theme.contentSecondary} />
+              <TouchableOpacity onPress={() => setAccountExpanded(!accountExpanded)}>
+                <View style={[
+                  styles.expandArrow,
+                  accountExpanded && styles.expandArrowRotated
+                ]}>
+                  <ArrowIcon
+                    size={20}
+                    color={theme.contentSecondary}
+                  />
+                </View>
+              </TouchableOpacity>
             </View>
           </TouchableOpacity>
+
+          {/* Expandable Account Actions */}
+          {accountExpanded && (
+            <View style={styles.accountActionsContainer}>
+              <TouchableOpacity style={[styles.accountActionButton, { backgroundColor: theme.backgroundSecondary }]}>
+                <EditIcon size={20} color={theme.contentPrimary} />
+                <Text style={[styles.accountActionText, { color: theme.contentPrimary }]}>Rename account</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={[styles.accountActionButton, { backgroundColor: theme.backgroundSecondary }]}>
+                <DeleteIcon size={20} color="#ff4444" />
+                <Text style={[styles.accountActionText, { color: '#ff4444' }]}>Remove account</Text>
+              </TouchableOpacity>
+            </View>
+          )}
 
           <TouchableOpacity style={[styles.manageButton, { backgroundColor: theme.backgroundAccent }]}>
             <Text style={[styles.manageButtonText, { color: theme.contentPrimary }]}>Manage account</Text>
@@ -269,23 +308,54 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     flex: 1,
   },
+  nameText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 2,
+  },
   emailText: {
-    fontSize: 16,
-    fontWeight: '500',
-    marginBottom: 4,
+    fontSize: 14,
+    marginBottom: 2,
   },
   addressText: {
-    fontSize: 14,
+    fontSize: 12,
+    fontFamily: 'monospace',
   },
   accountActions: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
   },
+  expandArrow: {
+    // No transition needed for React Native
+  },
+  expandArrowRotated: {
+    transform: [{ rotate: '90deg' }],
+  },
+  accountActionsContainer: {
+    marginTop: 12,
+    flexDirection: 'row',
+    gap: 8,
+  },
+  accountActionButton: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 16,
+    paddingHorizontal: 8,
+    borderRadius: 12,
+    gap: 6,
+  },
+  accountActionText: {
+    fontSize: 14,
+    fontWeight: '500',
+  },
   manageButton: {
     paddingVertical: 8,
     borderRadius: 16,
     alignItems: 'center',
+    marginTop: 12,
   },
   manageButtonText: {
     fontSize: 16,
@@ -296,8 +366,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
   },
   settingLeft: {
     flexDirection: 'row',

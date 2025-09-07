@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -7,186 +7,210 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useTheme } from "../theme/ThemeContext";
+import Svg, { Path, Circle } from 'react-native-svg';
+import SuiIcon from '../components/icons/SuiIcon';
+
+// Icons
+const MenuDotsIcon = ({ size = 24, color = "#000" }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Circle cx="5" cy="12" r="2" fill={color}/>
+    <Circle cx="12" cy="12" r="2" fill={color}/>
+    <Circle cx="19" cy="12" r="2" fill={color}/>
+  </Svg>
+);
+
+
 
 const NFTsScreen = () => {
   const { theme } = useTheme();
-  
-  const mockNFTs = [
-    {
-      id: 1,
-      name: "Cute #0131",
-      collection: "Cute",
-      image: "😺",
-      Value: "0.35 SUI",
-    },
-    {
-      id: 2,
-      name: "Puse #1996",
-      collection: "Puse",
-      image: "😺",
-      Value: "0.35 SUI",
-    },
-    {
-      id: 3,
-      name: "Cute #2025",
-      collection: "Cute",
-      image: "😺",
-      Value: "0.35 SUI",
-    },
-    {
-      id: 4,
-      name: "Cute #Apollo",
-      collection: "Cute",
-      image: "😺",
-      Value: "0.5 SUI",
-    },
-  ];
+  const [activeTab, setActiveTab] = useState('NFTs');
 
   const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: theme.backgroundPrimary,
-      padding: 16,
-      paddingBottom: 100, // Add padding for floating tab bar
+      padding: 16, // Add padding for floating tab bar
+      paddingTop: 20,
+      paddingBottom: 10,
     },
-    bounder:{
-      backgroundColor: theme.backgroundTertiary,
+    assetsCard: {
+      flex: 1,
+      backgroundColor: theme.backgroundSecondary,
       borderRadius: 20,
-      borderWidth: 1,
-      borderColor: "black",
-      padding: 16,
-    }, 
+      padding: 25,
+    },
     header: {
-      alignItems: "center",
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
       marginBottom: 24,
     },
     title: {
-      fontSize: 24,
+      fontSize: 28,
       fontWeight: "bold",
       color: theme.contentPrimary,
-      marginBottom: 8,
     },
-    subtitle: {
-      fontSize: 16,
-      color: theme.contentSecondary,
-      textAlign: "center",
-    },
-    nftGrid: {
-      flexDirection: "row",
-      flexWrap: "wrap",
-      justifyContent: "space-between",
-    },
-    nftCard: {
-      width: "48%",
-      backgroundColor: theme.backgroundSecondary,
+    menuButton: {
+      backgroundColor: theme.backgroundAccent,
       borderRadius: 12,
-      padding: 16,
-      marginBottom: 16,
-      alignItems: "center",
+      paddingHorizontal: 12,
+      paddingVertical: 8,
+      minWidth: 40,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
-    nftImage: {
-      width: 80,
-      height: 80,
-      borderRadius: 40,
-      backgroundColor: theme.borderWeak,
-      alignItems: "center",
-      justifyContent: "center",
-      marginBottom: 12,
+    tabContainer: {
+      flexDirection: 'row',
+      backgroundColor: theme.backgroundInverse,
+      borderRadius: 25,
+      padding: 4,
+      marginBottom: 40,
     },
-    nftEmoji: {
-      fontSize: 40,
+    tab: {
+      flex: 1,
+      paddingVertical: 12,
+      paddingHorizontal: 20,
+      borderRadius: 20,
+      alignItems: 'center',
     },
-    nftInfo: {
-      alignItems: "center",
+    activeTab: {
+      backgroundColor: theme.backgroundAccent,
     },
-    nftName: {
-      fontSize: 14,
-      fontWeight: "600",
-      color: theme.contentPrimary,
-      textAlign: "center",
-      marginBottom: 4,
+    tabText: {
+      fontSize: 16,
+      fontWeight: '600',
     },
-    nftCollection: {
-      fontSize: 12,
+    activeTabText: {
+      color: theme.contentInversePrimary,
+    },
+    inactiveTabText: {
       color: theme.contentSecondary,
-      marginBottom: 4,
     },
-    nftFloor: {
-      fontSize: 12,
-      color: theme.backgroundAccent,
-      fontWeight: "500",
-    },
-    emptyState: {
-      alignItems: "center",
+    emptyContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingHorizontal: 40,
       marginTop: 60,
     },
-    emptyEmoji: {
-      fontSize: 64,
-      marginBottom: 16,
+    emptyIconContainer: {
+      position: 'relative',
+      marginBottom: 24,
+    },
+    coinOverlay: {
+      position: 'absolute',
+      bottom: -8,
+      right: -8,
+      width: 32,
+      height: 32,
+      backgroundColor: '#FFD700',
+      borderRadius: 16,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderWidth: 2,
+      borderColor: theme.backgroundPrimary,
+    },
+    coinText: {
+      color: '#000',
+      fontSize: 14,
+      fontWeight: 'bold',
     },
     emptyTitle: {
-      fontSize: 20,
+      fontSize: 22,
       fontWeight: "bold",
       color: theme.contentPrimary,
-      marginBottom: 8,
+      marginBottom: 12,
+      textAlign: 'center',
     },
     emptySubtitle: {
       fontSize: 16,
       color: theme.contentSecondary,
       textAlign: "center",
-      marginBottom: 24,
-      paddingHorizontal: 20,
+      marginBottom: 32,
+      lineHeight: 22,
     },
     browseButton: {
-      backgroundColor: theme.backgroundAccent,
-      paddingHorizontal: 24,
-      paddingVertical: 12,
-      borderRadius: 8,
+      backgroundColor: '#47e299', // Green button
+      paddingHorizontal: 32,
+      paddingVertical: 16,
+      borderRadius: 25,
     },
     browseButtonText: {
-      color: theme.contentInversePrimary,
+      color: '#060d14',
       fontSize: 16,
       fontWeight: "600",
     },
   });
 
+  const getEmptyStateContent = () => {
+    if (activeTab === 'NFTs') {
+      return {
+        title: 'No NFTs owned',
+        subtitle: 'Digital assets that you purchase or receive will be displayed here.',
+      };
+    } else {
+      return {
+        title: 'No NFTs in kiosks',
+        subtitle: 'Digital kiosk assets that you purchase or receive will be displayed here.',
+      };
+    }
+  };
+
+  const emptyContent = getEmptyStateContent();
+
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.bounder}>
+    <View style={styles.container}>
+      <View style={styles.assetsCard}>
+        {/* Header */}
         <View style={styles.header}>
           <Text style={styles.title}>Assets</Text>
-          <Text style={styles.subtitle}>Your digital collections</Text>
+          <TouchableOpacity style={styles.menuButton}>
+            <MenuDotsIcon size={20} color={theme.contentInversePrimary} />
+          </TouchableOpacity>
         </View>
 
-        {mockNFTs.length > 0 ? (
-          <View style={styles.nftGrid}>
-            {mockNFTs.map((nft) => (
-              <TouchableOpacity key={nft.id} style={styles.nftCard}>
-                <View style={styles.nftImage}>
-                  <Text style={styles.nftEmoji}>{nft.image}</Text>
-                </View>
-                <View style={styles.nftInfo}>
-                  <Text style={styles.nftName}>{nft.name}</Text>
-                  <Text style={styles.nftCollection}>{nft.collection}</Text>
-                  <Text style={styles.nftFloor}>Vlaue: {nft.Value}</Text>
-                </View>
-              </TouchableOpacity>
-            ))}
-          </View>
-        ) : (
-          <View style={styles.emptyState}>
-            <Text style={styles.emptyEmoji}>🎨</Text>
-            <Text style={styles.emptyTitle}>No NFTs yet</Text>
-            <Text style={styles.emptySubtitle}>
-              Start collecting digital art and collectibles on Sui
+        {/* Tab Switcher */}
+        <View style={styles.tabContainer}>
+          <TouchableOpacity
+            style={[styles.tab, activeTab === 'NFTs' && styles.activeTab]}
+            onPress={() => setActiveTab('NFTs')}
+          >
+            <Text style={[
+              styles.tabText,
+              activeTab === 'NFTs' ? styles.activeTabText : styles.inactiveTabText
+            ]}>
+              NFTs
             </Text>
-            <TouchableOpacity style={styles.browseButton}>
-              <Text style={styles.browseButtonText}>Browse Marketplace</Text>
-            </TouchableOpacity>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.tab, activeTab === 'Kiosks' && styles.activeTab]}
+            onPress={() => setActiveTab('Kiosks')}
+          >
+            <Text style={[
+              styles.tabText,
+              activeTab === 'Kiosks' ? styles.activeTabText : styles.inactiveTabText
+            ]}>
+              Kiosks
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Empty State */}
+        <View style={styles.emptyContainer}>
+          <View style={styles.emptyIconContainer}>
+            <SuiIcon size={80} color={theme.backgroundAccent} />
           </View>
-        )}
+
+          <Text style={styles.emptyTitle}>{emptyContent.title}</Text>
+          <Text style={styles.emptySubtitle}>{emptyContent.subtitle}</Text>
+
+          <TouchableOpacity style={styles.browseButton}>
+            <Text style={styles.browseButtonText}>Browse marketplace</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 

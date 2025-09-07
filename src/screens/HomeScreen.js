@@ -66,7 +66,7 @@ const HomeScreen = ({ navigation }) => {
         <TouchableOpacity style={[styles.logoContainer, { backgroundColor: theme.backgroundInverse }]} onPress={handleLogoPress}>
           <View style={styles.logoButton}>
             <Image
-              source={require("../../assets/favicon.png")}
+              source={require("../../assets/red-wallet-logo.jpg")}
               style={styles.logoImage}
               resizeMode="contain"
             />
@@ -84,45 +84,6 @@ const HomeScreen = ({ navigation }) => {
       </View>
 
       <ScrollView style={styles.scrollContainer}>
-        <View style={[styles.promoBanner, { backgroundColor: theme.backgroundAccent }]}>
-          <Text style={styles.promoIconText}>🧧</Text>
-          <View style={styles.promoContent}>
-            <Text style={[styles.promoText, { color: theme.contentPrimary }]}>
-              Red Envelope Wallet - Trade AQY, USDC, and GC with rewards
-            </Text>
-          </View>
-        </View>
-
-        {/* Portfolio Balance Section */}
-        <View style={[styles.portfolioSection, { backgroundColor: theme.backgroundInverse }]}>
-          <Text style={[styles.portfolioTitle, { color: theme.contentPrimary }]}>
-            Portfolio Value
-          </Text>
-          <Text style={[styles.portfolioValue, { color: theme.contentPrimary }]}>
-            ${getTotalValue()}
-          </Text>
-
-          <View style={styles.tokenBalances}>
-            <View style={styles.tokenRow}>
-              <Text style={[styles.tokenSymbol, { color: theme.contentPrimary }]}>AQY</Text>
-              <Text style={[styles.tokenBalance, { color: theme.contentPrimary }]}>
-                {formatBalance(balances.AQY.balance, balances.AQY.decimals)}
-              </Text>
-            </View>
-            <View style={styles.tokenRow}>
-              <Text style={[styles.tokenSymbol, { color: theme.contentPrimary }]}>USDC</Text>
-              <Text style={[styles.tokenBalance, { color: theme.contentPrimary }]}>
-                {formatBalance(balances.USDC.balance, balances.USDC.decimals)}
-              </Text>
-            </View>
-            <View style={styles.tokenRow}>
-              <Text style={[styles.tokenSymbol, { color: theme.contentPrimary }]}>GC</Text>
-              <Text style={[styles.tokenBalance, { color: theme.contentPrimary }]}>
-                {formatBalance(balances.GC.balance, balances.GC.decimals)}
-              </Text>
-            </View>
-          </View>
-        </View>
 
         <View style={[styles.coinStackSection, { backgroundColor: theme.backgroundInverse }]}>
           <View style={styles.coinStackHeader}>
@@ -154,7 +115,7 @@ const HomeScreen = ({ navigation }) => {
               <Text style={[styles.actionButtonText, { color: theme.contentPrimary }]}>Send</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.actionButton, styles.actionButtonDisabled, { backgroundColor: theme.actionSecondary }]}
+              style={[styles.actionButton, { backgroundColor: theme.actionSecondary }]}
             >
               <SwapIcon size={20} color={theme.contentPrimary} />
               <Text style={[styles.actionButtonText, { color: theme.contentPrimary }]}>Swap</Text>
@@ -204,7 +165,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 6,
+    marginBottom: 40,
+    marginTop: 10,
   },
   logoContainer: {
     width: 45,
@@ -347,21 +309,16 @@ const styles = StyleSheet.create({
     gap: 8,
     justifyContent: "space-between",
   },
-  actionButton: {
-    flex: 1,
-    minWidth: "30%",
+ actionButton: {
+    width: "48%",
     backgroundColor: "#125eb0a3", // --color-action-secondary
-    borderRadius: 8,
-    paddingVertical: 16,
-    paddingHorizontal: 12,
+    borderRadius: 12,
+    paddingVertical: 20,
+    paddingHorizontal: 16,
     alignItems: "center",
     flexDirection: "column",
     justifyContent: "center",
-    maxHeight: "53%",
     gap: 8,
-  },
-  actionButtonDisabled: {
-    opacity: 0.4,
   },
   actionButtonText: {
     fontSize: 14,

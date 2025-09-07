@@ -8,7 +8,7 @@
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/favicon.png",
+      "image": "./assets/red-wallet-logo.jpg",
       "resizeMode": "contain",
       "backgroundColor": "#1a0c0c"
     },
@@ -17,7 +17,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/red-wallet-logo.jpg",
         "backgroundColor": "#1a0c0c"
       },
       "edgeToEdgeEnabled": true
