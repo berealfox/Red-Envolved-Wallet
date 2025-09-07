@@ -143,14 +143,15 @@ const SettingsScreen = () => {
             <View style={styles.accountActions}>
               <CopyIcon size={20} color={theme.contentSecondary} />
               <TouchableOpacity onPress={() => setAccountExpanded(!accountExpanded)}>
-                <ArrowIcon
-                  size={20}
-                  color={theme.contentSecondary}
-                  style={[
-                    styles.expandArrow,
-                    accountExpanded && styles.expandArrowRotated
-                  ]}
-                />
+                <View style={[
+                  styles.expandArrow,
+                  accountExpanded && styles.expandArrowRotated
+                ]}>
+                  <ArrowIcon
+                    size={20}
+                    color={theme.contentSecondary}
+                  />
+                </View>
               </TouchableOpacity>
             </View>
           </TouchableOpacity>
@@ -326,7 +327,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   expandArrow: {
-    transition: 'transform 0.3s ease',
+    // No transition needed for React Native
   },
   expandArrowRotated: {
     transform: [{ rotate: '90deg' }],

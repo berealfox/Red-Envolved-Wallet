@@ -30,7 +30,8 @@ const NFTsScreen = () => {
       flex: 1,
       backgroundColor: theme.backgroundPrimary,
       padding: 16, // Add padding for floating tab bar
-      paddingTop: 20
+      paddingTop: 20,
+      paddingBottom: 10,
     },
     assetsCard: {
       flex: 1,
