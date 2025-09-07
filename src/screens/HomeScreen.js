@@ -19,6 +19,7 @@ import { useTheme } from "../theme/ThemeContext";
 import { useWallet } from "../context/WalletContext";
 import SendScreen from "./SendScreen";
 import ReceiveScreen from "./ReceiveScreen";
+import SearchCoinsScreen from "./SearchCoinsScreen";
 import Svg, { Path, G } from 'react-native-svg';
 
 
@@ -51,6 +52,7 @@ const HomeScreen = ({ navigation }) => {
 
   const [showSendScreen, setShowSendScreen] = useState(false);
   const [showReceiveScreen, setShowReceiveScreen] = useState(false);
+  const [showSearchCoins, setShowSearchCoins] = useState(false);
 
   const handleManageAccount = () => {
     console.log("Manage account pressed");
@@ -129,9 +131,12 @@ const HomeScreen = ({ navigation }) => {
             Once you have purchased or received coins, they will be listed here.
             Coins of interest can also be pinned.
           </Text>
-          <TouchableOpacity style={[styles.searchButton, { backgroundColor: theme.actionSecondary }]}>
+          <TouchableOpacity
+            style={[styles.searchButton, { backgroundColor: theme.actionSecondary }]}
+            onPress={() => setShowSearchCoins(true)}
+          >
             <SearchIcon size={16} color={theme.contentPrimary} />
-            <Text style={[styles.searchButtonText, { color: theme.contentPrimary }]}>Search and pin coins</Text>
+            <Text style={[styles.searchButtonText, { color: theme.contentPrimary }]}>Search and manage coins</Text>
           </TouchableOpacity>
         </View>
         <View style={{ height: 50 }} />
@@ -148,6 +153,13 @@ const HomeScreen = ({ navigation }) => {
       {showReceiveScreen && (
         <View style={styles.modalOverlay}>
           <ReceiveScreen navigation={{ goBack: () => setShowReceiveScreen(false) }} />
+        </View>
+      )}
+
+      {/* Search Coins Screen Modal */}
+      {showSearchCoins && (
+        <View style={styles.modalOverlay}>
+          <SearchCoinsScreen onBack={() => setShowSearchCoins(false)} />
         </View>
       )}
     </View>
