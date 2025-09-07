@@ -207,7 +207,7 @@ const SearchCoinsScreen = ({ onBack }) => {
       flexDirection: 'row',
       alignItems: 'center',
       backgroundColor: theme.backgroundAccent,
-      borderRadius: 25,
+      borderRadius: 35,
       paddingHorizontal: 16,
       paddingVertical: 12,
     },
@@ -233,6 +233,7 @@ const SearchCoinsScreen = ({ onBack }) => {
     pinButton: {
       marginRight: 16,
       padding: 4,
+      transform: [{ rotate: '30deg' }],
     },
     tokenIcon: {
       width: 40,
@@ -306,11 +307,11 @@ const SearchCoinsScreen = ({ onBack }) => {
       {/* Search Bar */}
       <View style={styles.searchContainer}>
         <View style={styles.searchInputContainer}>
-          <SearchIcon size={20} color={theme.contentSecondary} style={styles.searchIcon} />
+          <SearchIcon size={20} color="#ffffff" style={styles.searchIcon} />
           <TextInput
             style={styles.searchInput}
             placeholder="Search"
-            placeholderTextColor={theme.contentSecondary}
+            placeholderTextColor="rgba(255, 255, 255, 0.5)"
             value={searchQuery}
             onChangeText={setSearchQuery}
           />
