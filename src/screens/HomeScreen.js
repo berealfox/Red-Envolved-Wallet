@@ -66,7 +66,7 @@ const HomeScreen = ({ navigation }) => {
         <TouchableOpacity style={[styles.logoContainer, { backgroundColor: theme.backgroundInverse }]} onPress={handleLogoPress}>
           <View style={styles.logoButton}>
             <Image
-              source={require("../../assets/favicon.png")}
+              source={require("../../assets/red-wallet-logo.jpg")}
               style={styles.logoImage}
               resizeMode="contain"
             />
@@ -84,37 +84,6 @@ const HomeScreen = ({ navigation }) => {
       </View>
 
       <ScrollView style={styles.scrollContainer}>
-
-        {/* Portfolio Balance Section */}
-        <View style={[styles.portfolioSection, { backgroundColor: theme.backgroundInverse }]}>
-          <Text style={[styles.portfolioTitle, { color: theme.contentPrimary }]}>
-            Portfolio Value
-          </Text>
-          <Text style={[styles.portfolioValue, { color: theme.contentPrimary }]}>
-            ${getTotalValue()}
-          </Text>
-
-          <View style={styles.tokenBalances}>
-            <View style={styles.tokenRow}>
-              <Text style={[styles.tokenSymbol, { color: theme.contentPrimary }]}>AQY</Text>
-              <Text style={[styles.tokenBalance, { color: theme.contentPrimary }]}>
-                {formatBalance(balances.AQY.balance, balances.AQY.decimals)}
-              </Text>
-            </View>
-            <View style={styles.tokenRow}>
-              <Text style={[styles.tokenSymbol, { color: theme.contentPrimary }]}>USDC</Text>
-              <Text style={[styles.tokenBalance, { color: theme.contentPrimary }]}>
-                {formatBalance(balances.USDC.balance, balances.USDC.decimals)}
-              </Text>
-            </View>
-            <View style={styles.tokenRow}>
-              <Text style={[styles.tokenSymbol, { color: theme.contentPrimary }]}>GC</Text>
-              <Text style={[styles.tokenBalance, { color: theme.contentPrimary }]}>
-                {formatBalance(balances.GC.balance, balances.GC.decimals)}
-              </Text>
-            </View>
-          </View>
-        </View>
 
         <View style={[styles.coinStackSection, { backgroundColor: theme.backgroundInverse }]}>
           <View style={styles.coinStackHeader}>
@@ -196,7 +165,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 6,
+    marginBottom: 40,
+    marginTop: 10,
   },
   logoContainer: {
     width: 45,
