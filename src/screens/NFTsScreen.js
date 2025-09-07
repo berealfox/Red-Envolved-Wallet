@@ -13,9 +13,9 @@ import SuiIcon from '../components/icons/SuiIcon';
 // Icons
 const MenuDotsIcon = ({ size = 24, color = "#000" }) => (
   <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-    <Circle cx="12" cy="5" r="2" fill={color}/>
+    <Circle cx="5" cy="12" r="2" fill={color}/>
     <Circle cx="12" cy="12" r="2" fill={color}/>
-    <Circle cx="12" cy="19" r="2" fill={color}/>
+    <Circle cx="19" cy="12" r="2" fill={color}/>
   </Svg>
 );
 
@@ -29,8 +29,14 @@ const NFTsScreen = () => {
     container: {
       flex: 1,
       backgroundColor: theme.backgroundPrimary,
-      padding: 16,
-      paddingBottom: 100, // Add padding for floating tab bar
+      padding: 16, // Add padding for floating tab bar
+      paddingTop: 20
+    },
+    assetsCard: {
+      flex: 1,
+      backgroundColor: theme.backgroundSecondary,
+      borderRadius: 20,
+      padding: 25,
     },
     header: {
       flexDirection: 'row',
@@ -45,8 +51,12 @@ const NFTsScreen = () => {
     },
     menuButton: {
       backgroundColor: theme.backgroundAccent,
-      borderRadius: 20,
-      padding: 8,
+      borderRadius: 12,
+      paddingHorizontal: 12,
+      paddingVertical: 8,
+      minWidth: 40,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     tabContainer: {
       flexDirection: 'row',
@@ -149,53 +159,55 @@ const NFTsScreen = () => {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.title}>Assets</Text>
-        <TouchableOpacity style={styles.menuButton}>
-          <MenuDotsIcon size={20} color={theme.contentInversePrimary} />
-        </TouchableOpacity>
-      </View>
-
-      {/* Tab Switcher */}
-      <View style={styles.tabContainer}>
-        <TouchableOpacity
-          style={[styles.tab, activeTab === 'NFTs' && styles.activeTab]}
-          onPress={() => setActiveTab('NFTs')}
-        >
-          <Text style={[
-            styles.tabText,
-            activeTab === 'NFTs' ? styles.activeTabText : styles.inactiveTabText
-          ]}>
-            NFTs
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[styles.tab, activeTab === 'Kiosks' && styles.activeTab]}
-          onPress={() => setActiveTab('Kiosks')}
-        >
-          <Text style={[
-            styles.tabText,
-            activeTab === 'Kiosks' ? styles.activeTabText : styles.inactiveTabText
-          ]}>
-            Kiosks
-          </Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Empty State */}
-      <View style={styles.emptyContainer}>
-        <View style={styles.emptyIconContainer}>
-          <SuiIcon size={80} color={theme.backgroundAccent} />
+      <View style={styles.assetsCard}>
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.title}>Assets</Text>
+          <TouchableOpacity style={styles.menuButton}>
+            <MenuDotsIcon size={20} color={theme.contentInversePrimary} />
+          </TouchableOpacity>
         </View>
 
-        <Text style={styles.emptyTitle}>{emptyContent.title}</Text>
-        <Text style={styles.emptySubtitle}>{emptyContent.subtitle}</Text>
+        {/* Tab Switcher */}
+        <View style={styles.tabContainer}>
+          <TouchableOpacity
+            style={[styles.tab, activeTab === 'NFTs' && styles.activeTab]}
+            onPress={() => setActiveTab('NFTs')}
+          >
+            <Text style={[
+              styles.tabText,
+              activeTab === 'NFTs' ? styles.activeTabText : styles.inactiveTabText
+            ]}>
+              NFTs
+            </Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity style={styles.browseButton}>
-          <Text style={styles.browseButtonText}>Browse marketplace</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.tab, activeTab === 'Kiosks' && styles.activeTab]}
+            onPress={() => setActiveTab('Kiosks')}
+          >
+            <Text style={[
+              styles.tabText,
+              activeTab === 'Kiosks' ? styles.activeTabText : styles.inactiveTabText
+            ]}>
+              Kiosks
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Empty State */}
+        <View style={styles.emptyContainer}>
+          <View style={styles.emptyIconContainer}>
+            <SuiIcon size={80} color={theme.backgroundAccent} />
+          </View>
+
+          <Text style={styles.emptyTitle}>{emptyContent.title}</Text>
+          <Text style={styles.emptySubtitle}>{emptyContent.subtitle}</Text>
+
+          <TouchableOpacity style={styles.browseButton}>
+            <Text style={styles.browseButtonText}>Browse marketplace</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
