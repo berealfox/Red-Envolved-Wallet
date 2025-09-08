@@ -7,14 +7,31 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
+  Modal,
 } from "react-native";
 import { useTheme } from "../theme/ThemeContext";
 import { SearchIcon } from "../components/icons";
+import Svg, { Path } from 'react-native-svg';
+
+// Icon Components
+const CloseIcon = ({ size = 24, color = "#000" }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill={color}/>
+  </Svg>
+);
+
+const ArrowRightIcon = ({ size = 24, color = "#000" }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" fill={color}/>
+  </Svg>
+);
 
 const AppsScreen = () => {
   const { theme } = useTheme();
   const [selectedFilter, setSelectedFilter] = useState("All");
   const [searchText, setSearchText] = useState("");
+  const [showSearchModal, setShowSearchModal] = useState(false);
+  const [modalSearchText, setModalSearchText] = useState("");
 
   const filters = ["All", "Walrus", "Finance", "Play", "Bridge"];
 
@@ -24,19 +41,42 @@ const AppsScreen = () => {
       description: "Stake your WAL tokens to help grow the Walrus network",
       icon: require("../../assets/walrus_staking.png"),
       badge: "walrus",
+      url: "stake-wal.wal.app",
     },
     {
       name: "Tusky",
       description: "Own your data with web3 storage on Walrus",
       icon: require("../../assets/tusky__2_.png"),
       badge: "walrus",
+      url: "app.tusky.io",
     },
     {
       name: "Aftermath Finance",
       description: "The all-in-one DEX on Sui, featuring a fully on-chain",
       icon: require("../../assets/Aftermath-Finance.png"),
+      url: "aftermath.finance",
     },
   ];
+
+  // Filter apps based on search text
+  const getFilteredApps = (searchQuery) => {
+    if (!searchQuery.trim()) return apps;
+    return apps.filter(app =>
+      app.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      app.description.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  };
+
+  const handleSearchPress = () => {
+    setShowSearchModal(true);
+  };
+
+  const handleAppPress = (app) => {
+    // Here you can implement navigation or opening external links
+    console.log(`Opening app: ${app.name} at ${app.url}`);
+    // For now, just close the modal
+    setShowSearchModal(false);
+  };
 
   return (
     <>
@@ -44,21 +84,20 @@ const AppsScreen = () => {
         style={[styles.header, { backgroundColor: theme.backgroundTertiary }]}
       >
         {/* Search Bar */}
-        <View
+        <TouchableOpacity
           style={[
             styles.searchContainer,
             { backgroundColor: theme.backgroundPrimary },
           ]}
+          onPress={handleSearchPress}
         >
           <SearchIcon size={20} color={theme.contentSecondary} />
-          <TextInput
-            style={[styles.searchInput, { color: theme.contentPrimary }]}
-            placeholder="Search apps"
-            placeholderTextColor={theme.contentSecondary}
-            value={searchText}
-            onChangeText={setSearchText}
-          />
-        </View>
+          <Text
+            style={[styles.searchPlaceholder, { color: theme.contentSecondary }]}
+          >
+            Search apps
+          </Text>
+        </TouchableOpacity>
       </View>
       <ScrollView
         style={[styles.container, { backgroundColor: theme.backgroundPrimary }]}
@@ -199,6 +238,84 @@ const AppsScreen = () => {
         </View>
         <View style={{ height: 100 }} />
       </ScrollView>
+
+      {/* Search Modal */}
+      <Modal
+        visible={showSearchModal}
+        animationType="slide"
+        presentationStyle="fullScreen"
+      >
+        <View style={[styles.modalContainer, { backgroundColor: theme.backgroundPrimary }]}>
+          {/* Modal Header */}
+          <View style={[styles.modalHeader, { backgroundColor: theme.backgroundPrimary }]}>
+            <View style={[styles.modalSearchContainer, { backgroundColor: theme.backgroundSecondary }]}>
+              <SearchIcon size={20} color={theme.contentSecondary} />
+              <TextInput
+                style={[styles.modalSearchInput, { color: theme.contentPrimary }]}
+                placeholder="Search apps"
+                placeholderTextColor={theme.contentSecondary}
+                value={modalSearchText}
+                onChangeText={setModalSearchText}
+                autoFocus={true}
+              />
+              {modalSearchText.length > 0 && (
+                <TouchableOpacity onPress={() => setModalSearchText("")}>
+                  <CloseIcon size={20} color={theme.contentSecondary} />
+                </TouchableOpacity>
+              )}
+            </View>
+            <TouchableOpacity
+              style={styles.cancelButton}
+              onPress={() => setShowSearchModal(false)}
+            >
+              <Text style={[styles.cancelText, { color: theme.contentSecondary }]}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Search Results */}
+          <ScrollView style={styles.resultsContainer}>
+            {modalSearchText.length > 0 && (
+              <>
+                <Text style={[styles.resultsTitle, { color: theme.contentPrimary }]}>Results</Text>
+                {getFilteredApps(modalSearchText).map((app, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={[styles.resultItem, { backgroundColor: theme.backgroundSecondary }]}
+                    onPress={() => handleAppPress(app)}
+                  >
+                    <View style={styles.resultIconContainer}>
+                      <Image
+                        source={app.icon}
+                        style={styles.resultIcon}
+                        resizeMode="contain"
+                      />
+                      {app.badge && (
+                        <View style={styles.resultBadge}>
+                          <Text style={styles.resultBadgeText}>W</Text>
+                        </View>
+                      )}
+                    </View>
+                    <View style={styles.resultInfo}>
+                      <Text style={[styles.resultName, { color: theme.contentPrimary }]}>
+                        {app.name}
+                      </Text>
+                      <Text style={[styles.resultUrl, { color: theme.contentSecondary }]}>
+                        {app.url}
+                      </Text>
+                    </View>
+                    <ArrowRightIcon size={20} color={theme.contentSecondary} />
+                  </TouchableOpacity>
+                ))}
+                {getFilteredApps(modalSearchText).length === 0 && (
+                  <Text style={[styles.noResults, { color: theme.contentSecondary }]}>
+                    No apps found
+                  </Text>
+                )}
+              </>
+            )}
+          </ScrollView>
+        </View>
+      </Modal>
     </>
   );
 };
@@ -227,11 +344,108 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     borderRadius: 20,
     margin: 12,
+    marginTop: 40,
   },
   searchInput: {
     flex: 1,
     marginLeft: 12,
     fontSize: 16,
+  },
+  searchPlaceholder: {
+    flex: 1,
+    marginLeft: 12,
+    fontSize: 16,
+  },
+  // Modal Styles
+  modalContainer: {
+    flex: 1,
+    paddingTop: 40,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    gap: 12,
+  },
+  modalSearchContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderRadius: 25,
+  },
+  modalSearchInput: {
+    flex: 1,
+    marginLeft: 12,
+    fontSize: 16,
+  },
+  cancelButton: {
+    paddingHorizontal: 8,
+  },
+  cancelText: {
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  resultsContainer: {
+    flex: 1,
+    paddingHorizontal: 16,
+  },
+  resultsTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 16,
+    marginTop: 8,
+  },
+  resultItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 8,
+  },
+  resultIconContainer: {
+    position: 'relative',
+    marginRight: 16,
+  },
+  resultIcon: {
+    width: 48,
+    height: 48,
+    borderRadius: 12,
+  },
+  resultBadge: {
+    position: 'absolute',
+    bottom: -4,
+    right: -4,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: '#8b5cf6',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  resultBadgeText: {
+    color: '#ffffff',
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
+  resultInfo: {
+    flex: 1,
+  },
+  resultName: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  resultUrl: {
+    fontSize: 14,
+    opacity: 0.8,
+  },
+  noResults: {
+    textAlign: 'center',
+    fontSize: 16,
+    marginTop: 40,
   },
   featuredSection: {
     borderRadius: 12,
