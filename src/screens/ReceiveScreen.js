@@ -102,6 +102,13 @@ const ReceiveScreen = ({ navigation }) => {
                   size={200}
                   backgroundColor="white"
                   color="black"
+                  logo={require('../../assets/red-wallet-logo.jpg')}
+                  logoSize={40}
+                  logoBackgroundColor='red'
+                  logoBorderRadius={20}
+                  logoBorderColor='transparent'
+                  logoBorderWidth={0}
+                  logoMargin={0}
                 />
               )}
             </View>
