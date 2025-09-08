@@ -20,6 +20,7 @@ import { useWallet } from "../context/WalletContext";
 import SendScreen from "./SendScreen";
 import ReceiveScreen from "./ReceiveScreen";
 import SearchCoinsScreen from "./SearchCoinsScreen";
+import ManageAccountsScreen from "./ManageAccountsScreen";
 import Svg, { Path, G } from 'react-native-svg';
 
 
@@ -53,9 +54,10 @@ const HomeScreen = ({ navigation }) => {
   const [showSendScreen, setShowSendScreen] = useState(false);
   const [showReceiveScreen, setShowReceiveScreen] = useState(false);
   const [showSearchCoins, setShowSearchCoins] = useState(false);
+  const [showManageAccounts, setShowManageAccounts] = useState(false);
 
   const handleManageAccount = () => {
-    console.log("Manage account pressed");
+    setShowManageAccounts(true);
   };
 
   const handleLogoPress = () => {
@@ -160,6 +162,13 @@ const HomeScreen = ({ navigation }) => {
       {showSearchCoins && (
         <View style={styles.modalOverlay}>
           <SearchCoinsScreen onBack={() => setShowSearchCoins(false)} />
+        </View>
+      )}
+
+      {/* Manage Accounts Screen Modal */}
+      {showManageAccounts && (
+        <View style={styles.modalOverlay}>
+          <ManageAccountsScreen onBack={() => setShowManageAccounts(false)} />
         </View>
       )}
     </View>
