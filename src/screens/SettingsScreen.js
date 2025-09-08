@@ -4,6 +4,7 @@ import { useTheme } from '../theme/ThemeContext';
 import { useWallet } from '../context/WalletContext';
 import Svg, { Path, G } from 'react-native-svg';
 import NetworkScreen from './NetworkScreen';
+import ThemeScreen from './ThemeScreen';
 
 // Google G Icon Component
 const GoogleGIcon = ({ size = 24 }) => (
@@ -100,6 +101,7 @@ const SettingsScreen = () => {
   const [soundEnabled, setSoundEnabled] = React.useState(true);
   const [accountExpanded, setAccountExpanded] = React.useState(false);
   const [showNetworkScreen, setShowNetworkScreen] = React.useState(false);
+  const [showThemeScreen, setShowThemeScreen] = React.useState(false);
 
   const formatAddress = (address) => {
     if (!address) return 'No wallet';
@@ -133,6 +135,10 @@ const SettingsScreen = () => {
 
   if (showNetworkScreen) {
     return <NetworkScreen onBack={() => setShowNetworkScreen(false)} />;
+  }
+
+  if (showThemeScreen) {
+    return <ThemeScreen onBack={() => setShowThemeScreen(false)} />;
   }
 
   return (
@@ -207,13 +213,16 @@ const SettingsScreen = () => {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.settingItem}>
+          <TouchableOpacity
+            style={styles.settingItem}
+            onPress={() => setShowThemeScreen(true)}
+          >
             <View style={styles.settingLeft}>
               <ThemeIcon size={24} color={theme.contentPrimary} />
               <Text style={[styles.settingLabel, { color: theme.contentPrimary }]}>Theme</Text>
             </View>
             <View style={styles.settingRight}>
-              <Text style={[styles.settingValue, { color: theme.contentSecondary }]}>Blue Blizzard (light)</Text>
+              <Text style={[styles.settingValue, { color: theme.contentSecondary }]}>Blue Blizzard (dark)</Text>
               <ArrowIcon size={20} color={theme.contentSecondary} />
             </View>
           </TouchableOpacity>
