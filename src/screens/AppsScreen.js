@@ -280,7 +280,7 @@ const AppsScreen = () => {
                 {getFilteredApps(modalSearchText).map((app, index) => (
                   <TouchableOpacity
                     key={index}
-                    style={[styles.resultItem, { backgroundColor: theme.backgroundSecondary }]}
+                    style={[styles.resultItem]}
                     onPress={() => handleAppPress(app)}
                   >
                     <View style={styles.resultIconContainer}>
@@ -303,7 +303,9 @@ const AppsScreen = () => {
                         {app.url}
                       </Text>
                     </View>
-                    <ArrowRightIcon size={20} color={theme.contentSecondary} />
+                    <View style={{ transform: [{ rotate: '300deg' }] }}>
+                      <ArrowRightIcon size={20} color={theme.contentSecondary} />
+                    </View>
                   </TouchableOpacity>
                 ))}
                 {getFilteredApps(modalSearchText).length === 0 && (
@@ -315,7 +317,7 @@ const AppsScreen = () => {
             )}
           </ScrollView>
         </View>
-      </Modal>
+      </Modal>``
     </>
   );
 };
@@ -403,7 +405,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
     borderRadius: 12,
-    marginBottom: 8,
+    marginBottom: 12,
+    backgroundColor: 'rgba(255, 255, 255, 0.05)', // Very subtle background
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.1)', // Subtle border
   },
   resultIconContainer: {
     position: 'relative',
