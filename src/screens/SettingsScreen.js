@@ -95,9 +95,14 @@ const DeleteIcon = ({ size = 24, color = "#000" }) => (
 
 const SettingsScreen = () => {
   const { theme } = useTheme();
-  const { clearWallet } = useWallet();
+  const { clearWallet, walletAddress } = useWallet();
   const [soundEnabled, setSoundEnabled] = React.useState(true);
   const [accountExpanded, setAccountExpanded] = React.useState(false);
+
+  const formatAddress = (address) => {
+    if (!address) return 'No wallet';
+    return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
+  };
 
   const handleClearWallet = () => {
     Alert.alert(
@@ -135,9 +140,11 @@ const SettingsScreen = () => {
             <View style={styles.accountInfo}>
               <GoogleGIcon size={24} />
               <View style={styles.accountDetails}>
-                <Text style={[styles.nameText, { color: theme.contentPrimary }]}>Kayato</Text>
-                <Text style={[styles.emailText, { color: theme.contentPrimary }]}>kayato.beast@gmail.com</Text>
-                <Text style={[styles.addressText, { color: theme.contentSecondary }]}>0xc7ca...84f6</Text>
+                <Text style={[styles.nameText, { color: theme.contentPrimary }]}>bearbeast131</Text>
+                <Text style={[styles.emailText, { color: theme.contentPrimary }]}>bearbeast131@gmail.com</Text>
+                <Text style={[styles.addressText, { color: theme.contentSecondary }]}>
+                  {formatAddress(walletAddress)}
+                </Text>
               </View>
             </View>
             <View style={styles.accountActions}>
