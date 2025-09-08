@@ -10,6 +10,7 @@ import SettingsScreen from './src/screens/SettingsScreen';
 import { HomeIcon, EarnIcon, NFTsIcon, AppsIcon, ActivityIcon, SettingsIcon } from './src/components/icons';
 import { ThemeProvider, useTheme } from './src/theme/ThemeContext';
 import { WalletProvider, useWallet } from './src/context/WalletContext';
+import LoadingScreen from './src/components/LoadingScreen';
 
 function AppContent() {
   const { theme } = useTheme();
@@ -75,6 +76,10 @@ function AppContent() {
 
 
   const renderContent = () => {
+    if (isLoading) {
+      return <LoadingScreen />;
+    }
+
     if (!hasWallet) {
       return (
         <View style={styles.onboardContainer}>
