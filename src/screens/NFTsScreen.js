@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Modal,
 } from "react-native";
 import { useTheme } from "../theme/ThemeContext";
 import Svg, { Path, Circle } from 'react-native-svg';
@@ -19,11 +20,19 @@ const MenuDotsIcon = ({ size = 24, color = "#000" }) => (
   </Svg>
 );
 
+const BackIcon = ({ size = 24, color = "#000" }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path d="M15.41 16.58L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.42z" fill={color}/>
+  </Svg>
+);
+
 
 
 const NFTsScreen = () => {
   const { theme } = useTheme();
   const [activeTab, setActiveTab] = useState('NFTs');
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [showHideAssets, setShowHideAssets] = useState(false);
 
   const styles = StyleSheet.create({
     container: {
@@ -140,6 +149,85 @@ const NFTsScreen = () => {
       fontSize: 16,
       fontWeight: "600",
     },
+    // Dropdown Menu Styles
+    dropdownOverlay: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      zIndex: 1000,
+    },
+    dropdownMenu: {
+      position: 'absolute',
+      top: 60,
+      right: 16,
+      backgroundColor: theme.backgroundSecondary,
+      borderRadius: 12,
+      paddingVertical: 8,
+      minWidth: 150,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
+      zIndex: 1001,
+    },
+    dropdownItem: {
+      paddingHorizontal: 16,
+      paddingVertical: 12,
+      borderRadius: 8,
+      marginHorizontal: 4,
+    },
+    dropdownItemText: {
+      fontSize: 16,
+      color: theme.contentPrimary,
+      fontWeight: '500',
+    },
+    // Hide Assets Modal Styles
+    modalOverlay: {
+      flex: 1,
+      backgroundColor: 'rgba(0, 0, 0, 0.8)',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    hideAssetsContainer: {
+      flex: 1,
+      backgroundColor: theme.backgroundPrimary,
+    },
+    hideAssetsHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingHorizontal: 16,
+      paddingVertical: 20,
+      paddingTop: 40,
+    },
+    hideAssetsTitle: {
+      fontSize: 18,
+      fontWeight: '600',
+      color: theme.contentPrimary,
+    },
+    doneButton: {
+      backgroundColor: '#ff6b35',
+      paddingHorizontal: 16,
+      paddingVertical: 8,
+      borderRadius: 20,
+    },
+    doneButtonText: {
+      color: '#ffffff',
+      fontSize: 16,
+      fontWeight: '600',
+    },
+    hideAssetsContent: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingHorizontal: 40,
+    },
   });
 
   const getEmptyStateContent = () => {
@@ -158,13 +246,87 @@ const NFTsScreen = () => {
 
   const emptyContent = getEmptyStateContent();
 
+  const handleMenuPress = () => {
+    setShowDropdown(!showDropdown);
+  };
+
+  const handleHideAssets = () => {
+    setShowDropdown(false);
+    setShowHideAssets(true);
+  };
+
+  const handleCloseHideAssets = () => {
+    setShowHideAssets(false);
+  };
+
+  const renderDropdownMenu = () => {
+    if (!showDropdown) return null;
+
+    return (
+      <>
+        <TouchableOpacity
+          style={styles.dropdownOverlay}
+          onPress={() => setShowDropdown(false)}
+          activeOpacity={1}
+        />
+        <View style={styles.dropdownMenu}>
+          <TouchableOpacity
+            style={styles.dropdownItem}
+            onPress={handleHideAssets}
+          >
+            <Text style={styles.dropdownItemText}>Hide Assets</Text>
+          </TouchableOpacity>
+        </View>
+      </>
+    );
+  };
+
+  const renderHideAssetsModal = () => {
+    return (
+      <Modal
+        visible={showHideAssets}
+        animationType="slide"
+        presentationStyle="fullScreen"
+      >
+        <View style={styles.hideAssetsContainer}>
+          {/* Header */}
+          <View style={styles.hideAssetsHeader}>
+            <Text style={styles.hideAssetsTitle}>Hide Assets</Text>
+            <TouchableOpacity
+              style={styles.doneButton}
+              onPress={handleCloseHideAssets}
+            >
+              <Text style={styles.doneButtonText}>Done</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Content */}
+          <View style={styles.hideAssetsContent}>
+            <View style={styles.emptyIconContainer}>
+              <SuiIcon size={80} color={theme.backgroundAccent} />
+            </View>
+
+            <Text style={styles.emptyTitle}>No NFTs owned</Text>
+            <Text style={styles.emptySubtitle}>
+              Digital assets that you purchase or receive will be displayed here.
+            </Text>
+
+            <TouchableOpacity style={styles.browseButton}>
+              <Text style={styles.browseButtonText}>Browse marketplace</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.assetsCard}>
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.title}>Assets</Text>
-          <TouchableOpacity style={styles.menuButton}>
+          <TouchableOpacity style={styles.menuButton} onPress={handleMenuPress}>
             <MenuDotsIcon size={20} color={theme.contentInversePrimary} />
           </TouchableOpacity>
         </View>
@@ -210,6 +372,12 @@ const NFTsScreen = () => {
           </TouchableOpacity>
         </View>
       </View>
+
+      {/* Dropdown Menu */}
+      {renderDropdownMenu()}
+
+      {/* Hide Assets Modal */}
+      {renderHideAssetsModal()}
     </View>
   );
 };
