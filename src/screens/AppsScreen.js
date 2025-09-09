@@ -317,7 +317,7 @@ const AppsScreen = () => {
             )}
           </ScrollView>
         </View>
-      </Modal>``
+      </Modal>
     </>
   );
 };

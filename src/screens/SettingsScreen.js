@@ -96,7 +96,7 @@ const DeleteIcon = ({ size = 24, color = "#000" }) => (
 );
 
 const SettingsScreen = () => {
-  const { theme } = useTheme();
+  const { theme, isDarkTheme } = useTheme();
   const { clearWallet, walletAddress } = useWallet();
   const [soundEnabled, setSoundEnabled] = React.useState(true);
   const [accountExpanded, setAccountExpanded] = React.useState(false);
@@ -222,7 +222,9 @@ const SettingsScreen = () => {
               <Text style={[styles.settingLabel, { color: theme.contentPrimary }]}>Theme</Text>
             </View>
             <View style={styles.settingRight}>
-              <Text style={[styles.settingValue, { color: theme.contentSecondary }]}>Blue Blizzard (dark)</Text>
+              <Text style={[styles.settingValue, { color: theme.contentSecondary }]}>
+                Red Envelope ({isDarkTheme ? 'dark' : 'light'})
+              </Text>
               <ArrowIcon size={20} color={theme.contentSecondary} />
             </View>
           </TouchableOpacity>
