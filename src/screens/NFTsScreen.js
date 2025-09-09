@@ -201,14 +201,21 @@ const NFTsScreen = () => {
       alignItems: 'center',
     },
     hideAssetsContainer: {
+      backgroundColor: theme.backgroundPrimary,
       flex: 1,
-      backgroundColor: theme.backgroundSecondary,
       position: 'absolute',
+      padding: 16,
       top: 0,
       left: 0,
       right: 0,
       bottom: 0,
       zIndex: 1000,
+    },
+    hideAssestsInnerContainer: {
+      flex: 1,
+      backgroundColor: theme.backgroundSecondary,
+      borderRadius: 20,
+      padding: 25,
     },
     hideAssetsHeader: {
       flexDirection: 'row',
@@ -302,6 +309,7 @@ const NFTsScreen = () => {
         statusBarTranslucent={true}
       >
         <View style={styles.hideAssetsContainer}>
+          <View style={styles.hideAssestsInnerContainer}>
           {/* Header */}
           <View style={styles.hideAssetsHeader}>
             <Text style={styles.hideAssetsTitle}>Hide Assets</Text>
@@ -312,7 +320,6 @@ const NFTsScreen = () => {
               <Text style={styles.doneButtonText}>Done</Text>
             </TouchableOpacity>
           </View>
-
           {/* Content */}
           <View style={styles.hideAssetsContent}>
             <View style={styles.emptyIconContainer}>
@@ -327,6 +334,7 @@ const NFTsScreen = () => {
             <TouchableOpacity style={styles.browseButton}>
               <Text style={styles.browseButtonText}>Browse marketplace</Text>
             </TouchableOpacity>
+          </View>
           </View>
         </View>
       </Modal>
