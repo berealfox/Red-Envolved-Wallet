@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -24,16 +24,21 @@ const RadioButton = ({ selected, color = "#4ade80" }) => (
 );
 
 const ThemeScreen = ({ onBack }) => {
-  const { theme, isDarkTheme } = useTheme();
+  const { theme, isDarkTheme, toggleTheme } = useTheme();
   const [selectedTheme, setSelectedTheme] = useState('Red Envelope');
   const [selectedMode, setSelectedMode] = useState(isDarkTheme ? 'Dark' : 'Light');
+
+  // Sync local state with theme context
+  useEffect(() => {
+    setSelectedMode(isDarkTheme ? 'Dark' : 'Light');
+  }, [isDarkTheme]);
 
   // Define theme variations using app colors
   const themeOptions = [
     {
       id: 'red-envelope',
       name: 'Red Envelope',
-      color: '#ff4444', // App's red accent color
+      color: theme.backgroundAccent, // Dynamic theme accent color
     },
   ];
 
@@ -44,9 +49,21 @@ const ThemeScreen = ({ onBack }) => {
   const handleModeSelect = (themeName, mode) => {
     if (selectedTheme === themeName) {
       setSelectedMode(mode);
+
+      // Apply the theme change
+      const shouldBeDark = mode === 'Dark';
+      if (shouldBeDark !== isDarkTheme) {
+        toggleTheme();
+      }
     } else {
       setSelectedTheme(themeName);
       setSelectedMode(mode);
+
+      // Apply the theme change
+      const shouldBeDark = mode === 'Dark';
+      if (shouldBeDark !== isDarkTheme) {
+        toggleTheme();
+      }
     }
   };
 
