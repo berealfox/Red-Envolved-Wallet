@@ -25,30 +25,15 @@ const RadioButton = ({ selected, color = "#4ade80" }) => (
 
 const ThemeScreen = ({ onBack }) => {
   const { theme, isDarkTheme } = useTheme();
-  const [selectedTheme, setSelectedTheme] = useState('Blue Blizzard');
+  const [selectedTheme, setSelectedTheme] = useState('Red Envelope');
   const [selectedMode, setSelectedMode] = useState(isDarkTheme ? 'Dark' : 'Light');
 
   // Define theme variations using app colors
   const themeOptions = [
     {
-      id: 'frostbite',
-      name: 'Frostbite Fuel',
-      color: '#8B5CF6', // Purple based on app accent
-    },
-    {
-      id: 'blizzard',
-      name: 'Blue Blizzard',
-      color: '#3B82F6', // Blue variation
-    },
-    {
-      id: 'citrine',
-      name: 'Citrine Swirl',
-      color: '#F59E0B', // Orange based on app accent
-    },
-    {
-      id: 'banana',
-      name: 'Banana Blitz',
-      color: '#EAB308', // Yellow variation
+      id: 'red-envelope',
+      name: 'Red Envelope',
+      color: '#ff4444', // App's red accent color
     },
   ];
 
@@ -99,7 +84,7 @@ const ThemeScreen = ({ onBack }) => {
       alignItems: 'center',
     },
     selectedThemeItem: {
-      backgroundColor: '#8B4513', // Brown/rust color for selected theme
+      backgroundColor: theme.backgroundSecondary, // App's darker background color
     },
     themeColorCircle: {
       width: 40,
