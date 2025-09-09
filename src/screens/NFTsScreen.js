@@ -143,11 +143,17 @@ const NFTsScreen = () => {
       paddingHorizontal: 32,
       paddingVertical: 16,
       borderRadius: 25,
+      alignSelf: 'center',
+      minWidth: 200,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     browseButtonText: {
       color: '#060d14',
       fontSize: 16,
       fontWeight: "600",
+      textAlign: 'center',
+      numberOfLines: 1,
     },
     // Dropdown Menu Styles
     dropdownOverlay: {
@@ -196,7 +202,7 @@ const NFTsScreen = () => {
     },
     hideAssetsContainer: {
       flex: 1,
-      backgroundColor: theme.backgroundPrimary,
+      backgroundColor: theme.backgroundSecondary,
       position: 'absolute',
       top: 0,
       left: 0,
