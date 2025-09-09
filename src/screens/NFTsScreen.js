@@ -160,7 +160,7 @@ const NFTsScreen = () => {
     },
     dropdownMenu: {
       position: 'absolute',
-      top: 60,
+      top: 80,
       right: 16,
       backgroundColor: theme.backgroundSecondary,
       borderRadius: 12,
@@ -218,13 +218,13 @@ const NFTsScreen = () => {
       color: theme.contentPrimary,
     },
     doneButton: {
-      backgroundColor: '#ff6b35',
+      backgroundColor: theme.backgroundAccent,
       paddingHorizontal: 16,
       paddingVertical: 8,
       borderRadius: 20,
     },
     doneButtonText: {
-      color: '#ffffff',
+      color: theme.contentInversePrimary,
       fontSize: 16,
       fontWeight: '600',
     },
