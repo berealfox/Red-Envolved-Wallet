@@ -25,6 +25,27 @@ export const createReceiveScreenStyles = (theme) => StyleSheet.create({
   placeholder: {
     width: 40,
   },
+  tabBar: {
+    flexDirection: 'row',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    gap: 8,
+  },
+  tab: {
+    flex: 1,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  activeTab: {
+    // Additional styling for active tab if needed
+  },
+  tabText: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
   content: {
     flex: 1,
     padding: 16,

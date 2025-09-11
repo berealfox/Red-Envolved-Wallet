@@ -19,6 +19,7 @@ const ReceiveScreen = ({ navigation }) => {
   const { walletAddress } = useWallet();
   const styles = createReceiveScreenStyles(theme);
   const [selectedToken, setSelectedToken] = useState('AQY');
+  const [activeTab, setActiveTab] = useState('receive'); // 'receive' or 'scan'
 
   const handleCopyAddress = async () => {
     try {
@@ -59,6 +60,41 @@ const ReceiveScreen = ({ navigation }) => {
         </TouchableOpacity>
         <Text style={[styles.title, { color: theme.contentPrimary }]}>Receive</Text>
         <View style={styles.placeholder} />
+      </View>
+
+      {/* Tab Bar */}
+      <View style={styles.tabBar}>
+        <TouchableOpacity
+          style={[
+            styles.tab,
+            activeTab === 'receive' && styles.activeTab,
+            { backgroundColor: activeTab === 'receive' ? theme.actionPrimary : 'transparent' }
+          ]}
+          onPress={() => setActiveTab('receive')}
+        >
+          <Text style={[
+            styles.tabText,
+            { color: activeTab === 'receive' ? theme.contentInversePrimary : theme.contentPrimary }
+          ]}>
+            Receive SUI
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[
+            styles.tab,
+            activeTab === 'scan' && styles.activeTab,
+            { backgroundColor: activeTab === 'scan' ? theme.actionPrimary : 'transparent' }
+          ]}
+          onPress={() => setActiveTab('scan')}
+        >
+          <Text style={[
+            styles.tabText,
+            { color: activeTab === 'scan' ? theme.contentInversePrimary : theme.contentPrimary }
+          ]}>
+            Scan code
+          </Text>
+        </TouchableOpacity>
       </View>
 
       <ScrollView style={styles.content}>
