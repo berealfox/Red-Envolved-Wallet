@@ -49,26 +49,29 @@ const SendScreen = ({ navigation }) => {
     setIsLoading(true);
 
     try {
-      // This would implement the actual transaction sending
-      // For now, we'll just simulate it
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Mock transaction to drive the Confirmation screen
+      const start = Date.now();
+      await new Promise(resolve => setTimeout(resolve, 600));
+      const durationMs = Date.now() - start;
+      const gas = 0.0005;
+      const amt = Number(amount);
+      const payload = {
+        durationMs,
+        amount: isNaN(amt) ? 0 : amt,
+        token: selectedToken,
+        to: `${recipient.substring(0, 6)}...${recipient.substring(recipient.length - 4)}`,
+        gas,
+        total: (isNaN(amt) ? 0 : amt) + gas,
+        txHash: '0xMOCK123',
+        completedAt: new Date().toISOString(),
+      };
 
-      Alert.alert(
-        'Success',
-        `Sent ${amount} ${selectedToken} to ${recipient.substring(0, 6)}...${recipient.substring(recipient.length - 4)}`,
-        [
-          {
-            text: 'OK',
-            onPress: () => {
-              // Reset form
-              setRecipient('');
-              setAmount('');
-              setMemo('');
-              navigation?.goBack();
-            }
-          }
-        ]
-      );
+      // Reset inputs before navigating
+      setRecipient('');
+      setAmount('');
+      setMemo('');
+
+      navigation?.navigate('Confirmation', payload);
     } catch (error) {
       Alert.alert('Error', 'Failed to send transaction: ' + error.message);
     } finally {

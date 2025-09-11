@@ -36,6 +36,24 @@ A modern, feature-rich cryptocurrency wallet built for the AQY blockchain (Sui f
 - **Secure Storage**: Encrypted wallet data with biometric protection
 - **Responsive Design**: Optimized for both mobile and desktop experiences
 
+## ✅ Implemented So Far (Current Sprint)
+
+- Buy/Sell modal with pinned coins and theme-aware actions
+- Send Method modal from Home: choose Direct wallet or Claimable Slush link
+- Swap screen created and refined
+  - Pill-shaped token selectors with icon, symbol, arrow
+  - Fixed layout issues (no stretched arrows, correct grouping)
+  - Bottom settings container: slippage, fees, Swap CTA; responsive and anchored
+- Receive screen
+  - Tab bar: "Receive SUI" and "Scan code"
+  - Clean QR view: QR card only; name and short address in a separate section
+  - Fixed bottom "Copy Address" button
+  - Camera-based QR scanning using Expo Camera (CameraView) with permission flow
+- Icons and fixes
+  - Centralized SVG icons; resolved stray text in `SuiIcon.js`
+- Styles refactor
+  - Extracted component styles into `src/styles/*` files for maintainability
+
 ## 📱 Screenshots
 
 *Screenshots will be added as development progresses*
@@ -55,29 +73,35 @@ A modern, feature-rich cryptocurrency wallet built for the AQY blockchain (Sui f
 ```
 Red-Envelope-Wallet/
 ├── src/
-│   ├── components/          # Reusable UI components
-│   │   ├── icons/          # Custom SVG icon components
-│   │   └── CustomTabBar.js # Navigation component
-│   ├── context/            # React Context providers
-│   │   └── WalletContext.js # Wallet state management
-│   ├── screens/            # Application screens
-│   │   ├── HomeScreen.js   # Portfolio and main dashboard
-│   │   ├── SendScreen.js   # Token sending interface
-│   │   ├── ReceiveScreen.js # Token receiving with QR
-│   │   ├── NFTsScreen.js   # Digital assets management
-│   │   ├── AppsScreen.js   # DApp integrations
-│   │   ├── ActivityScreen.js # Transaction history
-│   │   └── SettingsScreen.js # App configuration
-│   ├── services/           # Business logic and external APIs
-│   │   └── WalletService.js # Wallet operations
-│   ├── theme/              # Theming system
-│   │   ├── ThemeContext.js # Theme provider and logic
-│   │   └── colors.js       # Color palette definitions
-│   └── constants/          # App constants
-├── assets/                 # Static assets (images, icons)
-├── App.js                 # Main application entry point
-├── package.json           # Dependencies and scripts
-└── app.json              # Expo configuration
+│   ├── components/                    # Reusable UI components
+│   │   ├── icons/                     # Custom SVG icons
+│   │   │   ├── SuiIcon.js
+│   │   │   └── index.js               # Icon exports (ArrowLeft, ArrowRight, etc.)
+│   │   ├── BuySellModal.js            # Buy/Sell pinned coins modal
+│   │   └── SendMethodModal.js         # "Direct wallet" or "Claimable link"
+│   ├── context/
+│   │   └── WalletContext.js           # Wallet state management
+│   ├── screens/                       # Application screens
+│   │   ├── HomeScreen.js              # Dashboard with actions (Send/Receive/Swap)
+│   │   ├── SendScreen.js              # Send tokens flow
+│   │   ├── ReceiveScreen.js           # QR (receive) + Camera scanning tabs
+│   │   ├── SwapScreen.js              # Swap UI (selectors, slippage, fees)
+│   │   ├── SettingsScreen.js          # App configuration
+│   │   ├── SearchCoinsScreen.js       # (if present) Token search
+│   │   └── ManageAccountsScreen.js    # (if present) Account management
+│   ├── styles/                        # Component/screen styles (StyleSheet)
+│   │   ├── BuySellModal.styles.js
+│   │   ├── ReceiveScreen.styles.js
+│   │   ├── SendMethodModal.styles.js
+│   │   └── SwapScreen.styles.js
+│   ├── theme/
+│   │   ├── ThemeContext.js            # Theme provider and hook
+│   │   └── colors.js                  # Theme tokens
+│   └── constants/                     # App constants
+├── assets/                            # Images, logos (e.g., red-wallet-logo.jpg)
+├── App.js                             # App entry
+├── app.json                           # Expo app config
+└── package.json                       # Dependencies and scripts
 ```
 
 ## 🚦 Getting Started

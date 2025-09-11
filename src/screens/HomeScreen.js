@@ -20,6 +20,7 @@ import { createHomeScreenStyles } from "../styles/HomeScreen.styles";
 import SendScreen from "./SendScreen";
 import ReceiveScreen from "./ReceiveScreen";
 import SwapScreen from "./SwapScreen";
+import ConfirmationScreen from "./ConfirmationScreen";
 import SearchCoinsScreen from "./SearchCoinsScreen";
 import ManageAccountsScreen from "./ManageAccountsScreen";
 import BuySellModal from "../components/BuySellModal";
@@ -58,6 +59,8 @@ const HomeScreen = ({ navigation }) => {
   const [showSendScreen, setShowSendScreen] = useState(false);
   const [showReceiveScreen, setShowReceiveScreen] = useState(false);
   const [showSwapScreen, setShowSwapScreen] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [confirmationParams, setConfirmationParams] = useState(null);
   const [showSearchCoins, setShowSearchCoins] = useState(false);
   const [showManageAccounts, setShowManageAccounts] = useState(false);
   const [showBuySellModal, setShowBuySellModal] = useState(false);
@@ -164,7 +167,16 @@ const HomeScreen = ({ navigation }) => {
       {/* Send Screen Modal */}
       {showSendScreen && (
         <View style={styles.modalOverlay}>
-          <SendScreen navigation={{ goBack: () => setShowSendScreen(false) }} />
+          <SendScreen navigation={{
+            goBack: () => setShowSendScreen(false),
+            navigate: (route, params) => {
+              if (route === 'Confirmation') {
+                setShowSendScreen(false);
+                setConfirmationParams(params);
+                setShowConfirmation(true);
+              }
+            }
+          }} />
         </View>
       )}
 
@@ -208,6 +220,16 @@ const HomeScreen = ({ navigation }) => {
         onClose={() => setShowSendMethodModal(false)}
         onSelectMethod={handleSendMethodSelect}
       />
+
+      {/* Confirmation Screen Modal */}
+      {showConfirmation && (
+        <View style={styles.modalOverlay}>
+          <ConfirmationScreen
+            route={{ params: confirmationParams }}
+            navigation={{ goBack: () => setShowConfirmation(false) }}
+          />
+        </View>
+      )}
     </View>
   );
 };

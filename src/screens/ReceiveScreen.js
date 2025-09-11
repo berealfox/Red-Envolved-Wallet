@@ -9,6 +9,7 @@ import {
   Clipboard,
 } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
+import { CameraView, useCameraPermissions } from 'expo-camera';
 import { useTheme } from '../theme/ThemeContext';
 import { useWallet } from '../context/WalletContext';
 import { createReceiveScreenStyles } from '../styles/ReceiveScreen.styles';
@@ -19,6 +20,9 @@ const ReceiveScreen = ({ navigation }) => {
   const { walletAddress } = useWallet();
   const styles = createReceiveScreenStyles(theme);
   const [selectedToken, setSelectedToken] = useState('AQY');
+  const [activeTab, setActiveTab] = useState('receive'); // 'receive' or 'scan'
+  const [permission, requestPermission] = useCameraPermissions();
+  const [scanned, setScanned] = useState(false);
 
   const handleCopyAddress = async () => {
     try {
@@ -45,6 +49,24 @@ const ReceiveScreen = ({ navigation }) => {
     return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
   };
 
+  const handleQRCodeScanned = ({ type, data }) => {
+    setScanned(true);
+    // Handle scanned QR code data
+    Alert.alert(
+      'QR Code Scanned',
+      `Scanned data: ${data}`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Process', onPress: () => {
+          // Here you would process the scanned QR code
+          // For example, extract wallet address or payment info
+          console.log('Processing QR code:', data);
+        }}
+      ]
+    );
+    setTimeout(() => setScanned(false), 1500);
+  };
+
   const tokens = ['AQY', 'USDC', 'GC'];
 
   return (
@@ -61,120 +83,121 @@ const ReceiveScreen = ({ navigation }) => {
         <View style={styles.placeholder} />
       </View>
 
-      <ScrollView style={styles.content}>
-        {/* Token Selector */}
-        <View style={[styles.section, { backgroundColor: theme.backgroundInverse }]}>
-          <Text style={[styles.sectionTitle, { color: theme.contentPrimary }]}>Select Token</Text>
-          <View style={styles.tokenSelector}>
-            {tokens.map((token) => (
-              <TouchableOpacity
-                key={token}
-                style={[
-                  styles.tokenOption,
-                  {
-                    backgroundColor: selectedToken === token ? theme.actionPrimary : theme.actionSecondary,
-                    borderColor: selectedToken === token ? theme.actionPrimary : 'transparent'
-                  }
-                ]}
-                onPress={() => setSelectedToken(token)}
-              >
-                <Text style={[
-                  styles.tokenText,
-                  { color: selectedToken === token ? theme.contentInversePrimary : theme.contentPrimary }
-                ]}>
-                  {token}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
-
-        {/* QR Code Section */}
-        <View style={[styles.qrSection, { backgroundColor: theme.backgroundInverse }]}>
-          <Text style={[styles.sectionTitle, { color: theme.contentPrimary }]}>
-            Scan to send {selectedToken}
+      {/* Tab Bar */}
+      <View style={styles.tabBar}>
+        <TouchableOpacity
+          style={[
+            styles.tab,
+            activeTab === 'receive' && styles.activeTab,
+            { backgroundColor: activeTab === 'receive' ? theme.actionPrimary : 'transparent' }
+          ]}
+          onPress={() => setActiveTab('receive')}
+        >
+          <Text style={[
+            styles.tabText,
+            { color: activeTab === 'receive' ? theme.contentInversePrimary : theme.contentPrimary }
+          ]}>
+            Receive SUI
           </Text>
+        </TouchableOpacity>
 
-          <View style={styles.qrContainer}>
-            <View style={styles.qrBackground}>
-              {walletAddress && (
-                <QRCode
-                  value={walletAddress}
-                  size={200}
-                  backgroundColor="white"
-                  color="black"
-                  logo={require('../../assets/red-wallet-logo.jpg')}
-                  logoSize={40}
-                  logoBackgroundColor='red'
-                  logoBorderRadius={20}
-                  logoBorderColor='transparent'
-                  logoBorderWidth={0}
-                  logoMargin={0}
-                />
-              )}
+        <TouchableOpacity
+          style={[
+            styles.tab,
+            activeTab === 'scan' && styles.activeTab,
+            { backgroundColor: activeTab === 'scan' ? theme.actionPrimary : 'transparent' }
+          ]}
+          onPress={() => setActiveTab('scan')}
+        >
+          <Text style={[
+            styles.tabText,
+            { color: activeTab === 'scan' ? theme.contentInversePrimary : theme.contentPrimary }
+          ]}>
+            Scan code
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      {activeTab === 'receive' ? (
+        <View style={styles.mainContent}>
+          <ScrollView style={[styles.content, styles.scrollContent]}>
+            {/* QR Code Section (no background) */}
+            <View style={styles.qrSection}>
+              <View style={styles.qrContainer}>
+                <View style={styles.qrBackground}>
+                  {walletAddress && (
+                    <QRCode
+                      value={walletAddress}
+                      size={200}
+                      backgroundColor="white"
+                      color="black"
+                      logo={require('../../assets/red-wallet-logo.jpg')}
+                      logoSize={40}
+                      logoBackgroundColor='red'
+                      logoBorderRadius={20}
+                      logoBorderColor='transparent'
+                      logoBorderWidth={0}
+                      logoMargin={0}
+                    />
+                  )}
+                </View>
+              </View>
+
             </View>
-          </View>
 
-          <Text style={[styles.qrLabel, { color: theme.contentSecondary }]}>
-            Your {selectedToken} Address
-          </Text>
-        </View>
+            {/* Name and short address under QR (separate container) */}
+            <View style={styles.addressContainer}>
+              <Text style={[styles.walletName, { color: theme.contentPrimary }]}>bearbeast131</Text>
+              <Text style={[styles.addressShort, { color: theme.contentSecondary }]}>
+                {formatAddress(walletAddress)}
+              </Text>
+            </View>
+          </ScrollView>
 
-        {/* Address Section */}
-        <View style={[styles.section, { backgroundColor: theme.backgroundInverse }]}>
-          <Text style={[styles.sectionTitle, { color: theme.contentPrimary }]}>Wallet Address</Text>
-
-          <View style={[styles.addressContainer, { backgroundColor: theme.actionSecondary }]}>
-            <Text style={[styles.addressText, { color: theme.contentPrimary }]}>
-              {walletAddress}
-            </Text>
-          </View>
-
-          <Text style={[styles.addressShort, { color: theme.contentSecondary }]}>
-            {formatAddress(walletAddress)}
-          </Text>
-
-          {/* Action Buttons */}
-          <View style={styles.actionButtons}>
+          {/* Fixed bottom Copy button */}
+          <View style={styles.bottomContainer}>
             <TouchableOpacity
               style={[styles.actionButton, { backgroundColor: theme.actionPrimary }]}
               onPress={handleCopyAddress}
             >
               <CopyIcon size={20} color={theme.contentInversePrimary} />
-              <Text style={[styles.actionButtonText, { color: theme.contentInversePrimary }]}>
-                Copy
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[styles.actionButton, { backgroundColor: theme.actionSecondary }]}
-              onPress={handleShare}
-            >
-              <ShareIcon size={20} color={theme.contentPrimary} />
-              <Text style={[styles.actionButtonText, { color: theme.contentPrimary }]}>
-                Share
-              </Text>
+              <Text style={[styles.actionButtonText, { color: theme.contentInversePrimary }]}>Copy Address</Text>
             </TouchableOpacity>
           </View>
         </View>
-
-        {/* Instructions */}
-        <View style={[styles.section, { backgroundColor: theme.backgroundInverse }]}>
-          <Text style={[styles.sectionTitle, { color: theme.contentPrimary }]}>Instructions</Text>
-          <Text style={[styles.instructionText, { color: theme.contentSecondary }]}>
-            • Share your QR code or address with the sender
-          </Text>
-          <Text style={[styles.instructionText, { color: theme.contentSecondary }]}>
-            • Make sure they select the correct network (AQY)
-          </Text>
-          <Text style={[styles.instructionText, { color: theme.contentSecondary }]}>
-            • Transactions are irreversible, double-check the address
-          </Text>
-          <Text style={[styles.instructionText, { color: theme.contentSecondary }]}>
-            • Your wallet supports AQY, USDC, and GC tokens
-          </Text>
-        </View>
-      </ScrollView>
+      ) : (
+        /* Camera Scanner View */
+        (!permission || !permission.granted) ? (
+          <View style={styles.cameraContainer}>
+            <Text style={[styles.scanInstruction, { color: theme.contentPrimary }]}>We need your permission to use the camera</Text>
+            <TouchableOpacity
+              style={[styles.actionButton, { backgroundColor: theme.actionPrimary, marginTop: 12, alignSelf: 'center' }]}
+              onPress={requestPermission}
+            >
+              <Text style={[styles.actionButtonText, { color: theme.contentInversePrimary }]}>Grant Permission</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={styles.cameraContainer}>
+            <CameraView
+              style={styles.camera}
+              facing="back"
+              barcodeScannerSettings={{ barcodeTypes: ['qr'] }}
+              onBarcodeScanned={scanned ? undefined : handleQRCodeScanned}
+            >
+              <View style={styles.cameraOverlay}>
+                <View style={styles.scanArea}>
+                  <View style={[styles.scanCorner, styles.topLeft]} />
+                  <View style={[styles.scanCorner, styles.topRight]} />
+                  <View style={[styles.scanCorner, styles.bottomLeft]} />
+                  <View style={[styles.scanCorner, styles.bottomRight]} />
+                </View>
+                <Text style={[styles.scanInstruction, { color: theme.contentPrimary }]}>Position QR code within the frame</Text>
+              </View>
+            </CameraView>
+          </View>
+        )
+      )}
     </View>
   );
 };
