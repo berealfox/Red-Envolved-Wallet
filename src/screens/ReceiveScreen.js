@@ -184,17 +184,16 @@ const ReceiveScreen = ({ navigation, initialTab = 'receive' }) => {
               facing="back"
               barcodeScannerSettings={{ barcodeTypes: ['qr'] }}
               onBarcodeScanned={scanned ? undefined : handleQRCodeScanned}
-            >
-              <View style={styles.cameraOverlay}>
-                <View style={styles.scanArea}>
-                  <View style={[styles.scanCorner, styles.topLeft]} />
-                  <View style={[styles.scanCorner, styles.topRight]} />
-                  <View style={[styles.scanCorner, styles.bottomLeft]} />
-                  <View style={[styles.scanCorner, styles.bottomRight]} />
-                </View>
-                <Text style={[styles.scanInstruction, { color: theme.contentPrimary }]}>Position QR code within the frame</Text>
+            />
+            <View style={styles.cameraOverlay} pointerEvents="none">
+              <View style={styles.scanArea}>
+                <View style={[styles.scanCorner, styles.topLeft]} />
+                <View style={[styles.scanCorner, styles.topRight]} />
+                <View style={[styles.scanCorner, styles.bottomLeft]} />
+                <View style={[styles.scanCorner, styles.bottomRight]} />
               </View>
-            </CameraView>
+              <Text style={[styles.scanInstruction, { color: theme.contentPrimary }]}>Position QR code within the frame</Text>
+            </View>
           </View>
         )
       )}
