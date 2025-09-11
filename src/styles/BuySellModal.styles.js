@@ -71,7 +71,7 @@ export const createBuySellModalStyles = (theme) => StyleSheet.create({
   },
   actionButton: {
     backgroundColor: theme.actionPrimary,
-    borderRadius: 8,
+    borderRadius: 15,
     paddingVertical: 8,
     paddingHorizontal: 16,
     minWidth: 60,
