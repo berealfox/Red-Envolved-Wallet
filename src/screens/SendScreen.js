@@ -12,6 +12,7 @@ import { useTheme } from '../theme/ThemeContext';
 import { useWallet } from '../context/WalletContext';
 import { createSendScreenStyles } from '../styles/SendScreen.styles';
 import { ArrowLeftIcon } from '../components/icons';
+// import SendMethodModal from '../components/SendMethodModal';
 
 const SendScreen = ({ navigation }) => {
   const { theme } = useTheme();
@@ -23,6 +24,7 @@ const SendScreen = ({ navigation }) => {
   const [selectedToken, setSelectedToken] = useState('AQY');
   const [isLoading, setIsLoading] = useState(false);
   const [memo, setMemo] = useState('');
+  // const [showSendMethodModal, setShowSendMethodModal] = useState(false);
 
   const handleSend = async () => {
     if (!recipient || !amount) {
@@ -73,6 +75,7 @@ const SendScreen = ({ navigation }) => {
       setIsLoading(false);
     }
   };
+
 
   const validateAddress = (address) => {
     // Basic validation for Sui/AQY address format
@@ -200,6 +203,7 @@ const SendScreen = ({ navigation }) => {
           )}
         </TouchableOpacity>
       </ScrollView>
+
     </View>
   );
 };

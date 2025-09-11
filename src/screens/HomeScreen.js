@@ -22,6 +22,7 @@ import ReceiveScreen from "./ReceiveScreen";
 import SearchCoinsScreen from "./SearchCoinsScreen";
 import ManageAccountsScreen from "./ManageAccountsScreen";
 import BuySellModal from "../components/BuySellModal";
+import SendMethodModal from "../components/SendMethodModal";
 import Svg, { Path, G } from 'react-native-svg';
 
 
@@ -58,9 +59,16 @@ const HomeScreen = ({ navigation }) => {
   const [showSearchCoins, setShowSearchCoins] = useState(false);
   const [showManageAccounts, setShowManageAccounts] = useState(false);
   const [showBuySellModal, setShowBuySellModal] = useState(false);
+  const [showSendMethodModal, setShowSendMethodModal] = useState(false);
 
   const handleManageAccount = () => {
     setShowManageAccounts(true);
+  };
+
+  const handleSendMethodSelect = (method) => {
+    // Close the modal and show the SendScreen
+    setShowSendMethodModal(false);
+    setShowSendScreen(true);
   };
 
   const handleLogoPress = () => {
@@ -119,7 +127,7 @@ const HomeScreen = ({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.actionButton, { backgroundColor: theme.actionSecondary }]}
-              onPress={() => setShowSendScreen(true)}
+              onPress={() => setShowSendMethodModal(true)}
             >
               <SendIcon size={20} color={theme.contentPrimary} />
               <Text style={[styles.actionButtonText, { color: theme.contentPrimary }]}>Send</Text>
@@ -182,6 +190,13 @@ const HomeScreen = ({ navigation }) => {
       <BuySellModal
         visible={showBuySellModal}
         onClose={() => setShowBuySellModal(false)}
+      />
+
+      {/* Send Method Modal */}
+      <SendMethodModal
+        visible={showSendMethodModal}
+        onClose={() => setShowSendMethodModal(false)}
+        onSelectMethod={handleSendMethodSelect}
       />
     </View>
   );
