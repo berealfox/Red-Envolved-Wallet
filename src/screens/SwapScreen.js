@@ -22,7 +22,7 @@ const DownArrowIcon = ({ size = 24, color = "#666" }) => (
 
 // Mock data for available tokens
 const availableTokens = [
-  { id: 'sui', symbol: 'SUI', name: 'Sui', balance: '1.68', usdValue: '2.45' },
+  { id: 'sui', symbol: 'SUI', name: 'Sui', balance: '0.0', usdValue: '3.45' },
   { id: 'usdc', symbol: 'USDC', name: 'USD Coin', balance: '0.00', usdValue: '0.00' },
   { id: 'aqy', symbol: 'AQY', name: 'AQY Token', balance: '100.00', usdValue: '150.00' },
 ];
@@ -43,7 +43,7 @@ const SwapScreen = ({ navigation }) => {
     setAmount(value);
     // Calculate USD value (mock calculation)
     const numericValue = parseFloat(value) || 0;
-    const usdAmount = numericValue * 1.46; // Mock rate
+    const usdAmount = numericValue * 3.43; // Mock rate
     setUsdValue(`$${usdAmount.toFixed(2)}`);
   };
 
@@ -109,145 +109,145 @@ const SwapScreen = ({ navigation }) => {
         <View style={styles.placeholder} />
       </View>
 
-      <ScrollView style={styles.content}>
-        {/* From Token Section */}
-        <View style={styles.section}>
-          <View style={styles.tokenRow}>
-            <TouchableOpacity
-              style={[styles.tokenSelector, { backgroundColor: theme.backgroundInverse }]}
-              onPress={() => setShowFromTokenSelector(true)}
-            >
-              <View style={styles.tokenIcon}>
-                <Text style={styles.tokenIconText}>
-                  {fromToken.symbol.charAt(0)}
-                </Text>
-              </View>
-              <Text style={[styles.tokenSymbol, { color: theme.contentPrimary }]}>
-                {fromToken.symbol}
-              </Text>
-              <Text style={[styles.arrowIcon, { color: theme.contentSecondary }]}>›</Text>
-            </TouchableOpacity>
-
-            <View style={styles.balanceInfo}>
-              <Text style={[styles.balanceAmount, { color: theme.contentPrimary }]}>
-                {fromToken.balance}
-              </Text>
-            </View>
-          </View>
-
-          <View style={styles.amountSection}>
-            <TextInput
-              style={[styles.amountInput, { color: theme.contentPrimary }]}
-              value={amount}
-              onChangeText={handleAmountChange}
-              placeholder="0"
-              placeholderTextColor={theme.contentSecondary}
-              keyboardType="numeric"
-            />
-            <Text style={[styles.usdValue, { color: theme.contentSecondary }]}>
-              {usdValue}
-            </Text>
-          </View>
-
-          <View style={styles.percentageButtons}>
-            <TouchableOpacity
-              style={[styles.percentageButton, { backgroundColor: theme.actionSecondary }]}
-              onPress={() => handlePercentageSelect(25)}
-            >
-              <Text style={[styles.percentageText, { color: theme.contentPrimary }]}>25%</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.percentageButton, { backgroundColor: theme.actionSecondary }]}
-              onPress={() => handlePercentageSelect(50)}
-            >
-              <Text style={[styles.percentageText, { color: theme.contentPrimary }]}>50%</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.percentageButton, { backgroundColor: theme.actionSecondary }]}
-              onPress={() => handlePercentageSelect(100)}
-            >
-              <Text style={[styles.percentageText, { color: theme.contentPrimary }]}>Max</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        {/* Swap Direction Button */}
-        <View style={styles.swapDirectionContainer}>
-          <TouchableOpacity
-            style={[styles.swapDirectionButton, { backgroundColor: theme.backgroundInverse }]}
-            onPress={swapTokens}
-          >
-            <DownArrowIcon size={24} color={theme.contentPrimary} />
-          </TouchableOpacity>
-        </View>
-
-        {/* To Token Section */}
-        <View style={styles.section}>
-          <View style={styles.tokenRow}>
-            <TouchableOpacity
-              style={[styles.tokenSelector, { backgroundColor: theme.backgroundInverse }]}
-              onPress={() => setShowToTokenSelector(true)}
-            >
-              {toToken && (
+      <View style={styles.mainContent}>
+        <ScrollView style={styles.scrollContent} showsVerticalScrollIndicator={false}>
+          {/* From Token Section */}
+          <View style={styles.section}>
+            <View style={styles.tokenRow}>
+              <TouchableOpacity
+                style={[styles.tokenSelector, { backgroundColor: theme.backgroundInverse }]}
+                onPress={() => setShowFromTokenSelector(true)}
+              >
                 <View style={styles.tokenIcon}>
                   <Text style={styles.tokenIconText}>
-                    {toToken.symbol.charAt(0)}
+                    {fromToken.symbol.charAt(0)}
                   </Text>
                 </View>
-              )}
-              <Text style={[styles.tokenSymbol, { color: theme.contentPrimary }]}>
-                {toToken ? toToken.symbol : 'Select coin'}
-              </Text>
-              <Text style={[styles.arrowIcon, { color: theme.contentSecondary }]}>›</Text>
-            </TouchableOpacity>
-
-            <View style={styles.balanceInfo}>
-              {toToken && (
-                <Text style={[styles.balanceAmount, { color: theme.contentPrimary }]}>
-                  {toToken.balance}
+                <Text style={[styles.tokenSymbol, { color: theme.contentPrimary }]}>
+                  {fromToken.symbol}
                 </Text>
-              )}
+                <Text style={[styles.arrowIcon, { color: theme.contentSecondary }]}>›</Text>
+              </TouchableOpacity>
+
+              <View style={styles.balanceInfo}>
+                <Text style={[styles.balanceAmount, { color: theme.contentPrimary }]}>
+                  {fromToken.balance}
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.amountSection}>
+              <TextInput
+                style={[styles.amountInput, { color: theme.contentPrimary }]}
+                value={amount}
+                onChangeText={handleAmountChange}
+                placeholder="0"
+                placeholderTextColor={theme.contentSecondary}
+                keyboardType="numeric"
+              />
+              <Text style={[styles.usdValue, { color: theme.contentSecondary }]}>
+                {usdValue}
+              </Text>
+            </View>
+
+            <View style={styles.percentageButtons}>
+              <TouchableOpacity
+                style={[styles.percentageButton, { backgroundColor: theme.actionSecondary }]}
+                onPress={() => handlePercentageSelect(25)}
+              >
+                <Text style={[styles.percentageText, { color: theme.contentPrimary }]}>25%</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.percentageButton, { backgroundColor: theme.actionSecondary }]}
+                onPress={() => handlePercentageSelect(50)}
+              >
+                <Text style={[styles.percentageText, { color: theme.contentPrimary }]}>50%</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.percentageButton, { backgroundColor: theme.actionSecondary }]}
+                onPress={() => handlePercentageSelect(100)}
+              >
+                <Text style={[styles.percentageText, { color: theme.contentPrimary }]}>Max</Text>
+              </TouchableOpacity>
             </View>
           </View>
-        </View>
 
-        {/* Swap Settings */}
-        <View style={styles.settingsSection}>
+          {/* Swap Direction Button */}
+          <View style={styles.swapDirectionContainer}>
+            <TouchableOpacity
+              style={[styles.swapDirectionButton, { backgroundColor: theme.backgroundInverse }]}
+              onPress={swapTokens}
+            >
+              <DownArrowIcon size={24} color={theme.contentPrimary} />
+            </TouchableOpacity>
+          </View>
+
+          {/* To Token Section */}
+          <View style={styles.section}>
+            <View style={styles.tokenRow}>
+              <TouchableOpacity
+                style={[styles.tokenSelector, { backgroundColor: theme.backgroundInverse }]}
+                onPress={() => setShowToTokenSelector(true)}
+              >
+                {toToken && (
+                  <View style={styles.tokenIcon}>
+                    <Text style={styles.tokenIconText}>
+                      {toToken.symbol.charAt(0)}
+                    </Text>
+                  </View>
+                )}
+                <Text style={[styles.tokenSymbol, { color: theme.contentPrimary }]}>
+                  {toToken ? toToken.symbol : 'Select coin'}
+                </Text>
+                <Text style={[styles.arrowIcon, { color: theme.contentSecondary }]}>›</Text>
+              </TouchableOpacity>
+
+              <View style={styles.balanceInfo}>
+                {toToken && (
+                  <Text style={[styles.balanceAmount, { color: theme.contentPrimary }]}>
+                    {toToken.balance}
+                  </Text>
+                )}
+              </View>
+            </View>
+          </View>
+        </ScrollView>
+
+        {/* Swap Settings and Button Container - Fixed at Bottom */}
+        <View style={[styles.settingsContainer, { backgroundColor: theme.backgroundInverse }]}>
           <Text style={[styles.slippageText, { color: theme.contentSecondary }]}>
             1% max slippage
           </Text>
 
-          <View style={styles.feesContainer}>
-            <TouchableOpacity style={styles.feesRow}>
-              <Text style={[styles.feesLabel, { color: theme.contentPrimary }]}>Fees</Text>
-              <View style={styles.feesValue}>
-                <Text style={[styles.feesAmount, { color: theme.contentPrimary }]}>$0.00</Text>
-                <Text style={[styles.feesArrow, { color: theme.contentSecondary }]}>›</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </View>
+          <TouchableOpacity style={styles.feesRow}>
+            <Text style={[styles.feesLabel, { color: theme.contentPrimary }]}>Fees</Text>
+            <View style={styles.feesValue}>
+              <Text style={[styles.feesAmount, { color: theme.contentPrimary }]}>$0.00</Text>
+              <Text style={[styles.feesArrow, { color: theme.contentSecondary }]}>›</Text>
+            </View>
+          </TouchableOpacity>
 
-        {/* Swap Button */}
-        <TouchableOpacity
-          style={[
-            styles.swapButton,
-            {
-              backgroundColor: toToken && amount ? theme.actionPrimary : theme.actionSecondary,
-              opacity: toToken && amount ? 1 : 0.5
-            }
-          ]}
-          onPress={handleSwap}
-          disabled={!toToken || !amount}
-        >
-          <Text style={[
-            styles.swapButtonText,
-            { color: toToken && amount ? theme.contentInversePrimary : theme.contentSecondary }
-          ]}>
-            Swap
-          </Text>
-        </TouchableOpacity>
-      </ScrollView>
+          {/* Swap Button */}
+          <TouchableOpacity
+            style={[
+              styles.swapButton,
+              {
+                backgroundColor: toToken && amount ? theme.actionPrimary : theme.actionSecondary,
+                opacity: toToken && amount ? 1 : 0.5
+              }
+            ]}
+            onPress={handleSwap}
+            disabled={!toToken || !amount}
+          >
+            <Text style={[
+              styles.swapButtonText,
+              { color: toToken && amount ? theme.contentInversePrimary : theme.contentSecondary }
+            ]}>
+              Swap
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 };

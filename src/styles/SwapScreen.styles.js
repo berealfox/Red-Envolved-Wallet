@@ -25,9 +25,13 @@ export const createSwapScreenStyles = (theme) => StyleSheet.create({
   placeholder: {
     width: 40,
   },
-  content: {
+  mainContent: {
     flex: 1,
-    padding: 6,
+    flexDirection: 'column',
+  },
+  scrollContent: {
+    flex: 1,
+    padding: 16,
   },
   section: {
     borderRadius: 12,
@@ -120,18 +124,15 @@ export const createSwapScreenStyles = (theme) => StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  settingsSection: {
-    marginTop: 8,
-    marginBottom: 24,
+  settingsContainer: {
+    borderRadius: 12,
+    padding: 16,
+    marginHorizontal: 16,
+    marginBottom: 16,
   },
   slippageText: {
     fontSize: 14,
     textAlign: 'right',
-    marginBottom: 16,
-  },
-  feesContainer: {
-    borderRadius: 12,
-    padding: 16,
     marginBottom: 16,
   },
   feesRow: {
@@ -156,10 +157,10 @@ export const createSwapScreenStyles = (theme) => StyleSheet.create({
     fontSize: 16,
   },
   swapButton: {
-    borderRadius: 12,
-    padding: 16,
+    borderRadius: 22,
+    padding: 12,
     alignItems: 'center',
-    marginBottom: 32,
+    marginTop: 16,
   },
   swapButtonText: {
     fontSize: 18,
