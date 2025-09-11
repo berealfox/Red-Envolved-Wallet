@@ -12,7 +12,7 @@ export const createHomeScreenStyles = (theme) => StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 40,
-    marginTop: 10,
+    marginTop: 20,
   },
   logoContainer: {
     width: 45,
