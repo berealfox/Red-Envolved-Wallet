@@ -145,6 +145,19 @@ export const createReceiveScreenStyles = (theme) => StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
   },
+  // Compact button for camera permission prompt
+  permissionButton: {
+    alignSelf: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 45,
+    paddingVertical: 8,
+    paddingHorizontal: 20,
+    borderRadius: 22,
+    gap: 8,
+    marginTop: 12,
+  },
   bottomContainer: {
     paddingHorizontal: 16,
     paddingBottom: 16,

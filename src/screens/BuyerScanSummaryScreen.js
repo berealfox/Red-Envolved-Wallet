@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import { useTheme } from '../theme/ThemeContext';
 import { createBuyerScanSummaryStyles } from '../styles/BuyerScanSummaryScreen.styles';
 import { verifyEnvelope } from '../lib/f2c/sign';
+import { submitF2C } from '../services/F2CService';
 
 const BuyerScanSummaryScreen = ({ route, navigation }) => {
   const { theme } = useTheme();
@@ -35,12 +36,16 @@ const BuyerScanSummaryScreen = ({ route, navigation }) => {
     return () => { mounted = false; };
   }, [envelope, expired]);
 
-  const onPay = () => {
+  const onPay = async () => {
     if (!isValid) {
       Alert.alert('Invalid QR', 'The QR code is invalid or expired.');
       return;
     }
-    // Mock submit -> navigate to Confirmation via parent handler
+    const res = await submitF2C(envelope);
+    if (!res.success) {
+      Alert.alert('Payment Failed', res.error || 'Unknown error');
+      return;
+    }
     navigation?.navigate?.('Confirmation', {
       status: 'success',
       amount: '0.00',
@@ -49,6 +54,8 @@ const BuyerScanSummaryScreen = ({ route, navigation }) => {
       gas: '$0.00',
       total: '$0.00',
       timestamp: Date.now(),
+      explorerUrl: res.explorerUrl,
+      txId: res.txId,
     });
   };
 

@@ -15,24 +15,16 @@ export function buildCanonicalPayload({
   expiresAt,
   nonce,
 }) {
+  // Ultra-compact format - just essential data
   const canonical = {
     v: 1,
-    chainId: String(chainId),
-    seller: String(seller),
-    schemeId: String(schemeId),
-    rewardPct: roundRewardPct(rewardPct),
-    metadata: metadata && Object.keys(metadata).length ? {
-      sellerName: metadata.sellerName ?? undefined,
-      note: metadata.note ?? undefined,
-    } : undefined,
-    expiresAt: Number(expiresAt),
-    nonce: String(nonce),
+    c: 'aqy', // Fixed chain ID
+    s: String(seller).slice(-8), // Last 8 chars of seller address
+    i: 1, // Fixed scheme ID as number
+    r: Math.round(roundRewardPct(rewardPct)), // Integer reward %
+    e: Math.floor(Number(expiresAt) / 1000), // Unix timestamp in seconds
+    n: String(nonce).slice(0, 4), // Just 4 char nonce
   };
-
-  // Remove undefined fields for compact JSON
-  Object.keys(canonical).forEach((k) => {
-    if (canonical[k] === undefined) delete canonical[k];
-  });
 
   return canonical;
 }
@@ -41,13 +33,12 @@ export function canonicalJSONStringify(obj) {
   // Deterministic stringify according to required key order
   const order = [
     'v',
-    'chainId',
-    'seller',
-    'schemeId',
-    'rewardPct',
-    'metadata',
-    'expiresAt',
-    'nonce',
+    'c',
+    's',
+    'i',
+    'r',
+    'e',
+    'n',
   ];
 
   function replacer(key, value) {
@@ -55,7 +46,7 @@ export function canonicalJSONStringify(obj) {
   }
 
   function stringifyWithOrder(o) {
-    if (o === null || typeof o !== 'object' || Array.isArray(o)) {
+    if (o === null || typeof o !== 'object' || Array.isArray(o)) {dd 
       return JSON.stringify(o);
     }
     const keys = (o === obj ? order : Object.keys(o).sort());

@@ -20,9 +20,10 @@ const SellerQRScreen = ({ navigation }) => {
   const styles = createSellerQRScreenStyles(theme);
 
   const [schemeId, setSchemeId] = useState(SCHEMES[0].id);
+  const [localReward, setLocalReward] = useState(rewardPercentage);
 
   const expiresAt = useMemo(() => Date.now() + 10 * 60 * 1000, [schemeId, rewardPercentage]);
-  const nonce = useMemo(() => Math.random().toString(36).slice(2), [schemeId]);
+  const nonce = useMemo(() => Math.random().toString(36).slice(2, 10), [schemeId]); // Shorter nonce
 
   const payload = useMemo(() => buildCanonicalPayload({
     chainId: 'aqy-devnet',
@@ -46,7 +47,8 @@ const SellerQRScreen = ({ navigation }) => {
     }
   };
 
-  const bg = rewardToColor(rewardPercentage);
+  // Live feedback while sliding, commit to theme on release
+  const bg = rewardToColor(localReward);
 
   return (
     <View style={[styles.container, { backgroundColor: theme.backgroundPrimary }] }>
@@ -74,8 +76,9 @@ const SellerQRScreen = ({ navigation }) => {
             minimumTrackTintColor={theme.actionPrimary}
             maximumTrackTintColor={theme.backgroundPrimary}
             thumbTintColor={theme.actionPrimary}
-            value={rewardPercentage}
-            onValueChange={updateRewardPercentage}
+            value={localReward}
+            onValueChange={setLocalReward}
+            onSlidingComplete={(val) => updateRewardPercentage(val)}
           />
         </View>
 
@@ -103,6 +106,13 @@ const SellerQRScreen = ({ navigation }) => {
               <Text style={{ color: theme.contentSecondary }}>Tap Sign to generate QR</Text>
             )}
           </View>
+          {envelope && (
+            <View style={{ marginTop: 8, padding: 8, backgroundColor: theme.backgroundPrimary, borderRadius: 8 }}>
+              <Text style={{ color: theme.contentSecondary, fontSize: 10 }}>
+                QR contains: {JSON.stringify(envelope).length} characters
+              </Text>
+            </View>
+          )}
           <TouchableOpacity onPress={handleSign} style={[styles.primaryButton, { backgroundColor: theme.actionPrimary }]}>
             <Text style={[styles.primaryButtonText, { color: theme.contentInversePrimary }]}>{envelope ? 'Re-sign' : 'Sign & Generate QR'}</Text>
           </TouchableOpacity>
