@@ -1,36 +1,15 @@
 import React from 'react';
 import {
   View,
-  StyleSheet,
   Image,
   ActivityIndicator,
 } from 'react-native';
 import { useTheme } from '../theme/ThemeContext';
+import { createLoadingScreenStyles } from '../styles/LoadingScreen.styles';
 
 const LoadingScreen = () => {
   const { theme } = useTheme();
-
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: theme.backgroundPrimary,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    logoContainer: {
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    logo: {
-      width: 120,
-      height: 120,
-      borderRadius: 20,
-      marginBottom: 40,
-    },
-    loadingIndicator: {
-      marginTop: 20,
-    },
-  });
+  const styles = createLoadingScreenStyles(theme);
 
   return (
     <View style={styles.container}>

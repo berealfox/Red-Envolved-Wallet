@@ -1,7 +1,9 @@
 import React from 'react';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, Text } from 'react-native';
+import { createCustomTabBarStyles } from '../styles/CustomTabBar.styles';
 
 const CustomTabBar = ({ state, descriptors, navigation }) => {
+  const styles = createCustomTabBarStyles();
   const tabConfig = [
     { key: 'Home', icon: '🏠', label: 'Home' },
     { key: 'Earn', icon: '💰', label: 'Earn' },
@@ -57,38 +59,5 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  tabBar: {
-    flexDirection: 'row',
-    backgroundColor: '#1F2937',
-    borderTopWidth: 1,
-    borderTopColor: '#374151',
-    paddingHorizontal: 8,
-    paddingVertical: 8,
-    gap: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  tab: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  tabContent: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'transparent',
-  },
-  tabContentActive: {
-    backgroundColor: '#3B82F6',
-  },
-  tabIcon: {
-    fontSize: 20,
-    color: '#FFFFFF',
-  },
-});
 
-export default CustomTabBar; 
+export default CustomTabBar;
