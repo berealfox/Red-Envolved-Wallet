@@ -40,3 +40,28 @@ export const ArrowRightIcon = ({ size = 24, color = '#000' }) => (
     <Path d="M12 5L19 12L12 19" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
   </Svg>
 );
+
+export const EyeIcon = ({ size = 20, color = '#000' }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" stroke={color} strokeWidth="2" fill="none"/>
+    <Circle cx="12" cy="12" r="3" stroke={color} strokeWidth="2"/>
+  </Svg>
+);
+
+export const EyeOffIcon = ({ size = 20, color = '#000' }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path d="M17.94 17.94A10.94 10.94 0 0112 19c-7 0-11-7-11-7a20.29 20.29 0 015.06-5.94" stroke={color} strokeWidth="2" fill="none" strokeLinecap="round"/>
+    <Path d="M9.9 4.24A10.94 10.94 0 0112 5c7 0 11 7 11 7a20.29 20.29 0 01-3.22 4.31" stroke={color} strokeWidth="2" fill="none" strokeLinecap="round"/>
+    <Line x1="1" y1="1" x2="23" y2="23" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+  </Svg>
+);
+
+export const ScanIcon = ({ size = 20, color = '#000' }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path d="M4 7V5a1 1 0 011-1h2" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+    <Path d="M20 7V5a1 1 0 00-1-1h-2" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+    <Path d="M4 17v2a1 1 0 001 1h2" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+    <Path d="M20 17v2a1 1 0 01-1 1h-2" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+    <Line x1="4" y1="12" x2="20" y2="12" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+  </Svg>
+);
