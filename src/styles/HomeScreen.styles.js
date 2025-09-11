@@ -12,7 +12,7 @@ export const createHomeScreenStyles = (theme) => StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 40,
-    marginTop: 10,
+    marginTop: 20,
   },
   logoContainer: {
     width: 45,
@@ -58,6 +58,33 @@ export const createHomeScreenStyles = (theme) => StyleSheet.create({
   },
   scrollContainer: {
     flex: 1,
+  },
+  balanceHeader: {
+    backgroundColor: '#060d14',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 16,
+  },
+  balanceRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  balanceValue: {
+    fontSize: 28,
+    fontWeight: '700',
+    color: '#fafcff',
+  },
+  balanceActions: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  roundIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   promoBanner: {
     backgroundColor: "#4da2ff", // --color-background-accent
@@ -135,6 +162,36 @@ export const createHomeScreenStyles = (theme) => StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     marginBottom: 16,
+  },
+  statsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 8,
+    marginBottom: 12,
+  },
+  statTile: {
+    flex: 1,
+    borderRadius: 12,
+    padding: 16,
+  },
+  statLabel: {
+    fontSize: 12,
+    opacity: 0.7,
+    marginBottom: 8,
+  },
+  statValue: {
+    fontSize: 20,
+    fontWeight: '700',
+  },
+  statDelta: {
+    marginTop: 6,
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  statCta: {
+    fontSize: 16,
+    fontWeight: '700',
+    lineHeight: 20,
   },
   coinStackIcon: {
     marginRight: 12,

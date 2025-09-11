@@ -13,6 +13,9 @@ import {
   SwapIcon,
   SearchIcon,
   SuiIcon,
+  EyeIcon,
+  EyeOffIcon,
+  ScanIcon,
 } from "../components/icons";
 import { useTheme } from "../theme/ThemeContext";
 import { useWallet } from "../context/WalletContext";
@@ -65,6 +68,8 @@ const HomeScreen = ({ navigation }) => {
   const [showManageAccounts, setShowManageAccounts] = useState(false);
   const [showBuySellModal, setShowBuySellModal] = useState(false);
   const [showSendMethodModal, setShowSendMethodModal] = useState(false);
+  const [masked, setMasked] = useState(false);
+  const [receiveInitialTab, setReceiveInitialTab] = useState('receive');
 
   const handleManageAccount = () => {
     setShowManageAccounts(true);
@@ -79,6 +84,9 @@ const HomeScreen = ({ navigation }) => {
   const handleLogoPress = () => {
     toggleTheme();
   };
+
+  const totalBalance = Number(getTotalValue?.() || 0);
+  const hasBalance = totalBalance > 0;
 
   return (
     <View style={[styles.container, { backgroundColor: theme.backgroundPrimary }]}>
@@ -106,15 +114,57 @@ const HomeScreen = ({ navigation }) => {
       <ScrollView style={styles.scrollContainer}>
 
         <View style={[styles.coinStackSection, { backgroundColor: theme.backgroundInverse }]}>
-          <View style={styles.coinStackHeader}>
-            <View style={styles.coinStackIcon}>
-              <SuiIcon size={70} background={false} shadow={true} />
+          {/* Balance row lives inside the same section as action buttons */}
+          {hasBalance && (
+            <View style={[styles.balanceRow, { marginBottom: 12 }]}>
+              <Text style={[styles.balanceValue, { color: theme.contentPrimary }]}>
+                {masked ? '•••••' : `$${totalBalance.toFixed(2)}`}
+              </Text>
+              <View style={styles.balanceActions}>
+                <TouchableOpacity
+                  style={[styles.roundIcon, { backgroundColor: theme.backgroundPrimary }]}
+                  onPress={() => setMasked((m) => !m)}
+                >
+                  {masked ? (
+                    <EyeOffIcon size={18} color={theme.contentPrimary} />
+                  ) : (
+                    <EyeIcon size={18} color={theme.contentPrimary} />
+                  )}
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.roundIcon, { backgroundColor: theme.backgroundPrimary }]}
+                  onPress={() => { setReceiveInitialTab('scan'); setShowReceiveScreen(true); }}
+                >
+                  <ScanIcon size={18} color={theme.contentPrimary} />
+                </TouchableOpacity>
+              </View>
             </View>
-            <Text style={[styles.coinStackTitle, { color: theme.contentPrimary }]}>
-              To send transactions on the AQY network, you need AQY in your
-              wallet.
-            </Text>
-          </View>
+          )}
+          {hasBalance ? (
+            <View style={styles.statsRow}>
+              <View style={[styles.statTile, { backgroundColor: theme.backgroundPrimary }]}>
+                <Text style={[styles.statLabel, { color: theme.contentSecondary }]}>Coins</Text>
+                <Text style={[styles.statValue, { color: theme.contentPrimary }]}>
+                  {masked ? '•••••' : `$${totalBalance.toFixed(2)}`}
+                </Text>
+                <Text style={[styles.statDelta, { color: theme.success || '#22c55e' }]}>+0.1671</Text>
+              </View>
+              <View style={[styles.statTile, { backgroundColor: theme.backgroundPrimary }]}>
+                <Text style={[styles.statLabel, { color: theme.contentSecondary }]}>Investments</Text>
+                <Text style={[styles.statCta, { color: theme.contentPrimary }]}>Invest to start earning today</Text>
+              </View>
+            </View>
+          ) : (
+            <View style={styles.coinStackHeader}>
+              <View style={styles.coinStackIcon}>
+                <SuiIcon size={70} background={false} shadow={true} />
+              </View>
+              <Text style={[styles.coinStackTitle, { color: theme.contentPrimary }]}>
+                To send transactions on the AQY network, you need AQY in your
+                wallet.
+              </Text>
+            </View>
+          )}
           <View style={styles.actionButtons}>
             <TouchableOpacity
               style={[styles.actionButton, { backgroundColor: theme.actionSecondary }]}
@@ -125,7 +175,7 @@ const HomeScreen = ({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.actionButton, { backgroundColor: theme.actionSecondary }]}
-              onPress={() => setShowReceiveScreen(true)}
+              onPress={() => { setReceiveInitialTab('receive'); setShowReceiveScreen(true); }}
             >
               <ReceiveIcon size={20} color={theme.contentPrimary} />
               <Text style={[styles.actionButtonText, { color: theme.contentPrimary }]}>Receive</Text>
@@ -183,7 +233,7 @@ const HomeScreen = ({ navigation }) => {
       {/* Receive Screen Modal */}
       {showReceiveScreen && (
         <View style={styles.modalOverlay}>
-          <ReceiveScreen navigation={{ goBack: () => setShowReceiveScreen(false) }} />
+          <ReceiveScreen navigation={{ goBack: () => setShowReceiveScreen(false) }} initialTab={receiveInitialTab} />
         </View>
       )}
 

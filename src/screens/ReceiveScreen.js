@@ -15,12 +15,12 @@ import { useWallet } from '../context/WalletContext';
 import { createReceiveScreenStyles } from '../styles/ReceiveScreen.styles';
 import { ArrowLeftIcon, CopyIcon, ShareIcon } from '../components/icons';
 
-const ReceiveScreen = ({ navigation }) => {
+const ReceiveScreen = ({ navigation, initialTab = 'receive' }) => {
   const { theme } = useTheme();
   const { walletAddress } = useWallet();
   const styles = createReceiveScreenStyles(theme);
   const [selectedToken, setSelectedToken] = useState('AQY');
-  const [activeTab, setActiveTab] = useState('receive'); // 'receive' or 'scan'
+  const [activeTab, setActiveTab] = useState(initialTab); // 'receive' or 'scan'
   const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
 
