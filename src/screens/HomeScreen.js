@@ -24,6 +24,7 @@ import SendScreen from "./SendScreen";
 import ReceiveScreen from "./ReceiveScreen";
 import SwapScreen from "./SwapScreen";
 import ConfirmationScreen from "./ConfirmationScreen";
+import DirectSendScreen from "./DirectSendScreen";
 import SearchCoinsScreen from "./SearchCoinsScreen";
 import ManageAccountsScreen from "./ManageAccountsScreen";
 import BuySellModal from "../components/BuySellModal";
@@ -76,9 +77,12 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const handleSendMethodSelect = (method) => {
-    // Close the modal and show the SendScreen
+    // Close the modal, then route based on method
     setShowSendMethodModal(false);
-    setShowSendScreen(true);
+    if (method === 'direct') {
+      setShowSendScreen(true);
+    }
+    // 'slush' will be wired later to its own flow
   };
 
   const handleLogoPress = () => {
@@ -217,9 +221,15 @@ const HomeScreen = ({ navigation }) => {
       {/* Send Screen Modal */}
       {showSendScreen && (
         <View style={styles.modalOverlay}>
-          <SendScreen navigation={{
+          <DirectSendScreen navigation={{
             goBack: () => setShowSendScreen(false),
             navigate: (route, params) => {
+              if (route === 'OpenScan') {
+                setShowSendScreen(false);
+                setReceiveInitialTab('scan');
+                setShowReceiveScreen(true);
+                return;
+              }
               if (route === 'Confirmation') {
                 setShowSendScreen(false);
                 setConfirmationParams(params);
