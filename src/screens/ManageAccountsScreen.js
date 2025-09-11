@@ -2,12 +2,12 @@ import React from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
 import { useTheme } from '../theme/ThemeContext';
 import { useWallet } from '../context/WalletContext';
+import { createManageAccountsScreenStyles } from '../styles/ManageAccountsScreen.styles';
 import Svg, { Path, G } from 'react-native-svg';
 
 // Google G Icon Component
@@ -54,151 +54,13 @@ const DeleteIcon = ({ size = 20, color = "#000" }) => (
 const ManageAccountsScreen = ({ onBack }) => {
   const { theme } = useTheme();
   const { walletAddress } = useWallet();
+  const styles = createManageAccountsScreenStyles(theme);
 
   const formatAddress = (address) => {
     if (!address) return '';
     return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
   };
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: theme.backgroundPrimary,
-    },
-    header: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      paddingHorizontal: 16,
-      paddingVertical: 20,
-      paddingTop: 40,
-    },
-    backButton: {
-      marginRight: 16,
-    },
-    headerTitle: {
-      fontSize: 18,
-      fontWeight: '600',
-      color: theme.contentPrimary,
-    },
-    content: {
-      flex: 1,
-      paddingHorizontal: 16,
-    },
-    googleSection: {
-      backgroundColor: theme.backgroundSecondary,
-      borderRadius: 16,
-      padding: 16,
-      marginBottom: 20,
-    },
-    googleHeader: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginBottom: 16,
-    },
-    googleIcon: {
-      marginRight: 12,
-    },
-    googleInfo: {
-      flex: 1,
-    },
-    googleTitle: {
-      fontSize: 16,
-      fontWeight: '600',
-      color: theme.contentPrimary,
-      marginBottom: 4,
-    },
-    googleEmail: {
-      fontSize: 14,
-      color: theme.contentSecondary,
-    },
-    accountCard: {
-      backgroundColor: theme.backgroundTertiary,
-      borderRadius: 12,
-      padding: 16,
-      marginBottom: 16,
-    },
-    accountHeader: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      marginBottom: 16,
-    },
-    accountInfo: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      flex: 1,
-    },
-    avatar: {
-      width: 40,
-      height: 40,
-      borderRadius: 20,
-      backgroundColor: theme.backgroundAccent,
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginRight: 12,
-    },
-    avatarText: {
-      color: theme.contentInversePrimary,
-      fontSize: 16,
-      fontWeight: '600',
-    },
-    accountDetails: {
-      flex: 1,
-    },
-    accountName: {
-      fontSize: 16,
-      fontWeight: '600',
-      color: theme.contentPrimary,
-      marginBottom: 4,
-    },
-    accountEmail: {
-      fontSize: 14,
-      color: theme.contentSecondary,
-      marginBottom: 4,
-    },
-    accountAddress: {
-      fontSize: 12,
-      color: theme.contentSecondary,
-      fontFamily: 'monospace',
-    },
-    accountActions: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 8,
-    },
-    actionButtons: {
-      flexDirection: 'row',
-      gap: 12,
-    },
-    actionButton: {
-      flex: 1,
-      backgroundColor: theme.backgroundSecondary,
-      borderRadius: 12,
-      paddingVertical: 16,
-      paddingHorizontal: 12,
-      alignItems: 'center',
-      flexDirection: 'column',
-      gap: 8,
-    },
-    actionButtonText: {
-      fontSize: 14,
-      fontWeight: '500',
-      color: theme.contentPrimary,
-    },
-    addAccountButton: {
-      backgroundColor: '#47e299',
-      borderRadius: 25,
-      paddingVertical: 16,
-      alignItems: 'center',
-      marginTop: 'auto',
-      marginBottom: 40,
-    },
-    addAccountText: {
-      fontSize: 16,
-      fontWeight: '600',
-      color: '#060d14',
-    },
-  });
 
   return (
     <View style={styles.container}>
