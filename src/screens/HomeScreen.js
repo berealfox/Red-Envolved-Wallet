@@ -19,6 +19,7 @@ import { useWallet } from "../context/WalletContext";
 import { createHomeScreenStyles } from "../styles/HomeScreen.styles";
 import SendScreen from "./SendScreen";
 import ReceiveScreen from "./ReceiveScreen";
+import SwapScreen from "./SwapScreen";
 import SearchCoinsScreen from "./SearchCoinsScreen";
 import ManageAccountsScreen from "./ManageAccountsScreen";
 import BuySellModal from "../components/BuySellModal";
@@ -56,6 +57,7 @@ const HomeScreen = ({ navigation }) => {
 
   const [showSendScreen, setShowSendScreen] = useState(false);
   const [showReceiveScreen, setShowReceiveScreen] = useState(false);
+  const [showSwapScreen, setShowSwapScreen] = useState(false);
   const [showSearchCoins, setShowSearchCoins] = useState(false);
   const [showManageAccounts, setShowManageAccounts] = useState(false);
   const [showBuySellModal, setShowBuySellModal] = useState(false);
@@ -134,6 +136,7 @@ const HomeScreen = ({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.actionButton, { backgroundColor: theme.actionSecondary }]}
+              onPress={() => setShowSwapScreen(true)}
             >
               <SwapIcon size={20} color={theme.contentPrimary} />
               <Text style={[styles.actionButtonText, { color: theme.contentPrimary }]}>Swap</Text>
@@ -169,6 +172,13 @@ const HomeScreen = ({ navigation }) => {
       {showReceiveScreen && (
         <View style={styles.modalOverlay}>
           <ReceiveScreen navigation={{ goBack: () => setShowReceiveScreen(false) }} />
+        </View>
+      )}
+
+      {/* Swap Screen Modal */}
+      {showSwapScreen && (
+        <View style={styles.modalOverlay}>
+          <SwapScreen navigation={{ goBack: () => setShowSwapScreen(false) }} />
         </View>
       )}
 
