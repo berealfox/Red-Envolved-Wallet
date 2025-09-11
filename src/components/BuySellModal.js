@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   TouchableOpacity,
   ScrollView,
   Modal,
   Image,
 } from 'react-native';
 import { useTheme } from '../theme/ThemeContext';
+import { createBuySellModalStyles } from '../styles/BuySellModal.styles';
 import Svg, { Path, G } from 'react-native-svg';
 
 // Back Icon Component
@@ -45,98 +45,13 @@ const mockPinnedCoins = [
 const BuySellModal = ({ visible, onClose }) => {
   const { theme } = useTheme();
   const [selectedCoin, setSelectedCoin] = useState(null);
+  const styles = createBuySellModalStyles(theme);
 
   const handleBuySell = (coin, action) => {
     // Handle buy/sell action
     console.log(`${action} ${coin.symbol}`);
     // Here you would navigate to the actual buy/sell flow
   };
-
-  const styles = StyleSheet.create({
-    modalOverlay: {
-      flex: 1,
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-      justifyContent: 'flex-end',
-    },
-    modalContainer: {
-      backgroundColor: theme.backgroundPrimary,
-      borderTopLeftRadius: 20,
-      borderTopRightRadius: 20,
-      maxHeight: '80%',
-      paddingTop: 20,
-    },
-    header: {
-      alignItems: 'center',
-      paddingHorizontal: 20,
-      paddingBottom: 20,
-      borderBottomWidth: 1,
-      borderBottomColor: theme.borderWeak,
-    },
-    headerTitle: {
-      fontSize: 18,
-      fontWeight: '600',
-      color: theme.contentPrimary,
-    },
-    content: {
-      paddingHorizontal: 20,
-      paddingTop: 20,
-    },
-    coinList: {
-      gap: 12,
-    },
-    coinItem: {
-      padding: 16,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-    },
-    coinInfo: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      flex: 1,
-    },
-    coinIcon: {
-      width: 40,
-      height: 40,
-      borderRadius: 20,
-      backgroundColor: theme.backgroundAccent,
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginRight: 12,
-    },
-    coinIconText: {
-      color: theme.contentInversePrimary,
-      fontSize: 16,
-      fontWeight: '600',
-    },
-    coinDetails: {
-      flex: 1,
-    },
-    coinSymbol: {
-      fontSize: 16,
-      fontWeight: '600',
-      color: theme.contentPrimary,
-    },
-    actionButtons: {
-      flexDirection: 'row',
-      gap: 8,
-    },
-    actionButton: {
-      backgroundColor: theme.actionPrimary,
-      borderRadius: 8,
-      paddingVertical: 8,
-      paddingHorizontal: 16,
-      minWidth: 60,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    actionButtonText: {
-      fontSize: 14,
-      fontWeight: '600',
-      color: theme.contentInversePrimary,
-      textAlign: 'center',
-    },
-  });
 
   return (
     <Modal
