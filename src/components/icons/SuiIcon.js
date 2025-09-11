@@ -2,13 +2,13 @@ import React from 'react';
 import Svg, { Path } from 'react-native-svg';
 import { View, StyleSheet } from 'react-native';
 
-const SuiIcon = ({ 
-  size = 24, 
-  color = '#FFD731', 
-  background = false, 
+const SuiIcon = ({
+  size = 24,
+  color = '#FFD731',
+  background = false,
   backgroundColor = 'rgba(255, 215, 49, 0.15)',
   borderColor = 'rgba(255, 215, 49, 0.3)',
-  shadow = false 
+  shadow = false
 }) => {
   const icon = (
     <Svg width={size} height={size} fill="none" viewBox="0 0 82 82">
@@ -114,6 +114,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
   },
-});
+});git 
 
-export default SuiIcon; 
+export default SuiIcon;
