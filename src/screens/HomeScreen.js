@@ -31,6 +31,7 @@ import SellerQRScreen from "./SellerQRScreen";
 import BuySellModal from "../components/BuySellModal";
 import SendMethodModal from "../components/SendMethodModal";
 import Svg, { Path, G } from 'react-native-svg';
+import BuyerScanSummaryScreen from "./BuyerScanSummaryScreen";
 
 
 const GoogleGIcon = ({ size = 24 }) => (
@@ -73,6 +74,8 @@ const HomeScreen = ({ navigation }) => {
   const [showSellerQR, setShowSellerQR] = useState(false);
   const [masked, setMasked] = useState(false);
   const [receiveInitialTab, setReceiveInitialTab] = useState('receive');
+  const [showBuyerSummary, setShowBuyerSummary] = useState(false);
+  const [buyerSummaryParams, setBuyerSummaryParams] = useState(null);
 
   const handleManageAccount = () => {
     setShowManageAccounts(true);
@@ -251,7 +254,16 @@ const HomeScreen = ({ navigation }) => {
       {/* Receive Screen Modal */}
       {showReceiveScreen && (
         <View style={styles.modalOverlay}>
-          <ReceiveScreen navigation={{ goBack: () => setShowReceiveScreen(false) }} initialTab={receiveInitialTab} />
+          <ReceiveScreen navigation={{
+            goBack: () => setShowReceiveScreen(false),
+            navigate: (route, params) => {
+              if (route === 'BuyerScanSummary') {
+                setShowReceiveScreen(false);
+                setBuyerSummaryParams(params);
+                setShowBuyerSummary(true);
+              }
+            }
+          }} initialTab={receiveInitialTab} />
         </View>
       )}
 
@@ -266,6 +278,24 @@ const HomeScreen = ({ navigation }) => {
       {showSellerQR && (
         <View style={styles.modalOverlay}>
           <SellerQRScreen navigation={{ goBack: () => setShowSellerQR(false) }} />
+        </View>
+      )}
+
+      {showBuyerSummary && (
+        <View style={styles.modalOverlay}>
+          <BuyerScanSummaryScreen
+            route={{ params: buyerSummaryParams }}
+            navigation={{
+              goBack: () => setShowBuyerSummary(false),
+              navigate: (route, params) => {
+                if (route === 'Confirmation') {
+                  setShowBuyerSummary(false);
+                  setConfirmationParams(params);
+                  setShowConfirmation(true);
+                }
+              }
+            }}
+          />
         </View>
       )}
 

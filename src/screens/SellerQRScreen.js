@@ -5,7 +5,7 @@ import QRCode from 'react-native-qrcode-svg';
 import { useTheme } from '../theme/ThemeContext';
 import { useWallet } from '../context/WalletContext';
 import { buildCanonicalPayload } from '../lib/f2c/payload';
-import { signEnvelope } from '../lib/f2c/sign';
+import { signEnvelope, randomPrivateKeySafe } from '../lib/f2c/sign';
 import { createSellerQRScreenStyles } from '../styles/SellerQRScreen.styles';
 
 const SCHEMES = [
@@ -37,10 +37,13 @@ const SellerQRScreen = ({ navigation }) => {
   const [envelope, setEnvelope] = useState(null);
 
   const handleSign = async () => {
-    // NOTE: Private key derivation not implemented; use a mock 32-byte key for UI demo
-    const mockPrivateKey = new Uint8Array(32);
-    const signed = await signEnvelope(payload, mockPrivateKey);
-    setEnvelope(signed);
+    try {
+      const priv = randomPrivateKeySafe();
+      const signed = await signEnvelope(payload, priv);
+      setEnvelope(signed);
+    } catch (e) {
+      console.warn('Sign failed', e);
+    }
   };
 
   const bg = rewardToColor(rewardPercentage);

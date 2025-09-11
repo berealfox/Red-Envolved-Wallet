@@ -50,21 +50,20 @@ const ReceiveScreen = ({ navigation, initialTab = 'receive' }) => {
   };
 
   const handleQRCodeScanned = ({ type, data }) => {
+    if (scanned) return;
     setScanned(true);
-    // Handle scanned QR code data
-    Alert.alert(
-      'QR Code Scanned',
-      `Scanned data: ${data}`,
-      [
-        { text: 'Cancel', style: 'cancel' },
-        { text: 'Process', onPress: () => {
-          // Here you would process the scanned QR code
-          // For example, extract wallet address or payment info
-          console.log('Processing QR code:', data);
-        }}
-      ]
-    );
-    setTimeout(() => setScanned(false), 1500);
+    try {
+      const parsed = JSON.parse(data);
+      if (parsed && parsed.payload && parsed.sig && parsed.pubKey) {
+        navigation?.navigate?.('BuyerScanSummary', { envelope: parsed });
+      } else {
+        Alert.alert('Invalid QR', 'This QR is not a Red Envelope payment.');
+        setTimeout(() => setScanned(false), 1200);
+      }
+    } catch (e) {
+      Alert.alert('Invalid QR', 'This QR is not a Red Envelope payment.');
+      setTimeout(() => setScanned(false), 1200);
+    }
   };
 
   const tokens = ['AQY', 'USDC', 'GC'];
