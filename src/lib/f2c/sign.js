@@ -16,6 +16,8 @@ const fromHex = (hex) => {
   return out;
 };
 
+const bytesToHex = (bytes) => toHex(bytes);
+
 async function sha512(bytes) {
   const hex = toHex(bytes);
   const digestHex = await Crypto.digestStringAsync(
@@ -44,7 +46,7 @@ class Ed25519 {
     // This is a simplified version - you should use a proper crypto library
     // For now, let's use Expo Crypto to generate a deterministic public key
     const hash = await sha512(privateKey);
-    return hash.slice(0, 32); // Take first 32 bytes as public key representation
+    return hash.slice(0, 4); // Take first 4 bytes for ultra-short representation
   }
 
   static async sign(message, privateKey) {
@@ -52,11 +54,10 @@ class Ed25519 {
     const messageHash = await sha512(message);
     const keyHash = await sha512(privateKey);
 
-    // Combine hashes to create signature (simplified)
-    const signature = new Uint8Array(64);
-    for (let i = 0; i < 32; i++) {
-      signature[i] = messageHash[i];
-      signature[i + 32] = keyHash[i];
+    // Create an ultra-short 8-byte signature
+    const signature = new Uint8Array(8);
+    for (let i = 0; i < 8; i++) {
+      signature[i] = messageHash[i] ^ keyHash[i]; // XOR for simplicity
     }
 
     return signature;
@@ -65,15 +66,17 @@ class Ed25519 {
   static async verify(signature, message, publicKey) {
     // Simplified verification - in production, use proper Ed25519 verification
     const messageHash = await sha512(message);
+    const keyHash = await sha512(publicKey);
 
-    // Check if first 32 bytes of signature match message hash
-    for (let i = 0; i < 32; i++) {
-      if (signature[i] !== messageHash[i]) {
+    // Check if signature matches the expected XOR of hashes
+    for (let i = 0; i < signature.length; i++) {
+      const expected = messageHash[i] ^ keyHash[i];
+      if (signature[i] !== expected) {
         return false;
       }
     }
 
-    return true; // Simplified - always return true if hash matches
+    return true;
   }
 }
 
@@ -103,8 +106,8 @@ export async function signEnvelope(payload, privateKeyBytes) {
 
   return {
     payload,
-    sig: bytesToBase64Safe(signature),
-    pubKey: bytesToBase64Safe(publicKey),
+    sig: bytesToBase64Safe(signature), // Back to base64 for compactness
+    pubKey: bytesToBase64Safe(publicKey), // Back to base64 for compactness
   };
 }
 
@@ -114,11 +117,20 @@ export async function verifyEnvelope(envelope) {
   const message = new TextEncoder().encode(canonicalJSONStringify(envelope.payload));
 
   function decode(s) {
+    // Handle hex strings (both with and without "hex:" prefix)
     if (s.startsWith('hex:')) {
       const hex = s.slice(4);
       const out = new Uint8Array(hex.length / 2);
       for (let i = 0; i < out.length; i++) {
         out[i] = parseInt(hex.substr(i * 2, 2), 16);
+      }
+      return out;
+    }
+    // Handle pure hex strings (our new format)
+    if (/^[0-9a-fA-F]+$/.test(s)) {
+      const out = new Uint8Array(s.length / 2);
+      for (let i = 0; i < out.length; i++) {
+        out[i] = parseInt(s.substr(i * 2, 2), 16);
       }
       return out;
     }

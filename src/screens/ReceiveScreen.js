@@ -50,17 +50,26 @@ const ReceiveScreen = ({ navigation, initialTab = 'receive' }) => {
   };
 
   const handleQRCodeScanned = ({ type, data }) => {
-    if (scanned) return;
+    console.log('handleQRCodeScanned called, scanned:', scanned, 'data:', data);
+    if (scanned) {
+      console.log('Already scanned, ignoring');
+      return;
+    }
     setScanned(true);
+    console.log('QR scanned, data:', data);
     try {
       const parsed = JSON.parse(data);
+      console.log('Parsed QR data:', parsed);
       if (parsed && parsed.payload && parsed.sig && parsed.pubKey) {
+        console.log('Valid F2C envelope, navigating to BuyerScanSummary');
         navigation?.navigate?.('BuyerScanSummary', { envelope: parsed });
       } else {
+        console.log('Invalid envelope structure:', { hasPayload: !!parsed?.payload, hasSig: !!parsed?.sig, hasPubKey: !!parsed?.pubKey });
         Alert.alert('Invalid QR', 'This QR is not a Red Envelope payment.');
         setTimeout(() => setScanned(false), 1200);
       }
     } catch (e) {
+      console.log('JSON parse error:', e.message);
       Alert.alert('Invalid QR', 'This QR is not a Red Envelope payment.');
       setTimeout(() => setScanned(false), 1200);
     }
@@ -170,7 +179,7 @@ const ReceiveScreen = ({ navigation, initialTab = 'receive' }) => {
           <View style={styles.cameraContainer}>
             <Text style={[styles.scanInstruction, { color: theme.contentPrimary }]}>We need your permission to use the camera</Text>
             <TouchableOpacity
-              style={[styles.actionButton, { backgroundColor: theme.actionPrimary, marginTop: 12, alignSelf: 'center' }]}
+              style={[styles.permissionButton, { backgroundColor: theme.actionPrimary }]}
               onPress={requestPermission}
             >
               <Text style={[styles.actionButtonText, { color: theme.contentInversePrimary }]}>Grant Permission</Text>
@@ -181,7 +190,9 @@ const ReceiveScreen = ({ navigation, initialTab = 'receive' }) => {
             <CameraView
               style={styles.camera}
               facing="back"
-              barcodeScannerSettings={{ barcodeTypes: ['qr'] }}
+              barcodeScannerSettings={{
+                barcodeTypes: ['qr']
+              }}
               onBarcodeScanned={scanned ? undefined : handleQRCodeScanned}
             />
             <View style={styles.cameraOverlay} pointerEvents="none">

@@ -3,6 +3,8 @@ import { StyleSheet } from 'react-native';
 export const createSellerQRScreenStyles = (theme) => StyleSheet.create({
   container: {
     flex: 1,
+    padding: 5,
+    paddingTop: 30,
   },
   header: {
     height: 56,
