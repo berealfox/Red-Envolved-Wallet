@@ -21,6 +21,7 @@ import SendScreen from "./SendScreen";
 import ReceiveScreen from "./ReceiveScreen";
 import SearchCoinsScreen from "./SearchCoinsScreen";
 import ManageAccountsScreen from "./ManageAccountsScreen";
+import BuySellModal from "../components/BuySellModal";
 import Svg, { Path, G } from 'react-native-svg';
 
 
@@ -55,6 +56,7 @@ const HomeScreen = ({ navigation }) => {
   const [showReceiveScreen, setShowReceiveScreen] = useState(false);
   const [showSearchCoins, setShowSearchCoins] = useState(false);
   const [showManageAccounts, setShowManageAccounts] = useState(false);
+  const [showBuySellModal, setShowBuySellModal] = useState(false);
 
   const handleManageAccount = () => {
     setShowManageAccounts(true);
@@ -100,7 +102,10 @@ const HomeScreen = ({ navigation }) => {
             </Text>
           </View>
           <View style={styles.actionButtons}>
-            <TouchableOpacity style={[styles.actionButton, { backgroundColor: theme.actionSecondary }]}>
+            <TouchableOpacity
+              style={[styles.actionButton, { backgroundColor: theme.actionSecondary }]}
+              onPress={() => setShowBuySellModal(true)}
+            >
               <BuySellIcon size={20} color={theme.contentPrimary} />
               <Text style={[styles.actionButtonText, { color: theme.contentPrimary }]}>Buy/Sell</Text>
             </TouchableOpacity>
@@ -171,6 +176,12 @@ const HomeScreen = ({ navigation }) => {
           <ManageAccountsScreen onBack={() => setShowManageAccounts(false)} />
         </View>
       )}
+
+      {/* Buy/Sell Modal */}
+      <BuySellModal
+        visible={showBuySellModal}
+        onClose={() => setShowBuySellModal(false)}
+      />
     </View>
   );
 };
