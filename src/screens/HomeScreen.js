@@ -27,9 +27,11 @@ import ConfirmationScreen from "./ConfirmationScreen";
 import DirectSendScreen from "./DirectSendScreen";
 import SearchCoinsScreen from "./SearchCoinsScreen";
 import ManageAccountsScreen from "./ManageAccountsScreen";
+import SellerQRScreen from "./SellerQRScreen";
 import BuySellModal from "../components/BuySellModal";
 import SendMethodModal from "../components/SendMethodModal";
 import Svg, { Path, G } from 'react-native-svg';
+import BuyerScanSummaryScreen from "./BuyerScanSummaryScreen";
 
 
 const GoogleGIcon = ({ size = 24 }) => (
@@ -69,8 +71,11 @@ const HomeScreen = ({ navigation }) => {
   const [showManageAccounts, setShowManageAccounts] = useState(false);
   const [showBuySellModal, setShowBuySellModal] = useState(false);
   const [showSendMethodModal, setShowSendMethodModal] = useState(false);
+  const [showSellerQR, setShowSellerQR] = useState(false);
   const [masked, setMasked] = useState(false);
   const [receiveInitialTab, setReceiveInitialTab] = useState('receive');
+  const [showBuyerSummary, setShowBuyerSummary] = useState(false);
+  const [buyerSummaryParams, setBuyerSummaryParams] = useState(null);
 
   const handleManageAccount = () => {
     setShowManageAccounts(true);
@@ -198,6 +203,12 @@ const HomeScreen = ({ navigation }) => {
               <SwapIcon size={20} color={theme.contentPrimary} />
               <Text style={[styles.actionButtonText, { color: theme.contentPrimary }]}>Swap</Text>
             </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.actionButton, { backgroundColor: theme.actionSecondary }]}
+              onPress={() => setShowSellerQR(true)}
+            >
+              <Text style={[styles.actionButtonText, { color: theme.contentPrimary }]}>Seller QR</Text>
+            </TouchableOpacity>
           </View>
         </View>
 
@@ -243,7 +254,16 @@ const HomeScreen = ({ navigation }) => {
       {/* Receive Screen Modal */}
       {showReceiveScreen && (
         <View style={styles.modalOverlay}>
-          <ReceiveScreen navigation={{ goBack: () => setShowReceiveScreen(false) }} initialTab={receiveInitialTab} />
+          <ReceiveScreen navigation={{
+            goBack: () => setShowReceiveScreen(false),
+            navigate: (route, params) => {
+              if (route === 'BuyerScanSummary') {
+                setShowReceiveScreen(false);
+                setBuyerSummaryParams(params);
+                setShowBuyerSummary(true);
+              }
+            }
+          }} initialTab={receiveInitialTab} />
         </View>
       )}
 
@@ -251,6 +271,31 @@ const HomeScreen = ({ navigation }) => {
       {showSwapScreen && (
         <View style={styles.modalOverlay}>
           <SwapScreen navigation={{ goBack: () => setShowSwapScreen(false) }} />
+        </View>
+      )}
+
+      {/* Seller QR Screen Modal */}
+      {showSellerQR && (
+        <View style={styles.modalOverlay}>
+          <SellerQRScreen navigation={{ goBack: () => setShowSellerQR(false) }} />
+        </View>
+      )}
+
+      {showBuyerSummary && (
+        <View style={styles.modalOverlay}>
+          <BuyerScanSummaryScreen
+            route={{ params: buyerSummaryParams }}
+            navigation={{
+              goBack: () => setShowBuyerSummary(false),
+              navigate: (route, params) => {
+                if (route === 'Confirmation') {
+                  setShowBuyerSummary(false);
+                  setConfirmationParams(params);
+                  setShowConfirmation(true);
+                }
+              }
+            }}
+          />
         </View>
       )}
 

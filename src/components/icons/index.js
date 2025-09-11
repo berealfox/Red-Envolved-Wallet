@@ -5,6 +5,7 @@ export { default as AppsIcon } from './AppsIcon';
 export { default as ActivityIcon } from './ActivityIcon';
 export { default as SettingsIcon } from './SettingsIcon';
 export { default as SuiIcon } from './SuiIcon';
+// No specific new icons needed for SellerQR for now
 export { BuySellIcon, ReceiveIcon, SendIcon, SwapIcon, SearchIcon } from './ActionIcons.js';
 
 import Svg, { Path, Circle, Line, Rect } from 'react-native-svg';
