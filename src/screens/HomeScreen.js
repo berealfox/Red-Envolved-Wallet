@@ -27,6 +27,7 @@ import ConfirmationScreen from "./ConfirmationScreen";
 import DirectSendScreen from "./DirectSendScreen";
 import SearchCoinsScreen from "./SearchCoinsScreen";
 import ManageAccountsScreen from "./ManageAccountsScreen";
+import SellerQRScreen from "./SellerQRScreen";
 import BuySellModal from "../components/BuySellModal";
 import SendMethodModal from "../components/SendMethodModal";
 import Svg, { Path, G } from 'react-native-svg';
@@ -69,6 +70,7 @@ const HomeScreen = ({ navigation }) => {
   const [showManageAccounts, setShowManageAccounts] = useState(false);
   const [showBuySellModal, setShowBuySellModal] = useState(false);
   const [showSendMethodModal, setShowSendMethodModal] = useState(false);
+  const [showSellerQR, setShowSellerQR] = useState(false);
   const [masked, setMasked] = useState(false);
   const [receiveInitialTab, setReceiveInitialTab] = useState('receive');
 
@@ -198,6 +200,12 @@ const HomeScreen = ({ navigation }) => {
               <SwapIcon size={20} color={theme.contentPrimary} />
               <Text style={[styles.actionButtonText, { color: theme.contentPrimary }]}>Swap</Text>
             </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.actionButton, { backgroundColor: theme.actionSecondary }]}
+              onPress={() => setShowSellerQR(true)}
+            >
+              <Text style={[styles.actionButtonText, { color: theme.contentPrimary }]}>Seller QR</Text>
+            </TouchableOpacity>
           </View>
         </View>
 
@@ -251,6 +259,13 @@ const HomeScreen = ({ navigation }) => {
       {showSwapScreen && (
         <View style={styles.modalOverlay}>
           <SwapScreen navigation={{ goBack: () => setShowSwapScreen(false) }} />
+        </View>
+      )}
+
+      {/* Seller QR Screen Modal */}
+      {showSellerQR && (
+        <View style={styles.modalOverlay}>
+          <SellerQRScreen navigation={{ goBack: () => setShowSellerQR(false) }} />
         </View>
       )}
 
