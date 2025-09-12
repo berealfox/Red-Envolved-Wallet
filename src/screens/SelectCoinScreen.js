@@ -43,7 +43,7 @@ const TeardropIcon = ({ size = 20, color = "#ffffff" }) => (
   </Svg>
 );
 
-const SelectCoinScreen = ({ navigation, onBack }) => {
+const SelectCoinScreen = ({ navigation, onBack, onCoinSelect }) => {
   const { theme } = useTheme();
   const styles = createSelectCoinScreenStyles(theme);
   const [searchQuery, setSearchQuery] = useState('');
@@ -80,10 +80,12 @@ const SelectCoinScreen = ({ navigation, onBack }) => {
   );
 
   const handleCoinSelect = (token) => {
-    // Navigate back to DirectSendScreen with selected coin data
-    navigation?.goBack?.();
-    // You can also pass the selected coin data back via navigation params
-    // navigation?.navigate('DirectSend', { selectedCoin: token });
+    // Call the onCoinSelect callback with the selected token
+    if (onCoinSelect) {
+      onCoinSelect(token);
+    }
+    // Close the modal
+    onBack();
   };
 
   const isPositiveChange = (change) => {

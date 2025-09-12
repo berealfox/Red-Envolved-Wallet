@@ -10,6 +10,17 @@ const DirectSendScreen = ({ navigation }) => {
   const styles = createDirectSendScreenStyles(theme);
 
   const [token, setToken] = useState('SUI');
+  const [selectedCoin, setSelectedCoin] = useState({
+    id: 'SUI',
+    name: 'Sui',
+    symbol: 'SUI',
+    price: '$3.69',
+    change: '+2.15%',
+    balance: '2.18 SUI',
+    value: '$8.05',
+    icon: 'teardrop',
+    verified: true,
+  });
   const [amount, setAmount] = useState('');
   const [recipient, setRecipient] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -34,7 +45,9 @@ const DirectSendScreen = ({ navigation }) => {
 
   const getUSDAmount = () => {
     const numAmount = parseFloat(amount) || 0;
-    return (numAmount * SUI_RATE_USD).toFixed(2);
+    // USDC is 1:1 with USD, SUI is $3.70
+    const rate = selectedCoin.symbol === 'USDC' ? 1 : SUI_RATE_USD;
+    return (numAmount * rate).toFixed(2);
   };
 
   const getGasFees = () => {
@@ -67,6 +80,13 @@ const DirectSendScreen = ({ navigation }) => {
     const amountWithinBalance = parseFloat(amount) <= MOCK_BALANCE;
 
     return hasValidAmount && hasValidRecipient && amountWithinBalance;
+  };
+
+  const handleCoinSelect = (coin) => {
+    setSelectedCoin(coin);
+    setToken(coin.symbol);
+    // Reset amount when changing coins
+    setAmount('');
   };
 
   const handleSend = async () => {
@@ -104,7 +124,7 @@ const DirectSendScreen = ({ navigation }) => {
       navigation?.navigate('Confirmation', {
         durationMs: durationMs,
         amount: numAmount,
-        token: token,
+        token: selectedCoin.symbol,
         to: recipient,
         gas: gasFees,
         total: total,
@@ -138,10 +158,10 @@ const DirectSendScreen = ({ navigation }) => {
             style={[styles.tokenPill, { backgroundColor: theme.backgroundInverse }]}
             onPress={() => setShowSelectCoin(true)}
           >
-            <Text style={[styles.tokenPillText, { color: theme.contentPrimary }]}>{token}</Text>
+            <Text style={[styles.tokenPillText, { color: theme.contentPrimary }]}>{selectedCoin.symbol}</Text>
           </TouchableOpacity>
           <View style={styles.balanceRow}>
-            <Text style={{ color: theme.contentSecondary }}>{MOCK_BALANCE}</Text>
+            <Text style={{ color: theme.contentSecondary }}>{selectedCoin.balance}</Text>
           </View>
         </View>
 
@@ -231,6 +251,7 @@ const DirectSendScreen = ({ navigation }) => {
         <View style={styles.modalOverlay}>
           <SelectCoinScreen
             onBack={() => setShowSelectCoin(false)}
+            onCoinSelect={handleCoinSelect}
             navigation={navigation}
           />
         </View>
