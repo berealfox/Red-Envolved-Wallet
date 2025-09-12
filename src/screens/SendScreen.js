@@ -24,6 +24,7 @@ const SendScreen = ({ navigation }) => {
   const [selectedToken, setSelectedToken] = useState('AQY');
   const [isLoading, setIsLoading] = useState(false);
   const [memo, setMemo] = useState('');
+  const [isAddressValid, setIsAddressValid] = useState(false);
   // const [showSendMethodModal, setShowSendMethodModal] = useState(false);
 
   const handleSend = async () => {
