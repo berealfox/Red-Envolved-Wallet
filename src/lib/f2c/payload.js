@@ -46,7 +46,7 @@ export function canonicalJSONStringify(obj) {
   }
 
   function stringifyWithOrder(o) {
-    if (o === null || typeof o !== 'object' || Array.isArray(o)) {dd 
+    if (o === null || typeof o !== 'object' || Array.isArray(o)) {
       return JSON.stringify(o);
     }
     const keys = (o === obj ? order : Object.keys(o).sort());
