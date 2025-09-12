@@ -72,13 +72,13 @@ const SellerQRScreen = ({ navigation }) => {
             <View style={styles.sliderRow}>
               <Text style={[styles.sliderValue, { color: theme.contentPrimary }]}>{rewardPercentage}%</Text>
               <View style={styles.sliderLabels}>
-                <Text style={[styles.sliderLabel, { color: theme.contentSecondary }]}>3%</Text>
+                <Text style={[styles.sliderLabel, { color: theme.contentSecondary }]}>0%</Text>
                 <Text style={[styles.sliderLabel, { color: theme.contentSecondary }]}>100%</Text>
               </View>
             </View>
             <Slider
               style={styles.slider}
-              minimumValue={3}
+              minimumValue={0}
               maximumValue={100}
               step={1}
               minimumTrackTintColor={theme.actionPrimary}

@@ -10,41 +10,52 @@ export const useTheme = () => {
   return context;
 };
 
-// Reward % to color mapping function (from PROJECT.md)
+// Reward % to color mapping function - White → Pink → Red → Purple
 export const rewardToColor = (pct) => {
-  const clamped = Math.min(100, Math.max(3, pct));
+  const clamped = Math.min(100, Math.max(0, pct));
 
-  if (clamped <= 50) {
-    // pink (350°, 100%, 90%) → red (0°, 100%, 50%)
-    const t = (clamped - 3) / (50 - 3);
-
-    // Handle hue wraparound (350° to 0°)
-    const hue = 350 + (360 + 0 - 350) * t;
+  if (clamped <= 25) {
+    // White (0%, 0%, 100%) → Pink (330°, 100%, 85%)
+    const t = clamped / 25;
+    const hue = 330;
+    const sat = 0 + (100 - 0) * t;
+    const light = 100 + (85 - 100) * t;
+    return `hsl(${hue}, ${sat}%, ${light}%)`;
+  } else if (clamped <= 50) {
+    // Pink (330°, 100%, 85%) → Red (0°, 100%, 50%)
+    const t = (clamped - 25) / (50 - 25);
+    const hue = 330 + (360 - 330) * t; // Handle wraparound from 330° to 0°
     const finalHue = hue >= 360 ? hue - 360 : hue;
-
     const sat = 100;
-    const light = 90 + (50 - 90) * t;
-
+    const light = 85 + (50 - 85) * t;
     return `hsl(${finalHue}, ${sat}%, ${light}%)`;
+  } else if (clamped <= 75) {
+    // Red (0°, 100%, 50%) → Dark Red (0°, 100%, 30%)
+    const t = (clamped - 50) / (75 - 50);
+    const hue = 0;
+    const sat = 100;
+    const light = 50 + (30 - 50) * t;
+    return `hsl(${hue}, ${sat}%, ${light}%)`;
   } else {
-    // red (0°, 100%, 50%) → purple (~265°, 100%, 50%)
-    const t = (clamped - 50) / (100 - 50);
-    const hue = 0 + 265 * t;
-
-    return `hsl(${hue}, 100%, 50%)`;
+    // Dark Red (0°, 100%, 30%) → Purple (270°, 100%, 50%)
+    const t = (clamped - 75) / (100 - 75);
+    const hue = 0 + (270 - 0) * t;
+    const sat = 100;
+    const light = 30 + (50 - 30) * t;
+    return `hsl(${hue}, ${sat}%, ${light}%)`;
   }
 };
 
 export const ThemeProvider = ({ children }) => {
   const [isDarkTheme, setIsDarkTheme] = useState(true);
-  const [rewardPercentage, setRewardPercentage] = useState(12); // Default reward %
+  const [rewardPercentage, setRewardPercentage] = useState(0); // Default reward %
 
   const toggleTheme = () => {
     setIsDarkTheme(!isDarkTheme);
   };
 
   const updateRewardPercentage = (percentage) => {
-    setRewardPercentage(Math.min(100, Math.max(3, percentage)));
+    setRewardPercentage(Math.min(100, Math.max(0, percentage)));
   };
 
   // Get the dynamic reward color
