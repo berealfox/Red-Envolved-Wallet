@@ -24,11 +24,11 @@ A modern, feature-rich cryptocurrency wallet built for the AQY blockchain (Sui f
 - **Slippage Control**: Configurable slippage protection (0.1%-5%)
 - **Price Impact**: Real-time market data and transaction cost estimation
 
-### 🛒 F2C eCommerce Integration (Planned)
-- **Seller QR Generation**: Create signed QR codes with reward schemes
-- **Buyer Scan & Pay**: Camera-based QR scanning for instant payments
-- **Reward Schemes**: Multiple distribution models for seller incentives
-- **Smart Contract Integration**: Direct integration with F2C eCommerce contracts
+### 🛒 F2C eCommerce Integration ✅
+- **Seller QR Generation**: Create signed QR codes with reward schemes and dynamic theming
+- **Buyer Scan & Pay**: Camera-based QR scanning with signature verification
+- **Reward Schemes**: Three distribution models (Simple buyer %, Buyer + Others, Buyer + Predefined)
+- **Mock Contract Integration**: Complete F2C flow with transaction simulation
 
 ### 🔧 Additional Features
 - **Settings Management**: Network configuration, theme customization, security settings
@@ -36,23 +36,33 @@ A modern, feature-rich cryptocurrency wallet built for the AQY blockchain (Sui f
 - **Secure Storage**: Encrypted wallet data with biometric protection
 - **Responsive Design**: Optimized for both mobile and desktop experiences
 
-## ✅ Implemented So Far (Current Sprint)
+## ✅ Implemented Features
 
-- Buy/Sell modal with pinned coins and theme-aware actions
-- Send Method modal from Home: choose Direct wallet or Claimable Slush link
-- Swap screen created and refined
-  - Pill-shaped token selectors with icon, symbol, arrow
-  - Fixed layout issues (no stretched arrows, correct grouping)
-  - Bottom settings container: slippage, fees, Swap CTA; responsive and anchored
-- Receive screen
-  - Tab bar: "Receive SUI" and "Scan code"
-  - Clean QR view: QR card only; name and short address in a separate section
-  - Fixed bottom "Copy Address" button
-  - Camera-based QR scanning using Expo Camera (CameraView) with permission flow
-- Icons and fixes
-  - Centralized SVG icons; resolved stray text in `SuiIcon.js`
-- Styles refactor
-  - Extracted component styles into `src/styles/*` files for maintainability
+### 🏠 Core Wallet
+- **Home Screen**: Portfolio view with balance display and action buttons
+- **Buy/Sell Modal**: Pinned coins with theme-aware actions
+- **Send Flow**: Direct wallet transfer and payment request creation
+- **Receive Screen**: QR code display and camera-based scanning
+- **Swap Screen**: Token swapping interface with slippage controls
+
+### 🎨 UI/UX Enhancements
+- **Dynamic Theming**: Reward-driven background colors (pink → red → purple)
+- **Style Separation**: All components use dedicated `.styles.js` files
+- **Responsive Design**: Optimized layouts for different screen sizes
+- **Modern Components**: Enhanced buttons, cards, and interactive elements
+
+### 🛒 F2C eCommerce (Complete)
+- **Seller QR Generation**:
+  - Reward percentage slider (3%-100%) with live theming
+  - Three reward schemes (Simple buyer %, Buyer + Others, Buyer + Predefined)
+  - Signed QR payload generation with Ed25519-like cryptography
+  - Progressive disclosure UI (QR appears only after signing)
+- **Buyer Scan Flow**:
+  - Camera-based QR scanning with permission handling
+  - F2C payload parsing and signature verification
+  - Payment summary screen with transaction details
+  - Mock contract submission with explorer links
+- **Complete Integration**: End-to-end flow from QR generation to payment confirmation
 
 ## 📱 Screenshots
 
@@ -63,7 +73,7 @@ A modern, feature-rich cryptocurrency wallet built for the AQY blockchain (Sui f
 - **Framework**: React Native with Expo
 - **Language**: JavaScript
 - **UI Libraries**: React Native SVG, Custom component system
-- **Crypto**: Noble cryptography libraries (@noble/ed25519, @noble/hashes)
+- **Crypto**: Custom Ed25519-like implementation with Expo Crypto
 - **Storage**: Expo SecureStore, AsyncStorage
 - **Navigation**: Custom tab-based navigation
 - **State Management**: React Context API
@@ -84,16 +94,29 @@ Red-Envelope-Wallet/
 │   ├── screens/                       # Application screens
 │   │   ├── HomeScreen.js              # Dashboard with actions (Send/Receive/Swap)
 │   │   ├── SendScreen.js              # Send tokens flow
+│   │   ├── DirectSendScreen.js        # Direct wallet transfer
 │   │   ├── ReceiveScreen.js           # QR (receive) + Camera scanning tabs
 │   │   ├── SwapScreen.js              # Swap UI (selectors, slippage, fees)
-│   │   ├── SettingsScreen.js          # App configuration
-│   │   ├── SearchCoinsScreen.js       # (if present) Token search
-│   │   └── ManageAccountsScreen.js    # (if present) Account management
+│   │   ├── SellerQRScreen.js          # F2C QR generation with reward schemes
+│   │   ├── BuyerScanSummaryScreen.js  # F2C payment confirmation
+│   │   ├── ConfirmationScreen.js      # Transaction confirmation
+│   │   ├── SearchCoinsScreen.js       # Token search
+│   │   └── ManageAccountsScreen.js    # Account management
 │   ├── styles/                        # Component/screen styles (StyleSheet)
 │   │   ├── BuySellModal.styles.js
 │   │   ├── ReceiveScreen.styles.js
 │   │   ├── SendMethodModal.styles.js
-│   │   └── SwapScreen.styles.js
+│   │   ├── SwapScreen.styles.js
+│   │   ├── SellerQRScreen.styles.js
+│   │   ├── BuyerScanSummaryScreen.styles.js
+│   │   ├── DirectSendScreen.styles.js
+│   │   └── ConfirmationScreen.styles.js
+│   ├── lib/                           # Utility libraries
+│   │   └── f2c/                       # F2C eCommerce utilities
+│   │       ├── payload.js             # QR payload generation
+│   │       └── sign.js                # Ed25519-like signing
+│   └── services/                      # External service integrations
+│       └── F2CService.js              # Mock F2C contract service
 │   ├── theme/
 │   │   ├── ThemeContext.js            # Theme provider and hook
 │   │   └── colors.js                  # Theme tokens
@@ -162,7 +185,7 @@ Red-Envelope-Wallet/
 
 ## 🗺 Development Roadmap
 
-### ✅ Milestone 1 - Wallet Core & Foundations (Current)
+### ✅ Milestone 1 - Wallet Core & Foundations (Complete)
 - [x] Project scaffold with Expo/React Native
 - [x] Wallet key generation and import functionality
 - [x] Basic UI with custom theming system
@@ -170,12 +193,13 @@ Red-Envelope-Wallet/
 - [x] Send/Receive token flows
 - [x] Settings and navigation structure
 
-### 🔄 Milestone 2 - Seller QR & Buyer Scan (In Progress)
-- [ ] Seller reward percentage slider (3%-100%)
-- [ ] Dynamic background color mapping (pink→red→purple)
-- [ ] QR code generation with signed payloads
-- [ ] Camera-based QR scanning for buyers
-- [ ] Mock F2C contract integration
+### ✅ Milestone 2 - Seller QR & Buyer Scan (Complete)
+- [x] Seller reward percentage slider (3%-100%)
+- [x] Dynamic background color mapping (pink→red→purple)
+- [x] QR code generation with signed payloads
+- [x] Camera-based QR scanning for buyers
+- [x] Mock F2C contract integration
+- [x] Complete F2C eCommerce flow implementation
 
 ### 🔜 Milestone 3 - DEX Integration
 - [ ] Token swap interface (AQY ↔ USDC, AQY ↔ GC)
@@ -184,10 +208,10 @@ Red-Envelope-Wallet/
 - [ ] Transaction status and explorer linking
 
 ### 🔮 Milestone 4 - F2C Contract Full Integration
-- [ ] Live smart contract integration
-- [ ] Multiple reward schemes implementation
-- [ ] Signature verification and security
-- [ ] Payment confirmation flows
+- [ ] Live smart contract integration (currently using mock service)
+- [x] Multiple reward schemes implementation
+- [x] Signature verification and security
+- [x] Payment confirmation flows
 
 ### 🎯 Milestone 5 - AQY Explorer & Extended Features
 - [ ] Deep linking to AQY blockchain explorer
