@@ -76,22 +76,39 @@ const DirectSendScreen = ({ navigation }) => {
 
     try {
       // Simulate sending transaction
+      const startTime = Date.now();
       await new Promise(resolve => setTimeout(resolve, 2000));
+      const endTime = Date.now();
+      const durationMs = endTime - startTime;
+
+      // Calculate transaction data
+      const numAmount = parseFloat(amount);
+      const gasFees = parseFloat(getGasFees());
+      const total = numAmount + gasFees;
+
+      // Generate mock transaction hash
+      const txHash = '0x' + Math.random().toString(16).substr(2, 64);
 
       // Here you would typically call your wallet service to send the transaction
       console.log('Sending transaction:', {
-        amount: amount,
+        amount: numAmount,
         recipient: recipient,
-        token: token
+        token: token,
+        gas: gasFees,
+        total: total
       });
 
-      // Show success message or navigate back
-      alert('Transaction sent successfully!');
-
-      // Reset form
-      setAmount('');
-      setRecipient('');
-      setIsAddressValid(false);
+      // Navigate to ConfirmationScreen with transaction data
+      navigation?.navigate('Confirmation', {
+        durationMs: durationMs,
+        amount: numAmount,
+        token: token,
+        to: recipient,
+        gas: gasFees,
+        total: total,
+        txHash: txHash,
+        completedAt: new Date().toISOString(),
+      });
 
     } catch (error) {
       console.error('Send error:', error);
