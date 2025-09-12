@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, TextInput, ScrollView, ActivityIndicator 
 import { useTheme } from '../theme/ThemeContext';
 import { createDirectSendScreenStyles } from '../styles/DirectSendScreen.styles';
 import { ArrowLeftIcon, ScanIcon } from '../components/icons';
+import SelectCoinScreen from './SelectCoinScreen';
 
 const DirectSendScreen = ({ navigation }) => {
   const { theme } = useTheme();
@@ -13,6 +14,7 @@ const DirectSendScreen = ({ navigation }) => {
   const [recipient, setRecipient] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isAddressValid, setIsAddressValid] = useState(false);
+  const [showSelectCoin, setShowSelectCoin] = useState(false);
 
   // SUI rate in USD
   const SUI_RATE_USD = 3.70;
@@ -132,7 +134,10 @@ const DirectSendScreen = ({ navigation }) => {
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Token selector pill */}
         <View style={styles.tokenRow}>
-          <TouchableOpacity style={[styles.tokenPill, { backgroundColor: theme.backgroundInverse }]}>
+          <TouchableOpacity
+            style={[styles.tokenPill, { backgroundColor: theme.backgroundInverse }]}
+            onPress={() => setShowSelectCoin(true)}
+          >
             <Text style={[styles.tokenPillText, { color: theme.contentPrimary }]}>{token}</Text>
           </TouchableOpacity>
           <View style={styles.balanceRow}>
@@ -220,6 +225,16 @@ const DirectSendScreen = ({ navigation }) => {
           )}
         </TouchableOpacity>
       </View>
+
+      {/* Select Coin Modal Overlay */}
+      {showSelectCoin && (
+        <View style={styles.modalOverlay}>
+          <SelectCoinScreen
+            onBack={() => setShowSelectCoin(false)}
+            navigation={navigation}
+          />
+        </View>
+      )}
     </View>
   );
 };
