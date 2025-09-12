@@ -55,6 +55,7 @@ const ManageAccountsScreen = ({ onBack }) => {
   const { theme } = useTheme();
   const { walletAddress } = useWallet();
   const styles = createManageAccountsScreenStyles(theme);
+  const [accountExpanded, setAccountExpanded] = React.useState(false);
 
   const formatAddress = (address) => {
     if (!address) return '';
@@ -100,22 +101,31 @@ const ManageAccountsScreen = ({ onBack }) => {
               </View>
               <View style={styles.accountActions}>
                 <CopyIcon size={20} color={theme.contentSecondary} />
-                <ArrowIcon size={20} color={theme.contentSecondary} />
+                <TouchableOpacity onPress={() => setAccountExpanded(!accountExpanded)}>
+                  <View style={[
+                    styles.expandArrow,
+                    accountExpanded && styles.expandArrowRotated
+                  ]}>
+                    <ArrowIcon size={20} color={theme.contentSecondary} />
+                  </View>
+                </TouchableOpacity>
               </View>
             </View>
 
             {/* Action Buttons */}
-            <View style={styles.actionButtons}>
-              <TouchableOpacity style={styles.actionButton}>
-                <EditIcon size={20} color={theme.contentPrimary} />
-                <Text style={styles.actionButtonText}>Rename account</Text>
-              </TouchableOpacity>
+            {accountExpanded && (
+              <View style={styles.actionButtons}>
+                <TouchableOpacity style={styles.actionButton}>
+                  <EditIcon size={20} color={theme.contentPrimary} />
+                  <Text style={styles.actionButtonText}>Rename account</Text>
+                </TouchableOpacity>
 
-              <TouchableOpacity style={styles.actionButton}>
-                <DeleteIcon size={20} color="#ff4444" />
-                <Text style={[styles.actionButtonText, { color: '#ff4444' }]}>Remove account</Text>
-              </TouchableOpacity>
-            </View>
+                <TouchableOpacity style={styles.actionButton}>
+                  <DeleteIcon size={20} color="#ff4444" />
+                  <Text style={[styles.actionButtonText, { color: '#ff4444' }]}>Remove account</Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
         </View>
       </ScrollView>

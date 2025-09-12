@@ -6,6 +6,7 @@ import { createSettingsScreenStyles } from '../styles/SettingsScreen.styles';
 import Svg, { Path, G } from 'react-native-svg';
 import NetworkScreen from './NetworkScreen';
 import ThemeScreen from './ThemeScreen';
+import ManageAccountsScreen from './ManageAccountsScreen';
 
 // Google G Icon Component
 const GoogleGIcon = ({ size = 24 }) => (
@@ -104,10 +105,15 @@ const SettingsScreen = () => {
   const [accountExpanded, setAccountExpanded] = React.useState(false);
   const [showNetworkScreen, setShowNetworkScreen] = React.useState(false);
   const [showThemeScreen, setShowThemeScreen] = React.useState(false);
+  const [showManageAccounts, setShowManageAccounts] = React.useState(false);
 
   const formatAddress = (address) => {
     if (!address) return 'No wallet';
     return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
+  };
+
+  const handleManageAccount = () => {
+    setShowManageAccounts(true);
   };
 
   const handleClearWallet = () => {
@@ -192,7 +198,10 @@ const SettingsScreen = () => {
             </View>
           )}
 
-          <TouchableOpacity style={[styles.manageButton, { backgroundColor: theme.backgroundAccent }]}>
+          <TouchableOpacity
+            style={[styles.manageButton, { backgroundColor: theme.backgroundAccent }]}
+            onPress={handleManageAccount}
+          >
             <Text style={[styles.manageButtonText, { color: theme.contentPrimary }]}>Manage account</Text>
           </TouchableOpacity>
         </View>
@@ -294,6 +303,13 @@ const SettingsScreen = () => {
         </View>
         <View style={{ height: 100 }} />
       </ScrollView>
+
+      {/* Manage Accounts Screen Modal */}
+      {showManageAccounts && (
+        <View style={styles.modalOverlay}>
+          <ManageAccountsScreen onBack={() => setShowManageAccounts(false)} />
+        </View>
+      )}
     </View>
   );
 };
