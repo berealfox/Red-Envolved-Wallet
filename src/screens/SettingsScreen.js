@@ -8,6 +8,8 @@ import Svg, { Path, G } from 'react-native-svg';
 import NetworkScreen from './NetworkScreen';
 import ThemeScreen from './ThemeScreen';
 import ManageAccountsScreen from './ManageAccountsScreen';
+import RenameAccountScreen from './RenameAccountScreen';
+import RemoveAccountScreen from './RemoveAccountScreen';
 
 // Google G Icon Component
 const GoogleGIcon = ({ size = 24 }) => (
@@ -107,6 +109,8 @@ const SettingsScreen = () => {
   const [showNetworkScreen, setShowNetworkScreen] = React.useState(false);
   const [showThemeScreen, setShowThemeScreen] = React.useState(false);
   const [showManageAccounts, setShowManageAccounts] = React.useState(false);
+  const [showRenameAccount, setShowRenameAccount] = React.useState(false);
+  const [showRemoveAccount, setShowRemoveAccount] = React.useState(false);
 
   const formatAddress = (address) => {
     if (!address) return 'No wallet';
@@ -115,6 +119,14 @@ const SettingsScreen = () => {
 
   const handleManageAccount = () => {
     setShowManageAccounts(true);
+  };
+
+  const handleRenameAccount = () => {
+    setShowRenameAccount(true);
+  };
+
+  const handleRemoveAccount = () => {
+    setShowRemoveAccount(true);
   };
 
   const handleCopyAddress = async () => {
@@ -161,6 +173,7 @@ const SettingsScreen = () => {
     return <ThemeScreen onBack={() => setShowThemeScreen(false)} />;
   }
 
+
   return (
     <View style={[styles.container, { backgroundColor: theme.backgroundPrimary }]}>
       <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
@@ -200,12 +213,18 @@ const SettingsScreen = () => {
           {/* Expandable Account Actions */}
           {accountExpanded && (
             <View style={styles.accountActionsContainer}>
-              <TouchableOpacity style={[styles.accountActionButton, { backgroundColor: theme.backgroundSecondary }]}>
+              <TouchableOpacity
+                style={[styles.accountActionButton, { backgroundColor: theme.backgroundSecondary }]}
+                onPress={handleRenameAccount}
+              >
                 <EditIcon size={20} color={theme.contentPrimary} />
                 <Text style={[styles.accountActionText, { color: theme.contentPrimary }]}>Rename account</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={[styles.accountActionButton, { backgroundColor: theme.backgroundSecondary }]}>
+              <TouchableOpacity
+                style={[styles.accountActionButton, { backgroundColor: theme.backgroundSecondary }]}
+                onPress={handleRemoveAccount}
+              >
                 <DeleteIcon size={20} color="#ff4444" />
                 <Text style={[styles.accountActionText, { color: '#ff4444' }]}>Remove account</Text>
               </TouchableOpacity>
@@ -322,6 +341,20 @@ const SettingsScreen = () => {
       {showManageAccounts && (
         <View style={styles.modalOverlay}>
           <ManageAccountsScreen onBack={() => setShowManageAccounts(false)} />
+        </View>
+      )}
+
+      {/* Rename Account Screen Modal */}
+      {showRenameAccount && (
+        <View style={styles.modalOverlay}>
+          <RenameAccountScreen onBack={() => setShowRenameAccount(false)} />
+        </View>
+      )}
+
+      {/* Remove Account Screen Modal */}
+      {showRemoveAccount && (
+        <View style={styles.modalOverlay}>
+          <RemoveAccountScreen onBack={() => setShowRemoveAccount(false)} />
         </View>
       )}
     </View>

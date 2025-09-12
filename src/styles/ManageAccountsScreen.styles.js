@@ -115,6 +115,7 @@ export const createManageAccountsScreenStyles = (theme) => StyleSheet.create({
   actionButtons: {
     flexDirection: 'row',
     gap: 12,
+    minHeight: 60,
   },
   actionButton: {
     flex: 1,
@@ -125,11 +126,16 @@ export const createManageAccountsScreenStyles = (theme) => StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'column',
     gap: 8,
+    minHeight: 60,
+    minWidth: 80,
+    justifyContent: 'center',
   },
   actionButtonText: {
     fontSize: 14,
     fontWeight: '500',
     color: theme.contentPrimary,
+    textAlign: 'center',
+    flexShrink: 1,
   },
   addAccountButton: {
     backgroundColor: '#47e299',

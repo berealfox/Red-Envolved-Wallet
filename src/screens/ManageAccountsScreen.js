@@ -11,6 +11,7 @@ import { useTheme } from '../theme/ThemeContext';
 import { useWallet } from '../context/WalletContext';
 import { createManageAccountsScreenStyles } from '../styles/ManageAccountsScreen.styles';
 import RemoveAccountScreen from './RemoveAccountScreen';
+import RenameAccountScreen from './RenameAccountScreen';
 import Svg, { Path, G } from 'react-native-svg';
 
 // Google G Icon Component
@@ -60,6 +61,7 @@ const ManageAccountsScreen = ({ onBack }) => {
   const styles = createManageAccountsScreenStyles(theme);
   const [accountExpanded, setAccountExpanded] = React.useState(false);
   const [showRemoveAccount, setShowRemoveAccount] = React.useState(false);
+  const [showRenameAccount, setShowRenameAccount] = React.useState(false);
 
   const formatAddress = (address) => {
     if (!address) return '';
@@ -81,9 +83,17 @@ const ManageAccountsScreen = ({ onBack }) => {
     setShowRemoveAccount(true);
   };
 
+  const handleRenameAccount = () => {
+    setShowRenameAccount(true);
+  };
+
 
   if (showRemoveAccount) {
     return <RemoveAccountScreen onBack={() => setShowRemoveAccount(false)} />;
+  }
+
+  if (showRenameAccount) {
+    return <RenameAccountScreen onBack={() => setShowRenameAccount(false)} />;
   }
 
   return (
@@ -140,7 +150,7 @@ const ManageAccountsScreen = ({ onBack }) => {
             {/* Action Buttons */}
             {accountExpanded && (
               <View style={styles.actionButtons}>
-                <TouchableOpacity style={styles.actionButton}>
+                <TouchableOpacity style={styles.actionButton} onPress={handleRenameAccount}>
                   <EditIcon size={20} color={theme.contentPrimary} />
                   <Text style={styles.actionButtonText}>Rename account</Text>
                 </TouchableOpacity>

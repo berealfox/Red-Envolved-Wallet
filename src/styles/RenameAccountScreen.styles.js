@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-export const createRemoveAccountScreenStyles = (theme) => StyleSheet.create({
+export const createRenameAccountScreenStyles = (theme) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.backgroundPrimary,
@@ -23,20 +23,24 @@ export const createRemoveAccountScreenStyles = (theme) => StyleSheet.create({
   content: {
     flex: 1,
     paddingHorizontal: 16,
+    paddingTop: 40,
   },
-  warningIconContainer: {
+  buttonContainer: {
+    paddingHorizontal: 16,
+    paddingBottom: 40,
+  },
+  avatarContainer: {
     alignItems: 'center',
-    marginTop: 40,
     marginBottom: 30,
   },
-  confirmationQuestion: {
+  mainTitle: {
     fontSize: 24,
     fontWeight: 'bold',
     color: theme.contentPrimary,
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: 16,
   },
-  warningMessage: {
+  instructions: {
     fontSize: 16,
     color: theme.contentPrimary,
     textAlign: 'center',
@@ -44,53 +48,17 @@ export const createRemoveAccountScreenStyles = (theme) => StyleSheet.create({
     marginBottom: 40,
     paddingHorizontal: 20,
   },
-  accountCard: {
+  inputField: {
     backgroundColor: theme.backgroundSecondary,
     borderRadius: 12,
-    padding: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 40,
-  },
-  accountInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  googleIconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'white',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  accountDetails: {
-    flex: 1,
-  },
-  accountName: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: theme.contentPrimary,
-    marginBottom: 4,
-  },
-  accountEmail: {
-    fontSize: 14,
-    color: theme.contentSecondary,
-    marginBottom: 4,
-  },
-  accountAddress: {
-    fontSize: 12,
-    color: theme.contentSecondary,
-    fontFamily: 'monospace',
-  },
-  buttonContainer: {
     paddingHorizontal: 16,
-    paddingBottom: 40,
+    paddingVertical: 16,
+    fontSize: 16,
+    color: theme.contentPrimary,
+    borderWidth: 1,
+    borderColor: theme.borderWeak,
   },
-  removeButton: {
+  saveButton: {
     backgroundColor: '#ff4444',
     borderRadius: 12,
     paddingVertical: 16,
@@ -99,7 +67,7 @@ export const createRemoveAccountScreenStyles = (theme) => StyleSheet.create({
     minHeight: 50,
     width: '100%',
   },
-  removeButtonText: {
+  saveButtonText: {
     fontSize: 16,
     fontWeight: '600',
     color: 'white',
