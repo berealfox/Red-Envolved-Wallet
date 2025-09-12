@@ -177,7 +177,7 @@ const DirectSendScreen = ({ navigation }) => {
           style={[
             styles.sendButton,
             {
-              backgroundColor: isSendEnabled() ? '#22c55e' : theme.backgroundSecondary,
+              backgroundColor: isSendEnabled() ? '#ff4444' : theme.backgroundSecondary,
               opacity: isSendEnabled() ? 1 : 0.5
             }
           ]}
