@@ -3,16 +3,29 @@ import { View, Text, TouchableOpacity, TextInput, ScrollView, ActivityIndicator 
 import { useTheme } from '../theme/ThemeContext';
 import { createDirectSendScreenStyles } from '../styles/DirectSendScreen.styles';
 import { ArrowLeftIcon, ScanIcon } from '../components/icons';
+import SelectCoinScreen from './SelectCoinScreen';
 
 const DirectSendScreen = ({ navigation }) => {
   const { theme } = useTheme();
   const styles = createDirectSendScreenStyles(theme);
 
   const [token, setToken] = useState('SUI');
+  const [selectedCoin, setSelectedCoin] = useState({
+    id: 'SUI',
+    name: 'Sui',
+    symbol: 'SUI',
+    price: '$3.69',
+    change: '+2.15%',
+    balance: '2.18 SUI',
+    value: '$8.05',
+    icon: 'teardrop',
+    verified: true,
+  });
   const [amount, setAmount] = useState('');
   const [recipient, setRecipient] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isAddressValid, setIsAddressValid] = useState(false);
+  const [showSelectCoin, setShowSelectCoin] = useState(false);
 
   // SUI rate in USD
   const SUI_RATE_USD = 3.70;
@@ -32,7 +45,9 @@ const DirectSendScreen = ({ navigation }) => {
 
   const getUSDAmount = () => {
     const numAmount = parseFloat(amount) || 0;
-    return (numAmount * SUI_RATE_USD).toFixed(2);
+    // USDC is 1:1 with USD, SUI is $3.70
+    const rate = selectedCoin.symbol === 'USDC' ? 1 : SUI_RATE_USD;
+    return (numAmount * rate).toFixed(2);
   };
 
   const getGasFees = () => {
@@ -65,6 +80,13 @@ const DirectSendScreen = ({ navigation }) => {
     const amountWithinBalance = parseFloat(amount) <= MOCK_BALANCE;
 
     return hasValidAmount && hasValidRecipient && amountWithinBalance;
+  };
+
+  const handleCoinSelect = (coin) => {
+    setSelectedCoin(coin);
+    setToken(coin.symbol);
+    // Reset amount when changing coins
+    setAmount('');
   };
 
   const handleSend = async () => {
@@ -102,7 +124,7 @@ const DirectSendScreen = ({ navigation }) => {
       navigation?.navigate('Confirmation', {
         durationMs: durationMs,
         amount: numAmount,
-        token: token,
+        token: selectedCoin.symbol,
         to: recipient,
         gas: gasFees,
         total: total,
@@ -132,11 +154,14 @@ const DirectSendScreen = ({ navigation }) => {
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Token selector pill */}
         <View style={styles.tokenRow}>
-          <TouchableOpacity style={[styles.tokenPill, { backgroundColor: theme.backgroundInverse }]}>
-            <Text style={[styles.tokenPillText, { color: theme.contentPrimary }]}>{token}</Text>
+          <TouchableOpacity
+            style={[styles.tokenPill, { backgroundColor: theme.backgroundInverse }]}
+            onPress={() => setShowSelectCoin(true)}
+          >
+            <Text style={[styles.tokenPillText, { color: theme.contentPrimary }]}>{selectedCoin.symbol}</Text>
           </TouchableOpacity>
           <View style={styles.balanceRow}>
-            <Text style={{ color: theme.contentSecondary }}>{MOCK_BALANCE}</Text>
+            <Text style={{ color: theme.contentSecondary }}>{selectedCoin.balance}</Text>
           </View>
         </View>
 
@@ -220,6 +245,17 @@ const DirectSendScreen = ({ navigation }) => {
           )}
         </TouchableOpacity>
       </View>
+
+      {/* Select Coin Modal Overlay */}
+      {showSelectCoin && (
+        <View style={styles.modalOverlay}>
+          <SelectCoinScreen
+            onBack={() => setShowSelectCoin(false)}
+            onCoinSelect={handleCoinSelect}
+            navigation={navigation}
+          />
+        </View>
+      )}
     </View>
   );
 };

@@ -15,9 +15,10 @@ A modern, feature-rich cryptocurrency wallet built for the AQY blockchain (Sui f
 - **Portfolio View**: Real-time balance tracking and transaction history
 
 ### 🎨 Dynamic Theming
-- **Reward-Driven Colors**: Background dynamically shifts from pink → red → purple based on seller reward percentage (3%-100%)
+- **Reward-Driven Colors**: Background dynamically shifts from white → pink → red → purple based on seller reward percentage (0%-100%)
 - **Custom Theme System**: Built-in light/dark mode with customizable color palettes
 - **Modern UI**: Clean, responsive design optimized for mobile experience
+- **HSL Color Interpolation**: Smooth 4-phase color transitions with real-time updates
 
 ### 💱 DEX Integration (Planned)
 - **Token Swaps**: AQY ↔ USDC and AQY ↔ GC trading pairs
@@ -41,28 +42,62 @@ A modern, feature-rich cryptocurrency wallet built for the AQY blockchain (Sui f
 ### 🏠 Core Wallet
 - **Home Screen**: Portfolio view with balance display and action buttons
 - **Buy/Sell Modal**: Pinned coins with theme-aware actions
-- **Send Flow**: Direct wallet transfer and payment request creation
+- **Send Flow**: Direct wallet transfer with real-time address validation
 - **Receive Screen**: QR code display and camera-based scanning
 - **Swap Screen**: Token swapping interface with slippage controls
+- **Account Management**: Rename/remove accounts with modal overlays
+- **Copy-to-Clipboard**: Wallet address copying functionality
+
+### 💸 Advanced Send Features
+- **Real-time Address Validation**: Green confirmation bar for valid addresses
+- **Dynamic Gas Fee Calculation**: Gas fees based on transaction amount
+- **USD Conversion**: Token-specific rates (SUI: $3.70, USDC: $1.00)
+- **Percentage Buttons**: Functional 25%, 50%, Max amount selection
+- **Token Selection**: Modal overlay for choosing USDC or SUI
+- **Transaction Confirmation**: Dynamic confirmation screen with transaction details
 
 ### 🎨 UI/UX Enhancements
-- **Dynamic Theming**: Reward-driven background colors (pink → red → purple)
+- **Dynamic Theming**: Reward-driven background colors (white → pink → red → purple)
 - **Style Separation**: All components use dedicated `.styles.js` files
 - **Responsive Design**: Optimized layouts for different screen sizes
 - **Modern Components**: Enhanced buttons, cards, and interactive elements
+- **Modal Navigation**: Overlay system instead of screen transitions
+- **Real-time Feedback**: Instant validation and user feedback
 
 ### 🛒 F2C eCommerce (Complete)
 - **Seller QR Generation**:
-  - Reward percentage slider (3%-100%) with live theming
+  - Reward percentage slider (0%-100%) with live theming
   - Three reward schemes (Simple buyer %, Buyer + Others, Buyer + Predefined)
   - Signed QR payload generation with Ed25519-like cryptography
   - Progressive disclosure UI (QR appears only after signing)
+  - 4-phase color gradient system (White → Pink → Red → Purple)
 - **Buyer Scan Flow**:
   - Camera-based QR scanning with permission handling
   - F2C payload parsing and signature verification
   - Payment summary screen with transaction details
   - Mock contract submission with explorer links
 - **Complete Integration**: End-to-end flow from QR generation to payment confirmation
+
+## 🚀 Recent Technical Achievements
+
+### Advanced Send Screen Implementation
+- **Real-time Address Validation**: Instant feedback with green confirmation bar
+- **Dynamic Gas Calculation**: Smart fee calculation based on transaction amount
+- **Token Selection System**: Modal overlay for seamless coin switching
+- **USD Conversion**: Real-time conversion with token-specific rates
+- **Transaction Flow**: Complete Send → Confirmation → Success flow
+
+### Enhanced User Experience
+- **Modal Navigation**: Overlay system eliminates jarring screen transitions
+- **Responsive Design**: Optimized for all screen sizes and orientations
+- **Accessibility**: Improved contrast, focus management, and user feedback
+- **Performance**: Optimized rendering and state management
+
+### Color System Innovation
+- **4-Phase Gradient**: White → Pink → Red → Purple color transitions
+- **HSL Interpolation**: Smooth, mathematically precise color blending
+- **Real-time Updates**: Instant visual feedback as users interact
+- **Theme Integration**: Consistent color system across all components
 
 ## 📱 Screenshots
 
@@ -94,14 +129,17 @@ Red-Envelope-Wallet/
 │   ├── screens/                       # Application screens
 │   │   ├── HomeScreen.js              # Dashboard with actions (Send/Receive/Swap)
 │   │   ├── SendScreen.js              # Send tokens flow
-│   │   ├── DirectSendScreen.js        # Direct wallet transfer
+│   │   ├── DirectSendScreen.js        # Direct wallet transfer with validation
+│   │   ├── SelectCoinScreen.js        # Token selection modal
 │   │   ├── ReceiveScreen.js           # QR (receive) + Camera scanning tabs
 │   │   ├── SwapScreen.js              # Swap UI (selectors, slippage, fees)
 │   │   ├── SellerQRScreen.js          # F2C QR generation with reward schemes
 │   │   ├── BuyerScanSummaryScreen.js  # F2C payment confirmation
 │   │   ├── ConfirmationScreen.js      # Transaction confirmation
 │   │   ├── SearchCoinsScreen.js       # Token search
-│   │   └── ManageAccountsScreen.js    # Account management
+│   │   ├── ManageAccountsScreen.js    # Account management
+│   │   ├── RenameAccountScreen.js     # Account renaming modal
+│   │   └── RemoveAccountScreen.js     # Account removal confirmation
 │   ├── styles/                        # Component/screen styles (StyleSheet)
 │   │   ├── BuySellModal.styles.js
 │   │   ├── ReceiveScreen.styles.js
@@ -110,7 +148,10 @@ Red-Envelope-Wallet/
 │   │   ├── SellerQRScreen.styles.js
 │   │   ├── BuyerScanSummaryScreen.styles.js
 │   │   ├── DirectSendScreen.styles.js
-│   │   └── ConfirmationScreen.styles.js
+│   │   ├── ConfirmationScreen.styles.js
+│   │   ├── SelectCoinScreen.styles.js
+│   │   ├── RenameAccountScreen.styles.js
+│   │   └── RemoveAccountScreen.styles.js
 │   ├── lib/                           # Utility libraries
 │   │   └── f2c/                       # F2C eCommerce utilities
 │   │       ├── payload.js             # QR payload generation
@@ -194,12 +235,23 @@ Red-Envelope-Wallet/
 - [x] Settings and navigation structure
 
 ### ✅ Milestone 2 - Seller QR & Buyer Scan (Complete)
-- [x] Seller reward percentage slider (3%-100%)
-- [x] Dynamic background color mapping (pink→red→purple)
+- [x] Seller reward percentage slider (0%-100%)
+- [x] Dynamic background color mapping (white→pink→red→purple)
 - [x] QR code generation with signed payloads
 - [x] Camera-based QR scanning for buyers
 - [x] Mock F2C contract integration
 - [x] Complete F2C eCommerce flow implementation
+
+### ✅ Milestone 2.5 - Advanced Send Features (Complete)
+- [x] Real-time address validation with visual feedback
+- [x] Dynamic gas fee calculation based on transaction amount
+- [x] Token selection modal with USDC and SUI support
+- [x] USD conversion with token-specific rates
+- [x] Functional percentage buttons (25%, 50%, Max)
+- [x] Transaction confirmation screen with dynamic data
+- [x] Modal overlay navigation system
+- [x] Account management (rename/remove) with confirmation screens
+- [x] Copy-to-clipboard functionality for wallet addresses
 
 ### 🔜 Milestone 3 - DEX Integration
 - [ ] Token swap interface (AQY ↔ USDC, AQY ↔ GC)

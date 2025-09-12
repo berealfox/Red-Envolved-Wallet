@@ -73,6 +73,15 @@ export const createDirectSendScreenStyles = (theme) => StyleSheet.create({
   gasLabel: { fontSize: 16, fontWeight: '600' },
   sendButton: { borderRadius: 22, paddingVertical: 12, alignItems: 'center', justifyContent: 'center' },
   sendText: { fontSize: 16, fontWeight: '700' },
+  modalOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    zIndex: 1000,
+  },
 });
 
 
