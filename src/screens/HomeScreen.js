@@ -27,11 +27,11 @@ import ConfirmationScreen from "./ConfirmationScreen";
 import DirectSendScreen from "./DirectSendScreen";
 import SearchCoinsScreen from "./SearchCoinsScreen";
 import ManageAccountsScreen from "./ManageAccountsScreen";
-import SellerQRScreen from "./SellerQRScreen";
 import BuySellModal from "../components/BuySellModal";
 import SendMethodModal from "../components/SendMethodModal";
 import Svg, { Path, G } from 'react-native-svg';
 import BuyerScanSummaryScreen from "./BuyerScanSummaryScreen";
+import SellerQRScreen from "./SellerQRScreen";
 
 
 const GoogleGIcon = ({ size = 24 }) => (
@@ -71,11 +71,11 @@ const HomeScreen = ({ navigation }) => {
   const [showManageAccounts, setShowManageAccounts] = useState(false);
   const [showBuySellModal, setShowBuySellModal] = useState(false);
   const [showSendMethodModal, setShowSendMethodModal] = useState(false);
-  const [showSellerQR, setShowSellerQR] = useState(false);
   const [masked, setMasked] = useState(false);
   const [receiveInitialTab, setReceiveInitialTab] = useState('receive');
   const [showBuyerSummary, setShowBuyerSummary] = useState(false);
   const [buyerSummaryParams, setBuyerSummaryParams] = useState(null);
+  const [showSellerQR, setShowSellerQR] = useState(false);
 
   const handleManageAccount = () => {
     setShowManageAccounts(true);
@@ -86,6 +86,8 @@ const HomeScreen = ({ navigation }) => {
     setShowSendMethodModal(false);
     if (method === 'direct') {
       setShowSendScreen(true);
+    } else if (method === 'seller-qr') {
+      setShowSellerQR(true);
     }
     // 'slush' will be wired later to its own flow
   };
@@ -202,12 +204,6 @@ const HomeScreen = ({ navigation }) => {
             >
               <SwapIcon size={20} color={theme.contentPrimary} />
               <Text style={[styles.actionButtonText, { color: theme.contentPrimary }]}>Swap</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.actionButton, { backgroundColor: theme.actionSecondary }]}
-              onPress={() => setShowSellerQR(true)}
-            >
-              <Text style={[styles.actionButtonText, { color: theme.contentPrimary }]}>Seller QR</Text>
             </TouchableOpacity>
           </View>
         </View>

@@ -48,6 +48,14 @@ const SendMethodModal = ({ visible, onClose, onSelectMethod }) => {
               <Text style={styles.methodText}>Claimable Slush link</Text>
               <Text style={[styles.arrowText, { color: theme.contentSecondary }]}>›</Text>
             </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.methodOption}
+              onPress={() => handleMethodSelect('seller-qr')}
+            >
+              <Text style={styles.methodText}>Create Payment Request (QR)</Text>
+              <Text style={[styles.arrowText, { color: theme.contentSecondary }]}>›</Text>
+            </TouchableOpacity>
           </View>
         </TouchableOpacity>
       </TouchableOpacity>

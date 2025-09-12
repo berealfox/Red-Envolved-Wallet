@@ -64,26 +64,38 @@ const SellerQRScreen = ({ navigation }) => {
         <View style={[styles.hero, { backgroundColor: bg }]} />
 
         <View style={[styles.card, { backgroundColor: theme.backgroundInverse }]}>
-          <Text style={[styles.sectionTitle, { color: theme.contentPrimary }]}>Reward %</Text>
-          <View style={styles.sliderRow}>
-            <Text style={[styles.sliderValue, { color: theme.contentPrimary }]}>{rewardPercentage}%</Text>
+          <View style={styles.sectionHeader}>
+            <Text style={[styles.sectionTitle, { color: theme.contentPrimary }]}>Reward Percentage</Text>
+            <Text style={[styles.sectionSubtitle, { color: theme.contentSecondary }]}>Set the reward percentage for buyers</Text>
           </View>
-          <Slider
-            style={styles.slider}
-            minimumValue={3}
-            maximumValue={100}
-            step={1}
-            minimumTrackTintColor={theme.actionPrimary}
-            maximumTrackTintColor={theme.backgroundPrimary}
-            thumbTintColor={theme.actionPrimary}
-            value={localReward}
-            onValueChange={setLocalReward}
-            onSlidingComplete={(val) => updateRewardPercentage(val)}
-          />
+          <View style={styles.sliderContainer}>
+            <View style={styles.sliderRow}>
+              <Text style={[styles.sliderValue, { color: theme.contentPrimary }]}>{rewardPercentage}%</Text>
+              <View style={styles.sliderLabels}>
+                <Text style={[styles.sliderLabel, { color: theme.contentSecondary }]}>3%</Text>
+                <Text style={[styles.sliderLabel, { color: theme.contentSecondary }]}>100%</Text>
+              </View>
+            </View>
+            <Slider
+              style={styles.slider}
+              minimumValue={3}
+              maximumValue={100}
+              step={1}
+              minimumTrackTintColor={theme.actionPrimary}
+              maximumTrackTintColor={theme.backgroundPrimary}
+              thumbTintColor={theme.actionPrimary}
+              value={localReward}
+              onValueChange={setLocalReward}
+              onSlidingComplete={(val) => updateRewardPercentage(val)}
+            />
+          </View>
         </View>
 
         <View style={[styles.card, { backgroundColor: theme.backgroundInverse }]}>
-          <Text style={[styles.sectionTitle, { color: theme.contentPrimary }]}>Scheme</Text>
+          <View style={styles.sectionHeader}>
+            <Text style={[styles.sectionTitle, { color: theme.contentPrimary }]}>Reward Scheme</Text>
+            <Text style={[styles.sectionSubtitle, { color: theme.contentSecondary }]}>Choose how rewards are distributed</Text>
+          </View>
           <View style={styles.schemeRow}>
             {SCHEMES.map(s => (
               <TouchableOpacity
@@ -97,10 +109,14 @@ const SellerQRScreen = ({ navigation }) => {
           </View>
         </View>
 
-        <View style={[styles.card, { backgroundColor: theme.backgroundInverse, alignItems: 'center' }]}>
-          <Text style={[styles.sectionTitle, { color: theme.contentPrimary }]}>Signed QR</Text>
-          <View style={styles.qrBox}>
-            {envelope ? (
+        <TouchableOpacity onPress={handleSign} style={[styles.primaryButton, { backgroundColor: theme.actionPrimary }]}>
+          <Text style={[styles.primaryButtonText, { color: theme.contentInversePrimary }]}>{envelope ? 'Re-sign' : 'Sign & Generate QR'}</Text>
+        </TouchableOpacity>
+
+        {envelope && (
+          <View style={[styles.card, { backgroundColor: theme.backgroundInverse, alignItems: 'center' }]}>
+            <Text style={[styles.sectionTitle, { color: theme.contentPrimary }]}>Signed QR</Text>
+            <View style={styles.qrBox}>
               <QRCode
                 value={JSON.stringify(envelope)}
                 size={280}
@@ -115,21 +131,14 @@ const SellerQRScreen = ({ navigation }) => {
                 logoMargin={2}
                 ecl="M"
               />
-            ) : (
-              <Text style={{ color: theme.contentSecondary }}>Tap Sign to generate QR</Text>
-            )}
-          </View>
-          {envelope && (
+            </View>
             <View style={{ marginTop: 8, padding: 8, backgroundColor: theme.backgroundPrimary, borderRadius: 8 }}>
               <Text style={{ color: theme.contentSecondary, fontSize: 10 }}>
                 QR contains: {JSON.stringify(envelope).length} characters
               </Text>
             </View>
-          )}
-          <TouchableOpacity onPress={handleSign} style={[styles.primaryButton, { backgroundColor: theme.actionPrimary }]}>
-            <Text style={[styles.primaryButtonText, { color: theme.contentInversePrimary }]}>{envelope ? 'Re-sign' : 'Sign & Generate QR'}</Text>
-          </TouchableOpacity>
-        </View>
+          </View>
+        )}
 
         <View style={{ height: 40 }} />
       </ScrollView>
