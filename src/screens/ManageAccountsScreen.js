@@ -10,6 +10,7 @@ import * as Clipboard from 'expo-clipboard';
 import { useTheme } from '../theme/ThemeContext';
 import { useWallet } from '../context/WalletContext';
 import { createManageAccountsScreenStyles } from '../styles/ManageAccountsScreen.styles';
+import RemoveAccountScreen from './RemoveAccountScreen';
 import Svg, { Path, G } from 'react-native-svg';
 
 // Google G Icon Component
@@ -58,6 +59,7 @@ const ManageAccountsScreen = ({ onBack }) => {
   const { walletAddress } = useWallet();
   const styles = createManageAccountsScreenStyles(theme);
   const [accountExpanded, setAccountExpanded] = React.useState(false);
+  const [showRemoveAccount, setShowRemoveAccount] = React.useState(false);
 
   const formatAddress = (address) => {
     if (!address) return '';
@@ -75,6 +77,14 @@ const ManageAccountsScreen = ({ onBack }) => {
     }
   };
 
+  const handleRemoveAccount = () => {
+    setShowRemoveAccount(true);
+  };
+
+
+  if (showRemoveAccount) {
+    return <RemoveAccountScreen onBack={() => setShowRemoveAccount(false)} />;
+  }
 
   return (
     <View style={styles.container}>
@@ -135,7 +145,7 @@ const ManageAccountsScreen = ({ onBack }) => {
                   <Text style={styles.actionButtonText}>Rename account</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.actionButton}>
+                <TouchableOpacity style={styles.actionButton} onPress={handleRemoveAccount}>
                   <DeleteIcon size={20} color="#ff4444" />
                   <Text style={[styles.actionButtonText, { color: '#ff4444' }]}>Remove account</Text>
                 </TouchableOpacity>
