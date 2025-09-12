@@ -106,6 +106,12 @@ export const createManageAccountsScreenStyles = (theme) => StyleSheet.create({
     alignItems: 'center',
     gap: 8,
   },
+  expandArrow: {
+    // No transition needed for React Native
+  },
+  expandArrowRotated: {
+    transform: [{ rotate: '90deg' }],
+  },
   actionButtons: {
     flexDirection: 'row',
     gap: 12,

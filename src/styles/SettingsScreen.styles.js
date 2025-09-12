@@ -57,6 +57,10 @@ export const createSettingsScreenStyles = (theme) => StyleSheet.create({
     alignItems: 'center',
     gap: 8,
   },
+  arrowButton: {
+    padding: 4,
+    borderRadius: 4,
+  },
   expandArrow: {
     // No transition needed for React Native
   },
@@ -124,5 +128,14 @@ export const createSettingsScreenStyles = (theme) => StyleSheet.create({
   versionText: {
     fontSize: 14,
     fontFamily: 'monospace',
+  },
+  modalOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    zIndex: 1000,
   },
 });
