@@ -97,15 +97,27 @@ const SellerQRScreen = ({ navigation }) => {
             <Text style={[styles.sectionSubtitle, { color: theme.contentSecondary }]}>Choose how rewards are distributed</Text>
           </View>
           <View style={styles.schemeRow}>
-            {SCHEMES.map(s => (
-              <TouchableOpacity
-                key={s.id}
-                onPress={() => setSchemeId(s.id)}
-                style={[styles.schemeChip, { backgroundColor: schemeId === s.id ? theme.actionPrimary : theme.backgroundPrimary }]}
-              >
-                <Text style={[styles.schemeChipText, { color: schemeId === s.id ? theme.contentInversePrimary : theme.contentPrimary }]}>{s.label}</Text>
-              </TouchableOpacity>
-            ))}
+            {SCHEMES.map(s => {
+              const isSelected = schemeId === s.id;
+              return (
+                <TouchableOpacity
+                  key={s.id}
+                  onPress={() => setSchemeId(s.id)}
+                  style={[
+                    styles.schemeChip,
+                    { backgroundColor: isSelected ? theme.actionPrimary : theme.backgroundPrimary },
+                    isSelected && styles.schemeChipSelected
+                  ]}
+                >
+                  <Text style={[
+                    styles.schemeChipText,
+                    { color: isSelected ? theme.contentInversePrimary : theme.contentPrimary }
+                  ]}>
+                    {s.label}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
           </View>
         </View>
 
