@@ -86,7 +86,7 @@ const ConfirmationScreen = ({ route, navigation }) => {
         </View>
         <View style={styles.row}>
           <Text style={[styles.label, { color: theme.contentSecondary }]}>To</Text>
-          <Text style={[styles.value, { color: theme.contentPrimary }]}>{to}</Text>
+          <Text style={[styles.value, { color: theme.contentPrimary }]}>{to.length > 10 ? `${to.substring(0, 6)}...${to.substring(to.length - 4)}` : to}</Text>
         </View>
         <View style={styles.row}>
           <Text style={[styles.label, { color: theme.contentSecondary }]}>Gas</Text>
@@ -95,7 +95,7 @@ const ConfirmationScreen = ({ route, navigation }) => {
         <View style={styles.separator} />
         <View style={styles.row}>
           <Text style={[styles.label, { color: theme.contentSecondary }]}>Total</Text>
-          <Text style={[styles.totalValue, { color: theme.contentPrimary }]}>{total} {token}</Text>
+          <Text style={[styles.totalValue, { color: theme.contentPrimary }]}>{amount} {token}</Text>
         </View>
       </View>
 
