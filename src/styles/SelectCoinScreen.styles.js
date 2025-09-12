@@ -31,16 +31,17 @@ export const createSelectCoinScreenStyles = (theme) => StyleSheet.create({
   searchInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#1e3a8a', // Dark blue background matching design
+    justifyContent: 'center',
+    backgroundColor: theme.backgroundSecondary,
     borderRadius: 12,
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingVertical: 1,
   },
   searchIcon: {
     marginRight: 12,
   },
   searchInput: {
-    flex: 1,
+    display: 'flex',
     fontSize: 16,
     color: theme.contentPrimary,
   },

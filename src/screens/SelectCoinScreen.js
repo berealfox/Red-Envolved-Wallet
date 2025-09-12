@@ -115,7 +115,9 @@ const SelectCoinScreen = ({ navigation, onBack }) => {
       {/* Search Bar */}
       <View style={styles.searchContainer}>
         <View style={styles.searchInputContainer}>
-          <SearchIcon size={20} color="#ffffff" style={styles.searchIcon} />
+          {searchQuery.length === 0 && (
+            <SearchIcon size={20} color="rgba(255, 255, 255, 0.3)" style={styles.searchIcon} />
+          )}
           <TextInput
             style={styles.searchInput}
             placeholder="Search"
