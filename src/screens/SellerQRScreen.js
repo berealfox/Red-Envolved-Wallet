@@ -101,7 +101,20 @@ const SellerQRScreen = ({ navigation }) => {
           <Text style={[styles.sectionTitle, { color: theme.contentPrimary }]}>Signed QR</Text>
           <View style={styles.qrBox}>
             {envelope ? (
-              <QRCode value={JSON.stringify(envelope)} size={220} />
+              <QRCode
+                value={JSON.stringify(envelope)}
+                size={280}
+                backgroundColor="white"
+                color="black"
+                logo={require('../../assets/red-wallet-logo.jpg')}
+                logoSize={40}
+                logoBackgroundColor="white"
+                logoBorderRadius={20}
+                logoBorderColor="black"
+                logoBorderWidth={2}
+                logoMargin={2}
+                ecl="M"
+              />
             ) : (
               <Text style={{ color: theme.contentSecondary }}>Tap Sign to generate QR</Text>
             )}

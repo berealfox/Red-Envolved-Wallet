@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 export const createBuyerScanSummaryStyles = (theme) => StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1, padding: 6, paddingTop: 30, },
   header: {
     height: 56,
     flexDirection: 'row',
