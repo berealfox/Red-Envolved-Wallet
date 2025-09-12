@@ -35,6 +35,18 @@ const DirectSendScreen = ({ navigation }) => {
     return (numAmount * SUI_RATE_USD).toFixed(2);
   };
 
+  const getGasFees = () => {
+    const numAmount = parseFloat(amount) || 0;
+    if (numAmount === 0) {
+      return '0';
+    }
+    // Gas fees calculation based on amount (example: 0.001 SUI base + 0.0001 per SUI)
+    const baseGas = 0.001;
+    const perSuiGas = numAmount * 0.0001;
+    const totalGas = baseGas + perSuiGas;
+    return totalGas.toFixed(4);
+  };
+
   const handlePercentagePress = (percentage) => {
     let amountToSet = 0;
     if (percentage === '25%') {
@@ -171,7 +183,7 @@ const DirectSendScreen = ({ navigation }) => {
       <View style={[styles.bottomCard, { backgroundColor: theme.backgroundInverse }]}>
         <View style={styles.gasRow}>
           <Text style={[styles.gasLabel, { color: theme.contentPrimary }]}>Estimated Gas Fees</Text>
-          <Text style={{ color: theme.contentSecondary }}>0.0014 SUI</Text>
+          <Text style={{ color: theme.contentSecondary }}>{getGasFees()} SUI</Text>
         </View>
         <TouchableOpacity
           style={[
