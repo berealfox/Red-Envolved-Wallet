@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Switch, Alert } from 'react-native';
+import * as Clipboard from 'expo-clipboard';
 import { useTheme } from '../theme/ThemeContext';
 import { useWallet } from '../context/WalletContext';
 import { createSettingsScreenStyles } from '../styles/SettingsScreen.styles';
@@ -116,6 +117,17 @@ const SettingsScreen = () => {
     setShowManageAccounts(true);
   };
 
+  const handleCopyAddress = async () => {
+    if (walletAddress) {
+      try {
+        await Clipboard.setStringAsync(walletAddress);
+        Alert.alert('Copied', 'Wallet address copied to clipboard');
+      } catch (error) {
+        Alert.alert('Error', 'Failed to copy address to clipboard');
+      }
+    }
+  };
+
   const handleClearWallet = () => {
     Alert.alert(
       'Clear Wallet',
@@ -168,7 +180,9 @@ const SettingsScreen = () => {
               </View>
             </View>
             <View style={styles.accountActions}>
-              <CopyIcon size={20} color={theme.contentSecondary} />
+              <TouchableOpacity onPress={handleCopyAddress}>
+                <CopyIcon size={20} color={theme.contentSecondary} />
+              </TouchableOpacity>
               <TouchableOpacity onPress={() => setAccountExpanded(!accountExpanded)}>
                 <View style={[
                   styles.expandArrow,
