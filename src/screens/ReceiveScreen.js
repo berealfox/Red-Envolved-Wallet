@@ -191,9 +191,12 @@ const ReceiveScreen = ({ navigation, initialTab = 'receive' }) => {
               style={styles.camera}
               facing="back"
               barcodeScannerSettings={{
-                barcodeTypes: ['qr']
+                barcodeTypes: ['qr'],
+                interval: 500
               }}
               onBarcodeScanned={scanned ? undefined : handleQRCodeScanned}
+              autofocus="on"
+              focusable={true}
             />
             <View style={styles.cameraOverlay} pointerEvents="none">
               <View style={styles.scanArea}>
