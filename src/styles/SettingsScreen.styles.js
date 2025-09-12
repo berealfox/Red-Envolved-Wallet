@@ -71,6 +71,7 @@ export const createSettingsScreenStyles = (theme) => StyleSheet.create({
     marginTop: 12,
     flexDirection: 'row',
     gap: 8,
+    minHeight: 60,
   },
   accountActionButton: {
     flex: 1,
@@ -81,10 +82,14 @@ export const createSettingsScreenStyles = (theme) => StyleSheet.create({
     paddingHorizontal: 8,
     borderRadius: 12,
     gap: 6,
+    minHeight: 60,
+    minWidth: 80,
   },
   accountActionText: {
     fontSize: 14,
     fontWeight: '500',
+    textAlign: 'center',
+    flexShrink: 1,
   },
   manageButton: {
     paddingVertical: 8,

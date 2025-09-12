@@ -4,10 +4,14 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from 'react-native';
+import * as Clipboard from 'expo-clipboard';
 import { useTheme } from '../theme/ThemeContext';
 import { useWallet } from '../context/WalletContext';
 import { createManageAccountsScreenStyles } from '../styles/ManageAccountsScreen.styles';
+import RemoveAccountScreen from './RemoveAccountScreen';
+import RenameAccountScreen from './RenameAccountScreen';
 import Svg, { Path, G } from 'react-native-svg';
 
 // Google G Icon Component
@@ -56,12 +60,41 @@ const ManageAccountsScreen = ({ onBack }) => {
   const { walletAddress } = useWallet();
   const styles = createManageAccountsScreenStyles(theme);
   const [accountExpanded, setAccountExpanded] = React.useState(false);
+  const [showRemoveAccount, setShowRemoveAccount] = React.useState(false);
+  const [showRenameAccount, setShowRenameAccount] = React.useState(false);
 
   const formatAddress = (address) => {
     if (!address) return '';
     return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
   };
 
+  const handleCopyAddress = async () => {
+    if (walletAddress) {
+      try {
+        await Clipboard.setStringAsync(walletAddress);
+        Alert.alert('Copied', 'Wallet address copied to clipboard');
+      } catch (error) {
+        Alert.alert('Error', 'Failed to copy address to clipboard');
+      }
+    }
+  };
+
+  const handleRemoveAccount = () => {
+    setShowRemoveAccount(true);
+  };
+
+  const handleRenameAccount = () => {
+    setShowRenameAccount(true);
+  };
+
+
+  if (showRemoveAccount) {
+    return <RemoveAccountScreen onBack={() => setShowRemoveAccount(false)} />;
+  }
+
+  if (showRenameAccount) {
+    return <RenameAccountScreen onBack={() => setShowRenameAccount(false)} />;
+  }
 
   return (
     <View style={styles.container}>
@@ -100,7 +133,9 @@ const ManageAccountsScreen = ({ onBack }) => {
                 </View>
               </View>
               <View style={styles.accountActions}>
-                <CopyIcon size={20} color={theme.contentSecondary} />
+                <TouchableOpacity onPress={handleCopyAddress}>
+                  <CopyIcon size={20} color={theme.contentSecondary} />
+                </TouchableOpacity>
                 <TouchableOpacity onPress={() => setAccountExpanded(!accountExpanded)}>
                   <View style={[
                     styles.expandArrow,
@@ -115,12 +150,12 @@ const ManageAccountsScreen = ({ onBack }) => {
             {/* Action Buttons */}
             {accountExpanded && (
               <View style={styles.actionButtons}>
-                <TouchableOpacity style={styles.actionButton}>
+                <TouchableOpacity style={styles.actionButton} onPress={handleRenameAccount}>
                   <EditIcon size={20} color={theme.contentPrimary} />
                   <Text style={styles.actionButtonText}>Rename account</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.actionButton}>
+                <TouchableOpacity style={styles.actionButton} onPress={handleRemoveAccount}>
                   <DeleteIcon size={20} color="#ff4444" />
                   <Text style={[styles.actionButtonText, { color: '#ff4444' }]}>Remove account</Text>
                 </TouchableOpacity>
